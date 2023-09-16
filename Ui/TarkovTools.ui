@@ -146,28 +146,6 @@
           <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="TraderId">
-         <property name="geometry">
-          <rect>
-           <x>1060</x>
-           <y>0</y>
-           <width>111</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="maxLength">
-          <number>24</number>
-         </property>
-         <property name="placeholderText">
-          <string>Trader Id</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
         <widget class="QTextEdit" name="Description">
          <property name="geometry">
           <rect>
@@ -715,7 +693,7 @@
             <widget class="QPushButton" name="FinishLoyaltyAddToList">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>330</x>
                <y>50</y>
                <width>121</width>
                <height>24</height>
@@ -728,7 +706,7 @@
             <widget class="QPushButton" name="FinishSkillAddToList">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>330</x>
                <y>290</y>
                <width>121</width>
                <height>24</height>
@@ -741,7 +719,7 @@
             <widget class="QCheckBox" name="FinishItemDynamicLocale">
              <property name="geometry">
               <rect>
-               <x>220</x>
+               <x>240</x>
                <y>500</y>
                <width>111</width>
                <height>20</height>
@@ -777,7 +755,7 @@
             <widget class="QPushButton" name="FinishItemAddToList">
              <property name="geometry">
               <rect>
-               <x>100</x>
+               <x>330</x>
                <y>530</y>
                <width>121</width>
                <height>24</height>
@@ -790,7 +768,7 @@
             <widget class="QLineEdit" name="FinishItemAmount">
              <property name="geometry">
               <rect>
-               <x>140</x>
+               <x>150</x>
                <y>500</y>
                <width>71</width>
                <height>21</height>
@@ -816,7 +794,7 @@
             <widget class="QCheckBox" name="FinishItemFIR">
              <property name="geometry">
               <rect>
-               <x>340</x>
+               <x>360</x>
                <y>500</y>
                <width>111</width>
                <height>20</height>
@@ -842,7 +820,7 @@
             <widget class="QCheckBox" name="FinishItemEncoded">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>240</x>
                <y>530</y>
                <width>111</width>
                <height>20</height>
@@ -856,13 +834,61 @@
              <property name="geometry">
               <rect>
                <x>-10</x>
-               <y>720</y>
+               <y>710</y>
                <width>461</width>
                <height>20</height>
               </rect>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishItemAmount_2">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>530</y>
+               <width>51</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="placeholderText">
+              <string>DogTag Lvl</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishItemAmount_3">
+             <property name="geometry">
+              <rect>
+               <x>80</x>
+               <y>530</y>
+               <width>51</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="placeholderText">
+              <string>Min Dura</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishItemAmount_4">
+             <property name="geometry">
+              <rect>
+               <x>150</x>
+               <y>530</y>
+               <width>51</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>100</string>
+             </property>
+             <property name="placeholderText">
+              <string>Max Dura</string>
              </property>
             </widget>
            </widget>
@@ -1657,7 +1683,7 @@
         <widget class="QCheckBox" name="RequiresKey">
          <property name="geometry">
           <rect>
-           <x>1060</x>
+           <x>1050</x>
            <y>30</y>
            <width>100</width>
            <height>20</height>
@@ -1665,25 +1691,6 @@
          </property>
          <property name="text">
           <string>Requires a Key</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="Location">
-         <property name="geometry">
-          <rect>
-           <x>900</x>
-           <y>0</y>
-           <width>141</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="placeholderText">
-          <string>Location</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QCheckBox" name="Restartable">
@@ -1781,6 +1788,32 @@
          </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="TradercomboBox">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>0</y>
+           <width>141</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Trader</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="LocationComboBox">
+         <property name="geometry">
+          <rect>
+           <x>1050</x>
+           <y>0</y>
+           <width>131</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Location</string>
          </property>
         </widget>
        </widget>

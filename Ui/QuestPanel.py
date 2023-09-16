@@ -57,7 +57,7 @@ class QuestPanel(Quest):
         ]
         self.mainWindow.Type.addItems(sorted(TypeList))
         
-        SkillViewList = [
+        SkillList = [
             "Endurance", "Health", "Immunity",
             "Metabolism", "Strength", "Vitality",
             "StressResistance", "Attention", "Charisma",
@@ -72,7 +72,20 @@ class QuestPanel(Quest):
             "HeavyVests", "AdvancedModding", "Barter", 
             "Surgery", "HideoutManagement", "MagDrills"
         ]      
-        self.mainWindow.FinishSkillComboBox.addItems(sorted(SkillViewList))
+        self.mainWindow.FinishSkillComboBox.addItems(sorted(SkillList))
+        
+        locationList = [
+            "FactoryDay", "Customs", "Woods", "Lighthouse",
+            "Shoreline", "Reserve", "Interchange", "FactoryNight",
+            "Labs", "Streets"
+        ]
+        self.mainWindow.LocationComboBox.addItems(sorted(locationList))
+        
+        TraderList = [
+            "Prapor", "Therapist", "Fence", "Skier",
+            "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
+        ]
+        self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
         
     def setUpSignals(self):
         self.mainWindow.GenerateQuest.clicked.connect(self.saveQuestToDisk)
@@ -153,7 +166,6 @@ class QuestPanel(Quest):
         statusSelected = self.mainWindow.AvailableForStartStatus.currentText()
         if statusSelected in StatusMap:
             quest.statusType = StatusMap[statusSelected]
-            print(quest.statusType)
 
         self.availableStatusList.append(quest)
 

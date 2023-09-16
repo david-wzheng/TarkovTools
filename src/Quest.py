@@ -1,5 +1,6 @@
 import json, os, string, random
 from Ui.ui_mainwindow import Ui_MainWindow
+from src.constants import *
 
 class Quest: 
     def __init__(self, mainWindow: Ui_MainWindow):
@@ -269,6 +270,18 @@ class Quest:
     def generateFailReward(self):
         pass #TODO
 
+    def getTraderId(self):
+        selectedTrader = self.mainWindow.TradercomboBox.currentText()
+        if selectedTrader in TraderMap:
+            trader = TraderMap[selectedTrader]
+            return trader
+    
+    def getLocationId(self):
+        selectedLocation = self.mainWindow.LocationComboBox.currentText()
+        if selectedLocation in LocationMap:
+            location = LocationMap[selectedLocation]
+            return location
+        
     #Setup Quest
     def setUpQuests(self):
         self.availableForStartIndex = 0
@@ -301,8 +314,8 @@ class Quest:
                 #TODO
             }, 
 
-            "traderId": f"{self.mainWindow.TraderId.text()}",
-            "location": f"{self.mainWindow.Location.text()}",
+            "traderId": f"{self.getTraderId()}",
+            "location": f"{self.getLocationId()}",
             "image": self.mainWindow.ImagePath.text(),
             "type": self.mainWindow.Type.currentText(),
             "isKey": self.mainWindow.RequiresKey.isChecked(),
