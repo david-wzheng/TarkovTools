@@ -77,7 +77,7 @@ class QuestPanel(Quest):
             "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
         ]
         self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
-        self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
+        self.mainWindow.TraderFinishcomboBox.addItems(sorted(TraderList))
         self.mainWindow.SuccessTrader.addItems(sorted(TraderList))
         
     def setUpSignals(self):
