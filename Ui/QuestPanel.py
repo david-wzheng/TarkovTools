@@ -12,16 +12,7 @@ class QuestPanel(Quest):
     def __init__(self, mainWindow: Ui_MainWindow):
         super().__init__(mainWindow)
         self.mainWindow = mainWindow
-               
-        self.availableQuestVbox = QVBoxLayout()
-        self.currencyVbox = QVBoxLayout()
-        self.standingVbox = QVBoxLayout()
-        self.itemVbox = QVBoxLayout()
-        self.startedItemVbox = QVBoxLayout()
-        self.finishLoyaltyVbox = QVBoxLayout()
-        self.finishSkillVbox = QVBoxLayout()
-        self.finishItemsVbox = QVBoxLayout()
-              
+           
         self.addItemsToDropBoxes()
         self.setUpSignals()
         self.setUpControls()
@@ -118,13 +109,10 @@ class QuestPanel(Quest):
 
         self.finishLoyaltyList.append(loyalty)
 
-        object = QLabel(f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale}")
-        widget = QWidget()
-        self.finishLoyaltyVbox.addWidget(object)
-        widget.setLayout(self.finishLoyaltyVbox)
-        scroll = self.mainWindow.FinishLoyaltyScroll
-        scroll.setWidget(widget)
-        
+        object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale}"
+        listWidget = self.mainWindow.FinishLoyaltyWidget
+        listWidget.addItem(object)
+     
     def addFinishSkillToScrollList(self):
         skill = Object()       
         skill.skill = self.mainWindow.FinishSkillComboBox.currentText()
@@ -135,11 +123,8 @@ class QuestPanel(Quest):
         self.finishSkillList.append(skill)
 
         object = QLabel(f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale}")
-        widget = QWidget()
-        self.finishSkillVbox.addWidget(object)
-        widget.setLayout(self.finishSkillVbox)
-        scroll = self.mainWindow.FinishSkillScroll
-        scroll.setWidget(widget)
+        listWidget = self.mainWindow.FinishSkillWidget
+        listWidget.addItem(object)
     
     def addFinishItemToScrollList(self):
         item = Object()       
@@ -151,12 +136,9 @@ class QuestPanel(Quest):
 
         self.finishItemList.append(item)
 
-        object = QLabel(f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}")
-        widget = QWidget()
-        self.finishItemsVbox.addWidget(object)
-        widget.setLayout(self.finishItemsVbox)
-        scroll = self.mainWindow.FinishItemScroll
-        scroll.setWidget(widget)
+        object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}"
+        listWidget = self.mainWindow.FinishItemWidget
+        listWidget.addItem(object)
         
     def addAvailableQuestToScrollList(self):
         quest = Object()       
@@ -169,12 +151,9 @@ class QuestPanel(Quest):
 
         self.availableStatusList.append(quest)
 
-        object = QLabel(f"Status: {statusSelected} questId: {quest.questId} DynamicLocale: {quest.dynamicLocale}")
-        widget = QWidget()
-        self.availableQuestVbox.addWidget(object)
-        widget.setLayout(self.availableQuestVbox)
-        scroll = self.mainWindow.AvailableForStartQuestView
-        scroll.setWidget(widget)
+        object = f"Status: {statusSelected} questId: {quest.questId} DynamicLocale: {quest.dynamicLocale}"
+        listWidget = self.mainWindow.StartQuestWidget
+        listWidget.addItem(object)
 
     def addStartedItemtoScrollList(self):
         item = Object()
@@ -183,13 +162,10 @@ class QuestPanel(Quest):
        
         self.startedItemList.append(item)
         
-        object = QLabel(f"TraderId: Item reward: {item.id} Amount: {item.value}")
-        widget = QWidget()
-        self.startedItemVbox.addWidget(object)
-        widget.setLayout(self.startedItemVbox)
-        scroll = self.mainWindow.StartedItemReward
-        scroll.setWidget(widget)
-        
+        object = f"TraderId: Item reward: {item.id} Amount: {item.value}"
+        listWidget = self.mainWindow.StartedItemWidget
+        listWidget.addItem(object)
+     
     def addSuccessCurrencyToScrollList(self):
         currency = Object()
         currency.value = self.mainWindow.CurrencyAmount.text()
@@ -200,12 +176,9 @@ class QuestPanel(Quest):
 
         self.currencyRewardList.append(currency)
         
-        object = QLabel(f"{currencyTypeSelected} ID: {currency.id} Amount: {currency.value}")
-        widget = QWidget()
-        self.currencyVbox.addWidget(object)
-        widget.setLayout(self.currencyVbox)
-        scroll = self.mainWindow.SuccessCurrencyReward
-        scroll.setWidget(widget)
+        object = f"{currencyTypeSelected} ID: {currency.id} Amount: {currency.value}"
+        listWidget = self.mainWindow.SuccessCurrencyWidget
+        listWidget.addItem(object)
 
     def addSuccessStandingToScrollList(self):
         standing = Object()
@@ -213,12 +186,9 @@ class QuestPanel(Quest):
         standing.trader = self.mainWindow.SuccessTraderIdStanding.text()
         self.standingRewardList.append(standing)
         
-        object = QLabel(f"TraderId: {standing.trader} Standing reward: {standing.value}")
-        widget = QWidget()
-        self.standingVbox.addWidget(object)
-        widget.setLayout(self.standingVbox)
-        scroll = self.mainWindow.SuccessTraderReward
-        scroll.setWidget(widget)
+        object = f"TraderId: {standing.trader} Standing reward: {standing.value}"
+        listWidget = self.mainWindow.SuccessStandingWidget
+        listWidget.addItem(object)
 
     def addSuccessItemToScrollList(self):
         item = Object()
@@ -226,9 +196,6 @@ class QuestPanel(Quest):
         item.value = self.mainWindow.SuccessRewardAmount.text()
         self.itemRewardList.append(item)
         
-        object = QLabel(f"TraderId: Item reward: {item.id} Amount: {item.value}")
-        widget = QWidget()
-        self.itemVbox.addWidget(object)
-        widget.setLayout(self.itemVbox)
-        scroll = self.mainWindow.SuccessItemReward
-        scroll.setWidget(widget)
+        object = f"TraderId: Item reward: {item.id} Amount: {item.value}"
+        listWidget = self.mainWindow.SuccessItemWidget
+        listWidget.addItem(object)

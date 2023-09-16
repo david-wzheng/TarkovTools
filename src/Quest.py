@@ -270,6 +270,7 @@ class Quest:
     def generateFailReward(self):
         pass #TODO
 
+    #Root Methods
     def getTraderId(self):
         selectedTrader = self.mainWindow.TradercomboBox.currentText()
         if selectedTrader in TraderMap:
