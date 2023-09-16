@@ -1,0 +1,1842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>980</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1920</width>
+    <height>980</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1920</width>
+    <height>980</height>
+   </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Tarkov Tools 0.0.1</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>1911</width>
+      <height>1061</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <item row="0" column="0" colspan="2">
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="documentMode">
+        <bool>false</bool>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <property name="tabBarAutoHide">
+        <bool>false</bool>
+       </property>
+       <widget class="QWidget" name="QuestCreator">
+        <attribute name="title">
+         <string>Quest Creator</string>
+        </attribute>
+        <widget class="QTextEdit" name="FailMessage">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>250</y>
+           <width>521</width>
+           <height>201</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Fail Message</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="GenerateQuest">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>30</y>
+           <width>131</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Generate Quest</string>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="CompleteMessage">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>60</y>
+           <width>521</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Complete Message</string>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="ChangeMessage">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>470</y>
+           <width>521</width>
+           <height>201</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Change Message</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="SecretQuest">
+         <property name="geometry">
+          <rect>
+           <x>770</x>
+           <y>30</y>
+           <width>101</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Secret Quest</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="TraderId">
+         <property name="geometry">
+          <rect>
+           <x>1060</x>
+           <y>0</y>
+           <width>111</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>24</number>
+         </property>
+         <property name="placeholderText">
+          <string>Trader Id</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="Description">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>250</y>
+           <width>521</width>
+           <height>201</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Description</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="Type">
+         <property name="geometry">
+          <rect>
+           <x>1300</x>
+           <y>0</y>
+           <width>111</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>Type</string>
+         </property>
+        </widget>
+        <widget class="QTabWidget" name="tabWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>1440</x>
+           <y>0</y>
+           <width>461</width>
+           <height>881</height>
+          </rect>
+         </property>
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
+         <property name="tabBarAutoHide">
+          <bool>false</bool>
+         </property>
+         <widget class="QWidget" name="tab_4">
+          <attribute name="title">
+           <string>Available For Start</string>
+          </attribute>
+          <widget class="QLineEdit" name="lineEdit_20">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>862</y>
+             <width>132</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Available After</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="AvailableForStartLevelRequirement">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="placeholderText">
+            <string>Level requirement</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="AvailableForStartLevelRequirementCompare">
+           <property name="geometry">
+            <rect>
+             <x>310</x>
+             <y>20</y>
+             <width>121</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="placeholderText">
+            <string>Compare Method</string>
+           </property>
+          </widget>
+          <widget class="QScrollArea" name="AvailableForStartQuestView">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>130</y>
+             <width>441</width>
+             <height>151</height>
+            </rect>
+           </property>
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents_6">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>439</width>
+              <height>149</height>
+             </rect>
+            </property>
+           </widget>
+          </widget>
+          <widget class="Line" name="line_4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>40</y>
+             <width>451</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="AvailableForStartQuestId">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>70</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="placeholderText">
+            <string>Quest Id</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="AvailableForStartAddToList">
+           <property name="geometry">
+            <rect>
+             <x>310</x>
+             <y>70</y>
+             <width>121</width>
+             <height>24</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Add To List</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="AvailableForStartDynamicLocaleLevel">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>20</y>
+             <width>111</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Dynamic Locale</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="AvailableForStartDynamicLocaleQuest">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>70</y>
+             <width>111</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Dynamic Locale</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+          <widget class="Line" name="line_14">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>280</y>
+             <width>451</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="AvailableForStartStatus">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>100</y>
+             <width>111</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="placeholderText">
+            <string>Status</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_3">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>0</y>
+             <width>49</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Level</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_4">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>50</y>
+             <width>111</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Quest Requirement</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>Available For Finish</string>
+          </attribute>
+          <widget class="QComboBox" name="comboBox_6">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>852</y>
+             <width>68</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <property name="placeholderText">
+            <string>Side</string>
+           </property>
+           <property name="modelColumn">
+            <number>0</number>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lineEdit_16">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>879</y>
+             <width>132</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Value</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lineEdit_14">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>906</y>
+             <width>132</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Index</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="checkBox_10">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>933</y>
+             <width>212</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Do Not Reset If Counter Completed</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+          <widget class="QTabWidget" name="tabWidget_5">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>461</width>
+             <height>861</height>
+            </rect>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <property name="tabBarAutoHide">
+            <bool>false</bool>
+           </property>
+           <widget class="QWidget" name="tab_11">
+            <attribute name="title">
+             <string>Loyalty, Skills, Items</string>
+            </attribute>
+            <widget class="QLineEdit" name="FinishLoyaltyId">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>121</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Trader Id</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>0</y>
+               <width>49</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Loyalty</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FinishLoyaltyDynamicLocale">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>20</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Dynamic Locale</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishLoyaltyValue">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>20</y>
+               <width>71</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Value</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="FinishLoyaltyCompare">
+             <property name="geometry">
+              <rect>
+               <x>330</x>
+               <y>20</y>
+               <width>121</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Compare Method</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line">
+             <property name="geometry">
+              <rect>
+               <x>-10</x>
+               <y>230</y>
+               <width>461</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="FinishSkillComboBox">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>260</y>
+               <width>121</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Skill</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_2">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>240</y>
+               <width>49</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Skill</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishSkillValue">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>260</y>
+               <width>71</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Value</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FinishDynamicLocaleSkill">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>260</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Dynamic Locale</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="FinishSkillCompare">
+             <property name="geometry">
+              <rect>
+               <x>330</x>
+               <y>260</y>
+               <width>121</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Compare Method</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_2">
+             <property name="geometry">
+              <rect>
+               <x>-10</x>
+               <y>470</y>
+               <width>461</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QScrollArea" name="FinishSkillScroll">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>320</y>
+               <width>451</width>
+               <height>151</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_7">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>449</width>
+                <height>149</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QScrollArea" name="FinishLoyaltyScroll">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>80</y>
+               <width>451</width>
+               <height>151</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_8">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>449</width>
+                <height>149</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QPushButton" name="FinishLoyaltyAddToList">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>50</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="FinishSkillAddToList">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>290</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FinishItemDynamicLocale">
+             <property name="geometry">
+              <rect>
+               <x>220</x>
+               <y>500</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Dynamic Locale</string>
+             </property>
+            </widget>
+            <widget class="QScrollArea" name="FinishItemScroll">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>560</y>
+               <width>451</width>
+               <height>151</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_11">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>449</width>
+                <height>149</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QPushButton" name="FinishItemAddToList">
+             <property name="geometry">
+              <rect>
+               <x>100</x>
+               <y>530</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishItemAmount">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>500</y>
+               <width>71</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Amount</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FinishItemId">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>500</y>
+               <width>121</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>ItemId</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FinishItemFIR">
+             <property name="geometry">
+              <rect>
+               <x>340</x>
+               <y>500</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Found in raid</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_13">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>480</y>
+               <width>101</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Find Items&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FinishItemEncoded">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>530</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>IsEncoded</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_16">
+             <property name="geometry">
+              <rect>
+               <x>-10</x>
+               <y>720</y>
+               <width>461</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </widget>
+           <widget class="QWidget" name="tab_12">
+            <attribute name="title">
+             <string>Location</string>
+            </attribute>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_5">
+          <attribute name="title">
+           <string>Fail</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="tab_6">
+          <attribute name="title">
+           <string>Rewards</string>
+          </attribute>
+          <widget class="QTabWidget" name="tabWidget_3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>461</width>
+             <height>981</height>
+            </rect>
+           </property>
+           <property name="tabShape">
+            <enum>QTabWidget::Rounded</enum>
+           </property>
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <widget class="QWidget" name="tab_7">
+            <attribute name="title">
+             <string>Started</string>
+            </attribute>
+            <widget class="QLabel" name="label_9">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>9</y>
+               <width>57</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Start Items</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="StartedAddItemToList">
+             <property name="geometry">
+              <rect>
+               <x>310</x>
+               <y>30</y>
+               <width>75</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="StartedItemId">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>30</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Item Id</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="Line" name="line_9">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>50</y>
+               <width>441</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="StartedItemAmount">
+             <property name="geometry">
+              <rect>
+               <x>160</x>
+               <y>30</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Amount</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_10">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>60</y>
+               <width>57</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Start Items</string>
+             </property>
+            </widget>
+            <widget class="QScrollArea" name="StartedItemReward">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>80</y>
+               <width>441</width>
+               <height>821</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_4">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>439</width>
+                <height>819</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+           <widget class="QWidget" name="tab_8">
+            <attribute name="title">
+             <string>Success</string>
+            </attribute>
+            <widget class="QLineEdit" name="ExperienceAmount">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>9</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Experience Amount</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="CurrencyAmount">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>60</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Currency Amount</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="CurrencyType">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>60</y>
+               <width>131</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Currency Type</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="Line" name="line_5">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>240</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_6">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>250</y>
+               <width>84</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Trader Standing</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_7">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>300</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Standing Reward List</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_6">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>290</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_8">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>570</y>
+               <width>72</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Item Rewards</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="StandingAmount">
+             <property name="geometry">
+              <rect>
+               <x>170</x>
+               <y>270</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Standing Amount</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="SuccessTraderIdStanding">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>270</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Trader Id</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="Line" name="line_7">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>610</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="SuccessAddStandingToList">
+             <property name="geometry">
+              <rect>
+               <x>330</x>
+               <y>270</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="SuccessRewardId">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>590</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Item Id</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="SuccessRewardAmount">
+             <property name="geometry">
+              <rect>
+               <x>162</x>
+               <y>590</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Amount</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="SuccessAddItemToList">
+             <property name="geometry">
+              <rect>
+               <x>314</x>
+               <y>590</y>
+               <width>131</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_8">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>560</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QScrollArea" name="SuccessTraderReward">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>320</y>
+               <width>441</width>
+               <height>231</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_2">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>439</width>
+                <height>229</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QScrollArea" name="SuccessItemReward">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>640</y>
+               <width>431</width>
+               <height>201</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_3">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>429</width>
+                <height>199</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QLabel" name="label_5">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>620</y>
+               <width>88</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Item Reward List</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="SuccessAddCurrencyToList">
+             <property name="geometry">
+              <rect>
+               <x>330</x>
+               <y>60</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_12">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>30</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_11">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>40</y>
+               <width>84</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Currency</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_13">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>80</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QScrollArea" name="SuccessCurrencyReward">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>110</y>
+               <width>441</width>
+               <height>121</height>
+              </rect>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_5">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>439</width>
+                <height>119</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QLabel" name="label_12">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>90</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Currency Reward List</string>
+             </property>
+            </widget>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Json</string>
+          </attribute>
+          <widget class="QTabWidget" name="tabWidget_4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>451</width>
+             <height>971</height>
+            </rect>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="tab_9">
+            <attribute name="title">
+             <string>Quest.Json</string>
+            </attribute>
+           </widget>
+           <widget class="QWidget" name="tab_10">
+            <attribute name="title">
+             <string>Locale.json</string>
+            </attribute>
+           </widget>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QCheckBox" name="CanShowNotifications">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>30</y>
+           <width>146</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Can Show Notifications</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="InstantComplete">
+         <property name="geometry">
+          <rect>
+           <x>1300</x>
+           <y>30</y>
+           <width>114</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Instant Complete</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="Note">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>470</y>
+           <width>521</width>
+           <height>201</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Note</string>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="StartedMessage">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>690</y>
+           <width>521</width>
+           <height>191</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Started Message</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="Side">
+         <property name="geometry">
+          <rect>
+           <x>1190</x>
+           <y>0</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Side</string>
+         </property>
+         <property name="modelColumn">
+          <number>0</number>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="QuestName">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>0</y>
+           <width>251</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>Quest Name</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="AcceptMessage">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>60</y>
+           <width>521</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Accept Message</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="_Id">
+         <property name="geometry">
+          <rect>
+           <x>630</x>
+           <y>0</y>
+           <width>241</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>24</number>
+         </property>
+         <property name="placeholderText">
+          <string>_id</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="DynamicLocale">
+         <property name="geometry">
+          <rect>
+           <x>630</x>
+           <y>30</y>
+           <width>111</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Dynamic Locale</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="SuccessMessage">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>690</y>
+           <width>521</width>
+           <height>191</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Success Message</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="ImagePath">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>30</y>
+           <width>251</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>512</number>
+         </property>
+         <property name="placeholderText">
+          <string>Image Path</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="RequiresKey">
+         <property name="geometry">
+          <rect>
+           <x>1060</x>
+           <y>30</y>
+           <width>100</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Requires a Key</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="Location">
+         <property name="geometry">
+          <rect>
+           <x>900</x>
+           <y>0</y>
+           <width>141</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>Location</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="Restartable">
+         <property name="geometry">
+          <rect>
+           <x>1190</x>
+           <y>30</y>
+           <width>82</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Restartable</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QScrollArea" name="QuestSelection">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>321</width>
+           <height>821</height>
+          </rect>
+         </property>
+         <property name="toolTip">
+          <string>Quests in the loaded file appear here.</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>319</width>
+            <height>819</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="geometry">
+          <rect>
+           <x>9</x>
+           <y>0</y>
+           <width>321</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>Quest File Path</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+         <property name="geometry">
+          <rect>
+           <x>9</x>
+           <y>30</y>
+           <width>131</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Load Quest File</string>
+         </property>
+        </widget>
+        <widget class="Line" name="line_10">
+         <property name="geometry">
+          <rect>
+           <x>340</x>
+           <y>-20</y>
+           <width>3</width>
+           <height>1080</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+        <widget class="Line" name="line_11">
+         <property name="geometry">
+          <rect>
+           <x>1430</x>
+           <y>-20</y>
+           <width>3</width>
+           <height>1080</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Item Tool</string>
+        </attribute>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
