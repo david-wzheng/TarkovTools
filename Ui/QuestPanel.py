@@ -77,9 +77,12 @@ class QuestPanel(Quest):
             "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
         ]
         self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
+        self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
+        self.mainWindow.SuccessTrader.addItems(sorted(TraderList))
         
     def setUpSignals(self):
         self.mainWindow.GenerateQuest.clicked.connect(self.saveQuestToDisk)
+        # Add To List
         self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrencyToScrollList)
         self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStandingToScrollList)
         self.mainWindow.SuccessAddItemToList.clicked.connect(self.addSuccessItemToScrollList)
@@ -88,6 +91,16 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
         self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkillToScrollList)
         self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItemToScrollList)
+        
+        # Remove From List
+        self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(self.removeSuccessCurrencyScrollItem)
+        self.mainWindow.SuccessRemoveStandingFromList.clicked.connect(self.removeSuccessStandingScrollItem)
+        self.mainWindow.SuccessRemoveItemFromList.clicked.connect(self.removeSuccessItemScrollItem)
+        self.mainWindow.StartedRemoveItemFromList.clicked.connect(self.removeStartedItemScrollItem)
+        self.mainWindow.AvailableForStartRemoveFromList.clicked.connect(self.removeAvailableQuestScrollItem)
+        self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
+        self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
+        self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
     
     def setUpControls(self):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
@@ -99,13 +112,16 @@ class QuestPanel(Quest):
         with open("./json/quest.json", 'w') as file:
             file.write(self.setUpQuests())
     
-    # SCROLL VIEW POPULATION
+    # SCROLL WIDGET POPULATION
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
-        loyalty.traderId = self.mainWindow.FinishLoyaltyId.text()
         loyalty.dynamicLocale = self.mainWindow.FinishLoyaltyDynamicLocale.isChecked()
         loyalty.value = self.mainWindow.FinishLoyaltyValue.text()
         loyalty.compare = self.mainWindow.FinishLoyaltyCompare.currentText()
+
+        traderTypeSelected = self.mainWindow.TraderFinishcomboBox.currentText()
+        if traderTypeSelected in TraderMap:
+            loyalty.traderId = TraderMap[traderTypeSelected]
 
         self.finishLoyaltyList.append(loyalty)
 
@@ -122,7 +138,7 @@ class QuestPanel(Quest):
 
         self.finishSkillList.append(skill)
 
-        object = QLabel(f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale}")
+        object = f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale}"
         listWidget = self.mainWindow.FinishSkillWidget
         listWidget.addItem(object)
     
@@ -162,7 +178,7 @@ class QuestPanel(Quest):
        
         self.startedItemList.append(item)
         
-        object = f"TraderId: Item reward: {item.id} Amount: {item.value}"
+        object = f"Item reward: {item.id} Amount: {item.value}"
         listWidget = self.mainWindow.StartedItemWidget
         listWidget.addItem(object)
      
@@ -183,7 +199,11 @@ class QuestPanel(Quest):
     def addSuccessStandingToScrollList(self):
         standing = Object()
         standing.value = self.mainWindow.StandingAmount.text()
-        standing.trader = self.mainWindow.SuccessTraderIdStanding.text()
+          
+        traderTypeSelected = self.mainWindow.SuccessTrader.currentText()
+        if traderTypeSelected in TraderMap:
+            standing.trader = TraderMap[traderTypeSelected]
+        
         self.standingRewardList.append(standing)
         
         object = f"TraderId: {standing.trader} Standing reward: {standing.value}"
@@ -199,3 +219,44 @@ class QuestPanel(Quest):
         object = f"TraderId: Item reward: {item.id} Amount: {item.value}"
         listWidget = self.mainWindow.SuccessItemWidget
         listWidget.addItem(object)
+
+    # SCROLL WIDGET REMOVAL
+    def removeFinishLoyaltyScrollItem(self):
+        selectedIndex = self.mainWindow.FinishLoyaltyWidget.currentRow()
+        self.mainWindow.FinishLoyaltyWidget.takeItem(selectedIndex)
+        self.finishLoyaltyList.pop(selectedIndex)
+        
+    def removeFinishSkillScrollItem(self):
+        selectedIndex = self.mainWindow.FinishSkillWidget.currentRow()
+        self.mainWindow.FinishSkillWidget.takeItem(selectedIndex)
+        self.finishSkillList.pop(selectedIndex)
+    
+    def removeFinishItemScrollItem(self):
+        selectedIndex = self.mainWindow.FinishItemWidget.currentRow()
+        self.mainWindow.FinishItemWidget.takeItem(selectedIndex)
+        self.finishItemList.pop(selectedIndex)
+    
+    def removeAvailableQuestScrollItem(self):
+        selectedIndex = self.mainWindow.StartQuestWidget.currentRow()
+        self.mainWindow.StartQuestWidget.takeItem(selectedIndex)
+        self.availableStatusList.pop(selectedIndex)
+    
+    def removeStartedItemScrollItem(self):
+        selectedIndex = self.mainWindow.StartedItemWidget.currentRow()
+        self.mainWindow.StartedItemWidget.takeItem(selectedIndex)
+        self.startedItemList.pop(selectedIndex)
+    
+    def removeSuccessCurrencyScrollItem(self):
+        selectedIndex = self.mainWindow.SuccessCurrencyWidget.currentRow()
+        self.mainWindow.SuccessCurrencyWidget.takeItem(selectedIndex)
+        self.currencyRewardList.pop(selectedIndex)
+    
+    def removeSuccessStandingScrollItem(self):
+        selectedIndex = self.mainWindow.SuccessStandingWidget.currentRow()
+        self.mainWindow.SuccessStandingWidget.takeItem(selectedIndex)
+        self.standingRewardList.pop(selectedIndex)
+    
+    def removeSuccessItemScrollItem(self):
+        selectedIndex = self.mainWindow.SuccessItemWidget.currentRow()
+        self.mainWindow.SuccessItemWidget.takeItem(selectedIndex)
+        self.itemRewardList.pop(selectedIndex)

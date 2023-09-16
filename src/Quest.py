@@ -7,6 +7,7 @@ class Quest:
         self.mainWindow = mainWindow         
         self.availableForFinishIndex: int = 0
         self.availableForStartIndex: int = 0
+        self.startedRewardIndex: int = 0
         self.successRewardIndex: int = 0
         
         # Start/Finish
@@ -206,16 +207,15 @@ class Quest:
         }
         return experience
 
-    def generateReward(self, rewardList):
+    def generateReward(self, rewardList, indexList):
         newRewardList = []
         for entry in rewardList:
-            self.successRewardIndex = self.successRewardIndex + 1
             target = self.generateRandomId()
             reward = {
                 "value": entry.value,
                 "id": self.generateRandomId(), #TODO
                 "type": "Item",
-                "index": self.successRewardIndex,
+                "index": indexList,
                 "target": target,
                 "findInRaid": True,
                 "items": [
@@ -229,6 +229,7 @@ class Quest:
                 ]
             }
             newRewardList.append(reward)
+            indexList += 1
         return newRewardList
     
     def generateTraderStandingReward(self):
@@ -246,23 +247,24 @@ class Quest:
         return standingRewardList
 
     def generateStartedReward(self):
-        for item in self.generateReward(self.startedItemList):
-            self.Started.append(item)
+        Started = []
+        for item in self.generateReward(self.startedItemList, self.startedRewardIndex):
+            Started.append(item)
 
-        return self.Started
+        return Started
 
     def generateSuccessReward(self):
         Success = []
         if self.mainWindow.ExperienceAmount.text() != "":
             Success.append(self.generateExperienceReward())
         
-        for currency in self.generateReward(self.currencyRewardList):
+        for currency in self.generateReward(self.currencyRewardList, self.successRewardIndex):
             Success.append(currency)
         
         for standing in self.generateTraderStandingReward():
             Success.append(standing)
 
-        for item in self.generateReward(self.itemRewardList):
+        for item in self.generateReward(self.itemRewardList, self.successRewardIndex):
             Success.append(item)
         
         return Success
@@ -287,6 +289,7 @@ class Quest:
     def setUpQuests(self):
         self.availableForStartIndex = 0
         self.availableForFinishIndex = 0
+        self.startedRewardIndex = 0
         self.successRewardIndex = 0
         quest = {
             "_id":  f"{self.mainWindow._Id.text()}",
@@ -344,6 +347,5 @@ class Quest:
 
         return result
     
-
     def setUpQuestLocale(self):
         pass

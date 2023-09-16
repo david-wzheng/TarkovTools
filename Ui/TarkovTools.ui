@@ -185,7 +185,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>1</number>
          </property>
          <property name="tabBarAutoHide">
           <bool>false</bool>
@@ -488,19 +488,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <attribute name="title">
              <string>Loyalty, Skills, Items</string>
             </attribute>
-            <widget class="QLineEdit" name="FinishLoyaltyId">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>121</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="placeholderText">
-              <string>Trader Id</string>
-             </property>
-            </widget>
             <widget class="QLabel" name="label">
              <property name="geometry">
               <rect>
@@ -644,7 +631,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
-            <widget class="QPushButton" name="FinishLoyaltyAddToList">
+            <widget class="QPushButton" name="FinishLoyaltyRemoveFromList">
              <property name="geometry">
               <rect>
                <x>200</x>
@@ -832,7 +819,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
               </rect>
              </property>
             </widget>
-            <widget class="QPushButton" name="FinishLoyaltyAddToList_2">
+            <widget class="QPushButton" name="FinishLoyaltyAddToList">
              <property name="geometry">
               <rect>
                <x>330</x>
@@ -891,6 +878,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
               <string>Remove from List</string>
              </property>
             </widget>
+            <widget class="QComboBox" name="TraderFinishcomboBox">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>101</width>
+               <height>22</height>
+              </rect>
+             </property>
+             <property name="placeholderText">
+              <string>Trader</string>
+             </property>
+            </widget>
            </widget>
            <widget class="QWidget" name="tab_12">
             <attribute name="title">
@@ -921,7 +921,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <enum>QTabWidget::Rounded</enum>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tab_7">
             <attribute name="title">
@@ -1188,28 +1188,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLineEdit" name="SuccessTraderIdStanding">
-             <property name="geometry">
-              <rect>
-               <x>9</x>
-               <y>300</y>
-               <width>132</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="maxLength">
-              <number>24</number>
-             </property>
-             <property name="placeholderText">
-              <string>Trader Id</string>
-             </property>
-             <property name="clearButtonEnabled">
-              <bool>true</bool>
-             </property>
-            </widget>
             <widget class="Line" name="line_7">
              <property name="geometry">
               <rect>
@@ -1464,6 +1442,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="SuccessTrader">
+             <property name="geometry">
+              <rect>
+               <x>20</x>
+               <y>300</y>
+               <width>131</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Trader</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
              </property>
             </widget>
            </widget>
