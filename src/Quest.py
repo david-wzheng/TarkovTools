@@ -11,6 +11,11 @@ class Quest:
         self.successRewardIndex: int = 0
         self.failIndex: int = 0
         
+        # QuestFile
+        self.questFile = {}
+        self.saveFile = {}
+        self.questFileList = []
+      
         # Start/Finish
         self.finishLoyaltyList = []
         self.finishSkillList = []
@@ -38,10 +43,28 @@ class Quest:
         random_seed = ''.join(random.choice(characters) for _ in range(24))
         return random_seed
 
-    def loadQuestFile(self):
-        if os.path.exists(file_path):
-            with open(file_path, "r") as json_file:
-                data = json.load(json_file)
+    def saveQuestToDiskOld(self):
+        executingDirectory = os.path.dirname(os.path.abspath(__file__))
+        savePath = os.path.join(executingDirectory, "/json/")
+        os.makedirs(os.path.dirname(savePath), exist_ok=True)
+        with open(f"./json/quest.json", 'w') as file:
+            file.write(self.setUpQuest())
+        with open(f"./json/locale.json", 'w') as file:
+            file.write(self.setUpQuestLocale())
+
+    def saveQuestToDisk(self, file):
+        self.saveQuestFile = {}
+        with open(file, 'w') as file:
+            for quest, value in self.saveFile.items():
+                self.saveFile[f"{quest}"] = value
+            
+            json.dump(self.saveFile, file, sort_keys=True, indent=2)
+    
+    def loadQuestFile(self, file):
+        if os.path.exists(file):
+            with open(file, "r") as json_file:
+                self.questFile = json.load(json_file)
+                self.saveFile = self.questFile
 
     #JSON GENERATION
     def generateLoyalty(self, standing, index, parent):
@@ -377,7 +400,7 @@ class Quest:
             return location
         
     #Setup Quest
-    def setUpQuests(self):
+    def setUpQuest(self):
         self.availableForStartIndex = 0
         self.availableForFinishIndex = 0
         self.startedRewardIndex = 0
@@ -433,9 +456,7 @@ class Quest:
         }
         
         questDict = {quest["_id"]: quest}
-        result = json.dumps(questDict, sort_keys=True, indent=2)
-
-        return result
+        return quest
     
     def setUpQuestLocale(self):
         locale =  {}
@@ -449,3 +470,4 @@ class Quest:
         
         result = json.dumps(locale, sort_keys=True, indent=2)
         return result
+    

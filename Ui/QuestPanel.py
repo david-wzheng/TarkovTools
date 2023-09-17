@@ -17,6 +17,9 @@ class QuestPanel(Quest):
         self.failExitStatusList = []
         self.failExitLocationList = []           
         
+        self.openFileName = ""
+        self.selectedQuestEntry = ""
+        
         self.addItemsToDropBoxes()
         self.setUpSignals()
         self.setUpControls()
@@ -98,7 +101,14 @@ class QuestPanel(Quest):
         self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
         
     def setUpSignals(self):
-        self.mainWindow.GenerateQuest.clicked.connect(self.saveQuestToDisk)
+        self.mainWindow.GenerateQuest.clicked.connect(self.addQuestToScrollList)
+        self.mainWindow.LoadQuestFile.clicked.connect(self.showLoadFileDialog)
+        self.mainWindow.SaveQuestFile.clicked.connect(self.SaveFile)
+        self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
+        self.mainWindow.RemoveFromQuestFile.clicked.connect(self.removeQuestFromScrollList)
+        self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
+        
+        self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
         # Add To List
         self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrencyToScrollList)
         self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStandingToScrollList)
@@ -135,17 +145,30 @@ class QuestPanel(Quest):
     
     def setUpControls(self):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
-    
-    def saveQuestToDisk(self):
-        executingDirectory = os.path.dirname(os.path.abspath(__file__))
-        savePath = os.path.join(executingDirectory, "/json/")
-        os.makedirs(os.path.dirname(savePath), exist_ok=True)
-        with open("./json/quest.json", 'w') as file:
-            file.write(self.setUpQuests())
-        with open("./json/locale.json", 'w') as file:
-            file.write(self.setUpQuestLocale())
-    
+        
     # SCROLL WIDGET POPULATION
+    def loadQuestListToScrollList(self, file):
+        self.loadQuestFile(file)
+        for quest in self.questFile:
+            object = f"{quest}"
+            self.questFileList.append(self.questFile[quest])
+            listWidget = self.mainWindow.QuestFileWidget
+            listWidget.addItem(object)
+    
+    def addQuestToScrollList(self):
+        print(self.openFileName)
+        quest = self.setUpQuest()
+        self.saveFile[quest["_id"]] = quest
+        
+        object = f"{quest['_id']}"
+        self.questFileList.append(quest)
+        listWidget = self.mainWindow.QuestFileWidget
+        listWidget.addItem(object)
+    
+    def editSelectedQuestScrollList(self):
+        selectedIndex = self.mainWindow.QuestFileWidget.currentRow()
+        pass #TODO
+    
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
         loyalty.dynamicLocale = self.mainWindow.FinishLoyaltyDynamicLocale.isChecked()
@@ -430,4 +453,43 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.FailStandingWidget.currentRow()
         self.mainWindow.FailStandingWidget.takeItem(selectedIndex)
         self.failStandingList.pop(selectedIndex)
+      
+    def getSelectedTextFromScrollList(self):
+        self.selectedQuestEntry = self.mainWindow.QuestFileWidget.currentItem().text()  
+             
+    def removeQuestFromScrollList(self):
+        selectedIndex = self.mainWindow.QuestFileWidget.currentRow()
+        self.mainWindow.QuestFileWidget.takeItem(selectedIndex)
+        del self.saveFile[self.selectedQuestEntry]
+        self.questFileList.pop(selectedIndex)
         
+    #File
+    def showLoadFileDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_dialog = QFileDialog()
+        file_dialog.setOptions(options)
+        file_dialog.setNameFilter("Json files (*.json)")
+        self.openFileName, _ = file_dialog.getOpenFileName(self.mainWindow.centralwidget, "Open Image", "./json", "Json Files (*.json)")
+        self.mainWindow.QuestFileWidget.clear()
+        self.mainWindow.LoadFilePath.setText(self.openFileName) 
+        
+        if self.openFileName:
+            self.loadQuestListToScrollList(self.openFileName)
+         
+
+    def newSaveFile(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_dialog = QFileDialog()
+        file_dialog.setOptions(options)
+        file_dialog.setNameFilter("Json files (*.json)")    
+        self.openFileName, _ = file_dialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest File", "./json", "Json Files (*.json)")
+        self.mainWindow.QuestFileWidget.clear()
+        self.mainWindow.LoadFilePath.setText(self.openFileName) 
+        
+        if self.openFileName:
+            self.saveQuestToDisk(self.openFileName)
+   
+    def SaveFile(self):
+        self.saveQuestToDisk(self.openFileName)

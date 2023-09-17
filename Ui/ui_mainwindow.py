@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'TarkovToolsWYmRzb.ui'
+## Form generated from reading UI file 'TarkovToolslnFZcz.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -19,8 +19,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFormLayout,
     QFrame, QLabel, QLayout, QLineEdit,
     QListWidget, QListWidgetItem, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QScrollArea, QSizePolicy,
-    QStatusBar, QTabWidget, QTextEdit, QWidget)
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QTabWidget, QTextEdit, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.FailMessage.setGeometry(QRect(350, 320, 521, 201))
         self.GenerateQuest = QPushButton(self.QuestCreator)
         self.GenerateQuest.setObjectName(u"GenerateQuest")
-        self.GenerateQuest.setGeometry(QRect(200, 30, 131, 24))
+        self.GenerateQuest.setGeometry(QRect(190, 50, 141, 24))
         self.ChangeMessage = QTextEdit(self.QuestCreator)
         self.ChangeMessage.setObjectName(u"ChangeMessage")
         self.ChangeMessage.setGeometry(QRect(890, 320, 521, 201))
@@ -695,22 +695,9 @@ class Ui_MainWindow(object):
         self.Restartable.setObjectName(u"Restartable")
         self.Restartable.setGeometry(QRect(630, 60, 82, 20))
         self.Restartable.setChecked(False)
-        self.QuestSelection = QScrollArea(self.QuestCreator)
-        self.QuestSelection.setObjectName(u"QuestSelection")
-        self.QuestSelection.setGeometry(QRect(10, 60, 321, 821))
-        self.QuestSelection.setAutoFillBackground(False)
-        self.QuestSelection.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 319, 819))
-        self.QuestSelection.setWidget(self.scrollAreaWidgetContents)
-        self.lineEdit = QLineEdit(self.QuestCreator)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setGeometry(QRect(9, 0, 321, 21))
-        self.lineEdit.setClearButtonEnabled(True)
-        self.pushButton = QPushButton(self.QuestCreator)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(9, 30, 131, 24))
+        self.LoadQuestFile = QPushButton(self.QuestCreator)
+        self.LoadQuestFile.setObjectName(u"LoadQuestFile")
+        self.LoadQuestFile.setGeometry(QRect(120, 10, 91, 24))
         self.line_10 = QFrame(self.QuestCreator)
         self.line_10.setObjectName(u"line_10")
         self.line_10.setGeometry(QRect(340, -20, 3, 1080))
@@ -748,6 +735,32 @@ class Ui_MainWindow(object):
         self.line_3.setGeometry(QRect(347, 80, 1071, 20))
         self.line_3.setFrameShape(QFrame.HLine)
         self.line_3.setFrameShadow(QFrame.Sunken)
+        self.QuestFileWidget = QListWidget(self.QuestCreator)
+        self.QuestFileWidget.setObjectName(u"QuestFileWidget")
+        self.QuestFileWidget.setGeometry(QRect(0, 170, 331, 621))
+        self.RemoveFromQuestFile = QPushButton(self.QuestCreator)
+        self.RemoveFromQuestFile.setObjectName(u"RemoveFromQuestFile")
+        self.RemoveFromQuestFile.setGeometry(QRect(190, 90, 141, 24))
+        self.EditQuest = QPushButton(self.QuestCreator)
+        self.EditQuest.setObjectName(u"EditQuest")
+        self.EditQuest.setGeometry(QRect(10, 50, 131, 24))
+        self.SaveQuestFile = QPushButton(self.QuestCreator)
+        self.SaveQuestFile.setObjectName(u"SaveQuestFile")
+        self.SaveQuestFile.setGeometry(QRect(230, 10, 101, 24))
+        self.ShowLocalizedNames = QCheckBox(self.QuestCreator)
+        self.ShowLocalizedNames.setObjectName(u"ShowLocalizedNames")
+        self.ShowLocalizedNames.setGeometry(QRect(10, 90, 151, 20))
+        self.NewQuestFile = QPushButton(self.QuestCreator)
+        self.NewQuestFile.setObjectName(u"NewQuestFile")
+        self.NewQuestFile.setGeometry(QRect(10, 10, 91, 24))
+        self.LoadFilePath = QLineEdit(self.QuestCreator)
+        self.LoadFilePath.setObjectName(u"LoadFilePath")
+        self.LoadFilePath.setGeometry(QRect(0, 140, 331, 21))
+        self.LoadFilePath.setReadOnly(True)
+        self.LoadFilePath.setClearButtonEnabled(False)
+        self.label_17 = QLabel(self.QuestCreator)
+        self.label_17.setObjectName(u"label_17")
+        self.label_17.setGeometry(QRect(0, 120, 71, 16))
         self.tabWidget.addTab(self.QuestCreator, "")
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
@@ -778,7 +791,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(2)
         self.tabWidget_5.setCurrentIndex(0)
-        self.tabWidget_6.setCurrentIndex(0)
+        self.tabWidget_6.setCurrentIndex(1)
         self.tabWidget_3.setCurrentIndex(2)
         self.tabWidget_4.setCurrentIndex(0)
 
@@ -793,7 +806,7 @@ class Ui_MainWindow(object):
         self.actionSave_As.setText(QCoreApplication.translate("MainWindow", u"Save As", None))
         self.actionSettings.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.FailMessage.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Fail Message", None))
-        self.GenerateQuest.setText(QCoreApplication.translate("MainWindow", u"Generate Quest", None))
+        self.GenerateQuest.setText(QCoreApplication.translate("MainWindow", u"Add Quest", None))
         self.ChangeMessage.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Change Message", None))
         self.SecretQuest.setText(QCoreApplication.translate("MainWindow", u"Secret Quest", None))
         self.Description.setMarkdown("")
@@ -960,11 +973,7 @@ class Ui_MainWindow(object):
         self.ImagePath.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Image Path", None))
         self.RequiresKey.setText(QCoreApplication.translate("MainWindow", u"Requires a Key", None))
         self.Restartable.setText(QCoreApplication.translate("MainWindow", u"Restartable", None))
-#if QT_CONFIG(tooltip)
-        self.QuestSelection.setToolTip(QCoreApplication.translate("MainWindow", u"Quests in the loaded file appear here.", None))
-#endif // QT_CONFIG(tooltip)
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Quest File Path", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Load Quest File", None))
+        self.LoadQuestFile.setText(QCoreApplication.translate("MainWindow", u"Load Quest File", None))
         self.TradercomboBox.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Trader", None))
         self.LocationComboBox.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Location", None))
         self.CustomTraderCheckBox.setText(QCoreApplication.translate("MainWindow", u"Custom Trader", None))
@@ -973,6 +982,14 @@ class Ui_MainWindow(object):
         self.TraderIdTextField.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Trader Id override", None))
         self.LocationIdTextField.setText("")
         self.LocationIdTextField.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Location Id override", None))
+        self.RemoveFromQuestFile.setText(QCoreApplication.translate("MainWindow", u"Remove Quest", None))
+        self.EditQuest.setText(QCoreApplication.translate("MainWindow", u"Edit Quest", None))
+        self.SaveQuestFile.setText(QCoreApplication.translate("MainWindow", u"Save Quest File", None))
+        self.ShowLocalizedNames.setText(QCoreApplication.translate("MainWindow", u"Show Localized Names", None))
+        self.NewQuestFile.setText(QCoreApplication.translate("MainWindow", u"New Quest File", None))
+        self.LoadFilePath.setText("")
+        self.LoadFilePath.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Loaded File Path", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Loaded File", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.QuestCreator), QCoreApplication.translate("MainWindow", u"Quest Creator", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Item Tool", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
