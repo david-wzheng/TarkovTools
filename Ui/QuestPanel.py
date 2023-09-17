@@ -477,7 +477,6 @@ class QuestPanel(Quest):
         if self.openFileName:
             self.loadQuestListToScrollList(self.openFileName)
          
-
     def newSaveFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly

@@ -800,7 +800,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Tarkov Tools 0.0.3", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Tarkov Tools 0.0.5", None))
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.actionSave.setText(QCoreApplication.translate("MainWindow", u"Save", None))
         self.actionSave_As.setText(QCoreApplication.translate("MainWindow", u"Save As", None))
