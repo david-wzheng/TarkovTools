@@ -12,7 +12,11 @@ class QuestPanel(Quest):
     def __init__(self, mainWindow: Ui_MainWindow):
         super().__init__(mainWindow)
         self.mainWindow = mainWindow
-           
+        
+        # Temp Lists
+        self.failExitStatusList = []
+        self.failExitLocationList = []           
+        
         self.addItemsToDropBoxes()
         self.setUpSignals()
         self.setUpControls()
@@ -24,11 +28,14 @@ class QuestPanel(Quest):
         ]
         self.mainWindow.AvailableForStartStatus.addItems(sorted(StartStatusList))
         
+        leaveStatus = ['Killed', 'Left', 'MissingInAction', 'Survived', "Runner"]
+        self.mainWindow.FailExitStatusStatus.addItems(sorted(leaveStatus))
+        
         SideList = [
             'Pmc', 'Bear', 'Usec', 'Savage'
         ]
         self.mainWindow.Side.addItems(sorted(SideList))
-         
+
         CurrencyList = [
             'Roubles', 'Dollars', 'Euros'
         ]
@@ -72,6 +79,7 @@ class QuestPanel(Quest):
             "Labs", "Streets"
         ]
         self.mainWindow.LocationComboBox.addItems(sorted(locationList))
+        self.mainWindow.FailExitStatusLocation.addItems(sorted(locationList))
         
         TraderList = [
             "Prapor", "Therapist", "Fence", "Skier",
@@ -99,6 +107,9 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
         self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkillToScrollList)
         self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItemToScrollList)
+        self.mainWindow.FailExitStatusAdd.clicked.connect(self.addFailExitStatusToScrollList)
+        self.mainWindow.FailLocationAdd.clicked.connect(self.addFailExitLocationToScrollList)
+        self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExitToScrollList)
         
         # Remove From List
         self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(self.removeSuccessCurrencyScrollItem)
@@ -111,6 +122,9 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
         self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
         self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
+        self.mainWindow.FailExitStatusRemove.clicked.connect(self.removeFailExitStatusScrollList)
+        self.mainWindow.FailLocationRemove.clicked.connect(self.removeFailExitLocationScrollList)
+        self.mainWindow.FailExitRemoveFromList.clicked.connect(self.removeFailExitScrollList)
     
     def setUpControls(self):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
@@ -263,6 +277,46 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.AssortTraderAssortUnlockWidget
         listWidget.addItem(object)
 
+    def addFailExitStatusToScrollList(self):
+        value = self.mainWindow.FailExitStatusStatus.currentText()
+                
+        self.failExitStatusList.append(value)
+        object = f"Status: {value}"
+        listWidget = self.mainWindow.FailExitStatusWidget
+        listWidget.addItem(object)
+    
+    def addFailExitLocationToScrollList(self):        
+        locationSelected = self.mainWindow.FailExitStatusLocation.currentText()
+        if locationSelected in locationMapTarget:
+            value = locationMapTarget[locationSelected]    
+            
+        self.failExitLocationList.append(value)
+        object = f"Location: {value}"
+        listWidget = self.mainWindow.FailExitLocationWidget
+        listWidget.addItem(object)
+    
+    def addFailExitToScrollList(self):
+        exit = Object()
+        exit.status = self.failExitStatusList
+        exit.location = self.failExitLocationList
+        exit.oneSessionOnly = self.mainWindow.FailExitOneSession.isChecked()
+        exit.dynamicLocale = self.mainWindow.FailExitDynamicLocale.isChecked()
+        exit.doNotReset = self.mainWindow.FailExitDoNotReset.isChecked()
+            
+        self.failExitList.append(exit)
+        
+        self.failExitStatusList = []
+        self.failExitLocationList = []
+        self.mainWindow.FailExitStatusWidget.clear()
+        self.mainWindow.FailExitLocationWidget.clear()
+        
+        exitStatus = " ".join(exit.status)
+        exitLocations = " ".join(exit.location)
+        
+        object = f" Exit Status: {exitStatus} \n Exit List: {exitLocations}"
+        listWidget = self.mainWindow.FailExitWidget
+        listWidget.addItem(object)
+    
     # SCROLL WIDGET REMOVAL
     def removeFinishLoyaltyScrollItem(self):
         selectedIndex = self.mainWindow.FinishLoyaltyWidget.currentRow()
@@ -313,3 +367,18 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.AssortTraderAssortUnlockWidget.currentRow()
         self.mainWindow.AssortTraderAssortUnlockWidget.takeItem(selectedIndex)
         self.assortUnlockList.pop(selectedIndex)
+     
+    def removeFailExitStatusScrollList(self):
+        selectedIndex = self.mainWindow.FailExitStatusWidget.currentRow()
+        self.mainWindow.FailExitStatusWidget.takeItem(selectedIndex)
+        self.failExitStatusList.pop(selectedIndex)
+    
+    def removeFailExitLocationScrollList(self):
+        selectedIndex = self.mainWindow.FailExitLocationWidget.currentRow()
+        self.mainWindow.FailExitLocationWidget.takeItem(selectedIndex)
+        self.failExitLocationList.pop(selectedIndex)
+          
+    def removeFailExitScrollList(self):
+        selectedIndex = self.mainWindow.FailExitWidget.currentRow()
+        self.mainWindow.FailExitWidget.takeItem(selectedIndex)
+        self.failExitList.pop(selectedIndex)

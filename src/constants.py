@@ -33,6 +33,19 @@ LocationMap = {
     "Streets": "5714dc692459777137212e12"
 }
 
+locationMapTarget = {
+    "FactoryDay": "factory4_day",
+    "Customs": "bigmap",
+    "Woods": "Woods",
+    "Lighthouse": "Lighthouse",
+    "Shoreline": "Shoreline",
+    "Reserve": "RezervBase",
+    "Interchange": "Interchange",
+    "FactoryNight": "factory4_night",
+    "Labs": "laboratory",
+    "Streets": "TarkovStreets"
+}
+
 TraderMap = {
     "Prapor": "54cb50c76803fa8b248b4571",
     "Therapist": "54cb57776803fa99248b456e",

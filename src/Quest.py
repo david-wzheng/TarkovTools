@@ -9,6 +9,7 @@ class Quest:
         self.availableForStartIndex: int = 0
         self.startedRewardIndex: int = 0
         self.successRewardIndex: int = 0
+        self.failIndex: int = 0
         
         # Start/Finish
         self.finishLoyaltyList = []
@@ -16,6 +17,9 @@ class Quest:
         self.finishItemList = []
         self.availableStatusList = []
         self.availableLoyaltyList = []
+        
+        # Fail
+        self.failExitList = []
         
         # Reward List
         self.currencyRewardList = []
@@ -203,6 +207,55 @@ class Quest:
             
         return Finish
 
+    #Fail
+    def generatExitStatus(self, condition, index):
+        counterCreator = {
+            "_parent": "CounterCreator",
+            "_props": {
+                "counter": {
+                    "id": self.generateRandomId(),
+                    "conditions": [
+                        {
+                            "parent": "ExitStatus",
+                            "_props": {
+                                "status":
+                                    condition.status,
+                            "id": self.generateRandomId()
+                            }                   
+                        },
+                        {
+                        "_parent": "Location",
+                        "_props": {
+                            "target":
+                            condition.location,
+                            "id": self.generateRandomId()
+                            }
+                        }              
+                    ]
+                },
+                "id": self.generateRandomId(),
+                "index": index,
+                "parentId": "",
+                "oneSessionOnly": condition.oneSessionOnly,
+                "dynamicLocale": condition.dynamicLocale,
+                "type": "Exploration",
+                "doNotResetIfCounterCompleted": condition.doNotReset,
+                "value": 1, #TODO Investigate
+                "visibilityConditions": []
+            },
+            "dynamicLocale": condition.dynamicLocale
+        }
+        index += 1   
+        return counterCreator
+    
+    def generateFail(self):
+        Fail = []
+        for exitStatus in self.failExitList:
+            Fail.append(self.generatExitStatus(exitStatus, self.failIndex))
+        
+        
+        return Fail
+    
     #Rewards
     def generateExperienceReward(self):
         experience = {
@@ -336,9 +389,8 @@ class Quest:
                     self.generateAvailableForFinish(),
                 "AvailableForStart":
                     self.generateAvailableForStart(),
-                "Fail": [
-                    #TODO
-                ]
+                "Fail":
+                    self.generateFail(),
             },
 
             "description": f"{self.mainWindow._Id.text()} description",
@@ -375,7 +427,7 @@ class Quest:
         }
         
         questDict = {quest["_id"]: quest}
-        result = json.dumps(questDict, sort_keys=True, indent=4)
+        result = json.dumps(questDict, sort_keys=True, indent=2)
 
         return result
     
@@ -389,5 +441,5 @@ class Quest:
         locale[f"{self.mainWindow._Id.text()} changeQuestMessageText"] = self.mainWindow.ChangeMessage.toPlainText()
         locale[f"{self.mainWindow._Id.text()} location"] = self.getLocationId()
         
-        result = json.dumps(locale, sort_keys=True, indent=4)
+        result = json.dumps(locale, sort_keys=True, indent=2)
         return result
