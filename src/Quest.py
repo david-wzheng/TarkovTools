@@ -15,6 +15,7 @@ class Quest:
         self.finishSkillList = []
         self.finishItemList = []
         self.availableStatusList = []
+        self.availableLoyaltyList = []
         
         # Reward List
         self.currencyRewardList = []
@@ -36,6 +37,27 @@ class Quest:
             with open(file_path, "r") as json_file:
                 data = json.load(json_file)
 
+    def generateLoyalty(self, loyaltyList, index):
+        finishLoyalList = []
+        for item in loyaltyList:
+            loyalty = {
+                "_parent": "TraderLoyalty",
+                "_props": {
+                    "id": self.generateRandomId(),
+                    "index": self.availableForFinishIndex,
+                    "parentId": "", 
+                    "dynamicLocale": item.dynamicLocale,
+                    "target": item.traderId,
+                    "value": item.value,
+                    "compareMethod": item.compare,
+                    "visibilityConditions": []
+                },
+                "dynamicLocale": item.dynamicLocale
+            }
+            finishLoyalList.append(loyalty)
+            index += 1
+        return finishLoyalList
+    
     #JSON GENERATION
     #Available For Start
     def generateAvailableForStartLevel(self):
@@ -83,30 +105,12 @@ class Quest:
         for quest in self.availableStatusList:
             availableForStart.append(self.generateAvailableQuestRequirements(quest))
 
+        for loyalty in self.generateLoyalty(self.availableLoyaltyList, self.availableForStartIndex):
+            availableForStart.append(loyalty)
+
         return availableForStart
 
     #Available For Finish
-    def generateFinishLoyalty(self):
-        finishLoyalList = []
-        for item in self.finishLoyaltyList:
-            loyalty = {
-                "_parent": "TraderLoyalty",
-                "_props": {
-                    "id": self.generateRandomId(),
-                    "index": self.availableForFinishIndex,
-                    "parentId": "", 
-                    "dynamicLocale": item.dynamicLocale,
-                    "target": item.traderId,
-                    "value": item.value,
-                    "compareMethod": item.compare,
-                    "visibilityConditions": []
-                },
-                "dynamicLocale": item.dynamicLocale
-            }
-            finishLoyalList.append(loyalty)
-            self.availableForFinishIndex += 1
-        return finishLoyalList
-    
     def generateFinishSkills(self):
         finishSkillList = []
         for item in self.finishSkillList:
@@ -185,7 +189,7 @@ class Quest:
     
     def generateAvailableForFinish(self):
         Finish = []
-        for loyalty in self.generateFinishLoyalty():
+        for loyalty in self.generateLoyalty(self.finishLoyaltyList, self.availableForFinishIndex):
             Finish.append(loyalty)
             
         for skill in self.generateFinishSkills():

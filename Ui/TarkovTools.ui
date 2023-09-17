@@ -32,7 +32,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>Tarkov Tools 0.0.1</string>
+   <string>Tarkov Tools 0.0.3</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -185,7 +185,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <property name="tabBarAutoHide">
           <bool>false</bool>
@@ -395,6 +395,132 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </property>
            <property name="text">
             <string>Remove From List</string>
+           </property>
+          </widget>
+          <widget class="QListWidget" name="StartLoyaltyWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>380</y>
+             <width>441</width>
+             <height>151</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="AvailableForStartLoyaltyRemoveFromList">
+           <property name="geometry">
+            <rect>
+             <x>310</x>
+             <y>350</y>
+             <width>121</width>
+             <height>24</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Remove From List</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="AvailableForStartLoyaltyAddToList">
+           <property name="geometry">
+            <rect>
+             <x>310</x>
+             <y>320</y>
+             <width>121</width>
+             <height>24</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Add To List</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="AvailableForStartTraderComboBox">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>320</y>
+             <width>111</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="placeholderText">
+            <string>Trader</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="AvailableForStartLoyaltyDynamicLocaleQuest">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>320</y>
+             <width>111</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Dynamic Locale</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+          <widget class="Line" name="line_19">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>530</y>
+             <width>451</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_10">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>300</y>
+             <width>151</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Trader Loyalty Requirements</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="AvailableCompareLoyaltyComboBox">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>350</y>
+             <width>121</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <property name="placeholderText">
+            <string>Compare Method</string>
+           </property>
+           <property name="modelColumn">
+            <number>0</number>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="AvailableForStartLoyaltyValue">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>350</y>
+             <width>111</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="placeholderText">
+            <string>Loyalty value</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
            </property>
           </widget>
          </widget>
@@ -930,6 +1056,34 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <attribute name="title">
            <string>Fail</string>
           </attribute>
+          <widget class="QTabWidget" name="tabWidget_6">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>461</width>
+             <height>851</height>
+            </rect>
+           </property>
+           <property name="currentIndex">
+            <number>2</number>
+           </property>
+           <widget class="QWidget" name="tab_14">
+            <attribute name="title">
+             <string>Quest and Standing</string>
+            </attribute>
+           </widget>
+           <widget class="QWidget" name="tab_15">
+            <attribute name="title">
+             <string>Exit Status</string>
+            </attribute>
+           </widget>
+           <widget class="QWidget" name="tab_16">
+            <attribute name="title">
+             <string>Kills</string>
+            </attribute>
+           </widget>
+          </widget>
          </widget>
          <widget class="QWidget" name="tab_6">
           <attribute name="title">

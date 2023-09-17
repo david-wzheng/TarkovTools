@@ -40,6 +40,7 @@ class QuestPanel(Quest):
         self.mainWindow.AvailableForStartLevelRequirementCompare.addItems(sorted(CompareList))
         self.mainWindow.FinishLoyaltyCompare.addItems(sorted(CompareList))
         self.mainWindow.FinishSkillCompare.addItems(sorted(CompareList))
+        self.mainWindow.AvailableCompareLoyaltyComboBox.addItems(sorted(CompareList))
         
         TypeList = [
             'WeaponAssembly', 'Merchant', 'Completion', 
@@ -80,6 +81,7 @@ class QuestPanel(Quest):
         self.mainWindow.TraderFinishcomboBox.addItems(sorted(TraderList))
         self.mainWindow.SuccessTrader.addItems(sorted(TraderList))
         self.mainWindow.AssortTraderComboBox.addItems(sorted(TraderList))
+        self.mainWindow.AvailableForStartTraderComboBox.addItems(sorted(TraderList))
         
         loyaltyLevels = [ '1' , '2', '3', '4']
         self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
@@ -93,6 +95,7 @@ class QuestPanel(Quest):
         self.mainWindow.AssortTraderUnlockAddToList.clicked.connect(self.addAssortUnlockToScrollList)
         self.mainWindow.StartedAddItemToList.clicked.connect(self.addStartedItemtoScrollList)
         self.mainWindow.AvailableForStartAddToList.clicked.connect(self.addAvailableQuestToScrollList)
+        self.mainWindow.AvailableForStartLoyaltyAddToList.clicked.connect(self.addAvailableLoyaltyToScrollList)
         self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
         self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkillToScrollList)
         self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItemToScrollList)
@@ -104,6 +107,7 @@ class QuestPanel(Quest):
         self.mainWindow.AssortTraderUnlockRemoveFromList.clicked.connect(self.removeAssortUnlockScrollItem)
         self.mainWindow.StartedRemoveItemFromList.clicked.connect(self.removeStartedItemScrollItem)
         self.mainWindow.AvailableForStartRemoveFromList.clicked.connect(self.removeAvailableQuestScrollItem)
+        self.mainWindow.AvailableForStartLoyaltyRemoveFromList.clicked.connect(self.removeAvailableLoyaltyScrollItem)
         self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
         self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
         self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
@@ -175,6 +179,22 @@ class QuestPanel(Quest):
 
         object = f"Status: {statusSelected} questId: {quest.questId} DynamicLocale: {quest.dynamicLocale}"
         listWidget = self.mainWindow.StartQuestWidget
+        listWidget.addItem(object)
+        
+    def addAvailableLoyaltyToScrollList(self):
+        loyalty = Object()       
+        loyalty.value = self.mainWindow.AvailableForStartLoyaltyValue.text()
+        loyalty.dynamicLocale = self.mainWindow.AvailableForStartDynamicLocaleQuest.isChecked()
+        loyalty.compare = self.mainWindow.AvailableCompareLoyaltyComboBox.currentText()
+
+        traderSelected = self.mainWindow.AvailableForStartTraderComboBox.currentText()
+        if traderSelected in TraderMap:
+            loyalty.traderId = TraderMap[traderSelected]
+
+        self.availableLoyaltyList.append(loyalty)
+
+        object = f"Loyalty requirement: {traderSelected} Loyalty: {loyalty.value} Compare: {loyalty.compare} DynamicLocale: {loyalty.dynamicLocale}"
+        listWidget = self.mainWindow.StartLoyaltyWidget
         listWidget.addItem(object)
 
     def addStartedItemtoScrollList(self):
@@ -261,6 +281,11 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.StartQuestWidget.currentRow()
         self.mainWindow.StartQuestWidget.takeItem(selectedIndex)
         self.availableStatusList.pop(selectedIndex)
+    
+    def removeAvailableLoyaltyScrollItem(self):
+        selectedIndex = self.mainWindow.StartLoyaltyWidget.currentRow()
+        self.mainWindow.StartLoyaltyWidget.takeItem(selectedIndex)
+        self.availableLoyaltyList.pop(selectedIndex)
     
     def removeStartedItemScrollItem(self):
         selectedIndex = self.mainWindow.StartedItemWidget.currentRow()
