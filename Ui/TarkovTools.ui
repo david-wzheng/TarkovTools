@@ -185,7 +185,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>3</number>
          </property>
          <property name="tabBarAutoHide">
           <bool>false</bool>
@@ -231,6 +231,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <property name="placeholderText">
             <string>Level requirement</string>
            </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
           </widget>
           <widget class="QComboBox" name="AvailableForStartLevelRequirementCompare">
            <property name="geometry">
@@ -269,6 +272,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </property>
            <property name="placeholderText">
             <string>Quest Id</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
            </property>
           </widget>
           <widget class="QPushButton" name="AvailableForStartAddToList">
@@ -479,7 +485,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </rect>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="tabBarAutoHide">
             <bool>false</bool>
@@ -525,6 +531,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
              <property name="placeholderText">
               <string>Value</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
              </property>
             </widget>
             <widget class="QComboBox" name="FinishLoyaltyCompare">
@@ -590,6 +599,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
              <property name="placeholderText">
               <string>Value</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
              </property>
             </widget>
             <widget class="QCheckBox" name="FinishDynamicLocaleSkill">
@@ -695,6 +707,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              <property name="placeholderText">
               <string>Amount</string>
              </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
             </widget>
             <widget class="QLineEdit" name="FinishItemId">
              <property name="geometry">
@@ -707,6 +722,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
              <property name="placeholderText">
               <string>ItemId</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
              </property>
             </widget>
             <widget class="QCheckBox" name="FinishItemFIR">
@@ -776,6 +794,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              <property name="placeholderText">
               <string>DogTag Lvl</string>
              </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
             </widget>
             <widget class="QLineEdit" name="FinishItemAmount_3">
              <property name="geometry">
@@ -792,6 +813,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              <property name="placeholderText">
               <string>Min Dura</string>
              </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
             </widget>
             <widget class="QLineEdit" name="FinishItemAmount_4">
              <property name="geometry">
@@ -807,6 +831,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
              <property name="placeholderText">
               <string>Max Dura</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
              </property>
             </widget>
             <widget class="QListWidget" name="FinishLoyaltyWidget">
@@ -921,7 +948,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <enum>QTabWidget::Rounded</enum>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tab_7">
             <attribute name="title">
@@ -1464,6 +1491,159 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
             </widget>
            </widget>
+           <widget class="QWidget" name="tab_13">
+            <attribute name="title">
+             <string>Assort Unlock</string>
+            </attribute>
+            <widget class="QLineEdit" name="AssortTraderItemId">
+             <property name="geometry">
+              <rect>
+               <x>160</x>
+               <y>20</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>ItemId</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="AssortTraderUnlockRemoveFromList">
+             <property name="geometry">
+              <rect>
+               <x>320</x>
+               <y>50</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Remove From List</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="AssortTraderComboBox">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>20</y>
+               <width>131</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Trader</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="AssortTraderUnlockAddToList">
+             <property name="geometry">
+              <rect>
+               <x>320</x>
+               <y>20</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_14">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>80</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Assort Reward List</string>
+             </property>
+            </widget>
+            <widget class="QListWidget" name="AssortTraderAssortUnlockWidget">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>100</y>
+               <width>421</width>
+               <height>131</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="Line" name="line_17">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>70</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_15">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>84</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Assort Unlock</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_18">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>230</y>
+               <width>437</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="AssortLoyaltyLevelComboBox">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>50</y>
+               <width>131</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Loyalty level</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+           </widget>
           </widget>
          </widget>
          <widget class="QWidget" name="tab">
@@ -1720,6 +1900,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </property>
          <property name="placeholderText">
           <string>Quest File Path</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QPushButton" name="pushButton">

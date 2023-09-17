@@ -19,6 +19,7 @@ class Quest:
         # Reward List
         self.currencyRewardList = []
         self.standingRewardList = []
+        self.assortUnlockList = []
         self.itemRewardList = []
         self.startedItemList = []
 
@@ -51,10 +52,10 @@ class Quest:
             },
             "dynamicLocale": self.mainWindow.AvailableForStartDynamicLocaleLevel.isChecked()
         }
+        self.availableForStartIndex += 1
         return level
 
     def generateAvailableQuestRequirements(self, questList):
-        self.availableForStartIndex = self.availableForStartIndex + 1
         questData = {
             "_parent": "Quest",
             "_props": {
@@ -71,6 +72,7 @@ class Quest:
             },
             "dynamicLocale": questList.dynamicLocale
         }
+        self.availableForStartIndex += 1
         return questData
 
     def generateAvailableForStart(self):
@@ -87,7 +89,6 @@ class Quest:
     def generateFinishLoyalty(self):
         finishLoyalList = []
         for item in self.finishLoyaltyList:
-            self.availableForFinishIndex += 1
             loyalty = {
                 "_parent": "TraderLoyalty",
                 "_props": {
@@ -103,12 +104,12 @@ class Quest:
                 "dynamicLocale": item.dynamicLocale
             }
             finishLoyalList.append(loyalty)
+            self.availableForFinishIndex += 1
         return finishLoyalList
     
     def generateFinishSkills(self):
         finishSkillList = []
         for item in self.finishSkillList:
-            self.availableForFinishIndex += 1
             skill = {
                 "_parent": "Skill",
                 "_props": {
@@ -124,12 +125,12 @@ class Quest:
                 "dynamicLocale": item.dynamicLocale
             }
             finishSkillList.append(skill)
+            self.availableForFinishIndex += 1
         return finishSkillList
     
     def generateFinishItems(self):
         finishItemList = []
         for token in self.finishItemList:
-            self.availableForFinishIndex += 1
             item = {
                 "_parent": "FindItem",
                 "_props": {
@@ -152,12 +153,12 @@ class Quest:
                 "dynamicLocale": token.dynamicLocale
             }
             finishItemList.append(item)
+            self.availableForFinishIndex += 1
         return finishItemList
     
     def generateFinishHandover(self):
         finishHandOver = []
         for token in self.finishItemList:
-            self.availableForFinishIndex += 1
             handover = {
                 "_parent": "HandoverItem",
                 "_props": {
@@ -179,6 +180,7 @@ class Quest:
                 "dynamicLocale": token.dynamicLocale
             }
             finishHandOver.append(handover)
+            self.availableForFinishIndex += 1
         return finishHandOver
     
     def generateAvailableForFinish(self):
@@ -205,11 +207,13 @@ class Quest:
             "type": "Experience",
             "index": self.successRewardIndex
         }
+        self.successRewardIndex += 1
         return experience
 
     def generateReward(self, rewardList, indexList):
         newRewardList = []
         for entry in rewardList:
+            indexList = indexList + 1
             target = self.generateRandomId()
             reward = {
                 "value": entry.value,
@@ -229,13 +233,12 @@ class Quest:
                 ]
             }
             newRewardList.append(reward)
-            indexList += 1
         return newRewardList
     
     def generateTraderStandingReward(self):
         standingRewardList = []
         for standing in self.standingRewardList:
-            self.successRewardIndex = self.successRewardIndex + 1
+            self.successRewardIndex += 1
             reward = {
                 "value": standing.value,
                 "id": self.generateRandomId(),
@@ -253,6 +256,28 @@ class Quest:
 
         return Started
 
+    def generateAssortUnlock(self):
+        assortRewardList = []     
+        for assort in self.assortUnlockList:
+            self.successRewardIndex += 1
+            target = self.generateRandomId()
+            reward = {
+                "id": self.generateRandomId(),
+                "type": "AssortmentUnlock",
+                "index": self.successRewardIndex,
+                "target": target,
+                "items": [
+                    {
+                    "_id": target,
+                    "_tpl": assort.item
+                    }
+                ],
+                "loyaltyLevel": assort.level,
+                "traderId": assort.trader
+            }
+            assortRewardList.append(reward)
+        return assortRewardList
+
     def generateSuccessReward(self):
         Success = []
         if self.mainWindow.ExperienceAmount.text() != "":
@@ -266,6 +291,9 @@ class Quest:
 
         for item in self.generateReward(self.itemRewardList, self.successRewardIndex):
             Success.append(item)
+            
+        for assort in self.generateAssortUnlock():
+            Success.append(assort)
         
         return Success
 

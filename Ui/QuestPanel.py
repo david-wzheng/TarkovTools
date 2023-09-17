@@ -79,6 +79,10 @@ class QuestPanel(Quest):
         self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
         self.mainWindow.TraderFinishcomboBox.addItems(sorted(TraderList))
         self.mainWindow.SuccessTrader.addItems(sorted(TraderList))
+        self.mainWindow.AssortTraderComboBox.addItems(sorted(TraderList))
+        
+        loyaltyLevels = [ '1' , '2', '3', '4']
+        self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
         
     def setUpSignals(self):
         self.mainWindow.GenerateQuest.clicked.connect(self.saveQuestToDisk)
@@ -86,6 +90,7 @@ class QuestPanel(Quest):
         self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrencyToScrollList)
         self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStandingToScrollList)
         self.mainWindow.SuccessAddItemToList.clicked.connect(self.addSuccessItemToScrollList)
+        self.mainWindow.AssortTraderUnlockAddToList.clicked.connect(self.addAssortUnlockToScrollList)
         self.mainWindow.StartedAddItemToList.clicked.connect(self.addStartedItemtoScrollList)
         self.mainWindow.AvailableForStartAddToList.clicked.connect(self.addAvailableQuestToScrollList)
         self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
@@ -96,6 +101,7 @@ class QuestPanel(Quest):
         self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(self.removeSuccessCurrencyScrollItem)
         self.mainWindow.SuccessRemoveStandingFromList.clicked.connect(self.removeSuccessStandingScrollItem)
         self.mainWindow.SuccessRemoveItemFromList.clicked.connect(self.removeSuccessItemScrollItem)
+        self.mainWindow.AssortTraderUnlockRemoveFromList.clicked.connect(self.removeAssortUnlockScrollItem)
         self.mainWindow.StartedRemoveItemFromList.clicked.connect(self.removeStartedItemScrollItem)
         self.mainWindow.AvailableForStartRemoveFromList.clicked.connect(self.removeAvailableQuestScrollItem)
         self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
@@ -220,6 +226,21 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.SuccessItemWidget
         listWidget.addItem(object)
 
+    def addAssortUnlockToScrollList(self):
+        assort = Object()
+        assort.item = self.mainWindow.AssortTraderItemId.text()
+        assort.level = int(self.mainWindow.AssortLoyaltyLevelComboBox.currentText())
+        
+        traderSelected = self.mainWindow.AssortTraderComboBox.currentText()
+        if traderSelected in TraderMap:
+            assort.trader = TraderMap[traderSelected]
+                
+        self.assortUnlockList.append(assort)
+        
+        object = f"TraderId: {assort.trader} Assort unlock: {assort.item} at level: {assort.level}"
+        listWidget = self.mainWindow.AssortTraderAssortUnlockWidget
+        listWidget.addItem(object)
+
     # SCROLL WIDGET REMOVAL
     def removeFinishLoyaltyScrollItem(self):
         selectedIndex = self.mainWindow.FinishLoyaltyWidget.currentRow()
@@ -260,3 +281,8 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.SuccessItemWidget.currentRow()
         self.mainWindow.SuccessItemWidget.takeItem(selectedIndex)
         self.itemRewardList.pop(selectedIndex)
+        
+    def removeAssortUnlockScrollItem(self):
+        selectedIndex = self.mainWindow.AssortTraderAssortUnlockWidget.currentRow()
+        self.mainWindow.AssortTraderAssortUnlockWidget.takeItem(selectedIndex)
+        self.assortUnlockList.pop(selectedIndex)
