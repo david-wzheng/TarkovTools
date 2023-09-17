@@ -327,9 +327,9 @@ class Quest:
             "_id":  f"{self.mainWindow._Id.text()}",
             "QuestName": f"{self.mainWindow.QuestName.text()}",
             "canShowNotificationsInGame": f"{self.mainWindow.CanShowNotifications.isChecked()}",
-            "acceptPlayerMessage": f"{self.mainWindow._Id.text()} acceptPlayerMessage",
+            "acceptPlayerMessage": f"{self.mainWindow._Id.text()} description",
             "changeQuestMessageText": f"{self.mainWindow._Id.text()} changeQuestMessageText",
-            "completePlayerMessage": f"{self.mainWindow._Id.text()} completePlayerMessage",
+            "completePlayerMessage": f"{self.mainWindow._Id.text()} successMessageText",
         
             "conditions": {
                 "AvailableForFinish":
@@ -358,7 +358,7 @@ class Quest:
             "restartable": self.mainWindow.Restartable.isChecked(),
             "instantComplete": self.mainWindow.InstantComplete.isChecked(),
             "secretQuest": self.mainWindow.SecretQuest.isChecked(),
-            "startedMessageText": f"{self.mainWindow._Id.text()} startedMessageText",
+            "startedMessageText": f"{self.mainWindow._Id.text()} description",
             "successMessageText": f"{self.mainWindow._Id.text()} successMessageText",
             "templateId": self.mainWindow._Id.text(),
         
@@ -380,4 +380,14 @@ class Quest:
         return result
     
     def setUpQuestLocale(self):
-        pass
+        locale =  {}
+        locale[f"{self.mainWindow._Id.text()} name"] = self.mainWindow.QuestName.text()
+        locale[f"{self.mainWindow._Id.text()} description"] = self.mainWindow.Description.toPlainText()
+        locale[f"{self.mainWindow._Id.text()} note"] = self.mainWindow.Note.toPlainText()
+        locale[f"{self.mainWindow._Id.text()} successMessageText"] = self.mainWindow.SuccessMessage.toPlainText()
+        locale[f"{self.mainWindow._Id.text()} failMessageText"] = self.mainWindow.FailMessage.toPlainText()
+        locale[f"{self.mainWindow._Id.text()} changeQuestMessageText"] = self.mainWindow.ChangeMessage.toPlainText()
+        locale[f"{self.mainWindow._Id.text()} location"] = self.getLocationId()
+        
+        result = json.dumps(locale, sort_keys=True, indent=4)
+        return result

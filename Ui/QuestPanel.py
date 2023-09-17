@@ -121,6 +121,8 @@ class QuestPanel(Quest):
         os.makedirs(os.path.dirname(savePath), exist_ok=True)
         with open("./json/quest.json", 'w') as file:
             file.write(self.setUpQuests())
+        with open("./json/locale.json", 'w') as file:
+            file.write(self.setUpQuestLocale())
     
     # SCROLL WIDGET POPULATION
     def addFinishLoyaltyToScrollList(self):
