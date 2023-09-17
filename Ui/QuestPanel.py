@@ -27,6 +27,7 @@ class QuestPanel(Quest):
             'ReadyForTurnIn', 'Completed', 'Failed'
         ]
         self.mainWindow.AvailableForStartStatus.addItems(sorted(StartStatusList))
+        self.mainWindow.FailQuestStatus.addItems(sorted(StartStatusList))
         
         leaveStatus = ['Killed', 'Left', 'MissingInAction', 'Survived', "Runner"]
         self.mainWindow.FailExitStatusStatus.addItems(sorted(leaveStatus))
@@ -48,6 +49,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyCompare.addItems(sorted(CompareList))
         self.mainWindow.FinishSkillCompare.addItems(sorted(CompareList))
         self.mainWindow.AvailableCompareLoyaltyComboBox.addItems(sorted(CompareList))
+        self.mainWindow.FailStandingCompare.addItems(sorted(CompareList))
         
         TypeList = [
             'WeaponAssembly', 'Merchant', 'Completion', 
@@ -90,6 +92,7 @@ class QuestPanel(Quest):
         self.mainWindow.SuccessTrader.addItems(sorted(TraderList))
         self.mainWindow.AssortTraderComboBox.addItems(sorted(TraderList))
         self.mainWindow.AvailableForStartTraderComboBox.addItems(sorted(TraderList))
+        self.mainWindow.FailStandingTrader.addItems(sorted(TraderList))
         
         loyaltyLevels = [ '1' , '2', '3', '4']
         self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
@@ -110,6 +113,8 @@ class QuestPanel(Quest):
         self.mainWindow.FailExitStatusAdd.clicked.connect(self.addFailExitStatusToScrollList)
         self.mainWindow.FailLocationAdd.clicked.connect(self.addFailExitLocationToScrollList)
         self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExitToScrollList)
+        self.mainWindow.FailQuestAddToList.clicked.connect(self.addFailQuestToScrollList)
+        self.mainWindow.FailStandingAddToList.clicked.connect(self.addFailStandingToScrollList)
         
         # Remove From List
         self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(self.removeSuccessCurrencyScrollItem)
@@ -125,6 +130,8 @@ class QuestPanel(Quest):
         self.mainWindow.FailExitStatusRemove.clicked.connect(self.removeFailExitStatusScrollList)
         self.mainWindow.FailLocationRemove.clicked.connect(self.removeFailExitLocationScrollList)
         self.mainWindow.FailExitRemoveFromList.clicked.connect(self.removeFailExitScrollList)
+        self.mainWindow.FailQuestRemoveFromList.clicked.connect(self.removeFailQuestScrollList)
+        self.mainWindow.FailStandingRemoveFromList.clicked.connect(self.removeFailStandingScrollList)
     
     def setUpControls(self):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
@@ -317,6 +324,37 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FailExitWidget
         listWidget.addItem(object)
     
+    def addFailQuestToScrollList(self):
+        quest = Object()
+        quest.questId = self.mainWindow.FailQuestId.text()
+        quest.dynamicLocale = self.mainWindow.FailQuestDynamicLocale.isChecked()
+        
+        statusSelected = self.mainWindow.FailQuestStatus.currentText()
+        if statusSelected in StatusMap:
+            quest.statusType = StatusMap[statusSelected]
+                
+        self.failQuestList.append(quest)
+        
+        object = f"QuestId: {quest.questId} Status: {quest.statusType} dynamicLocale: {quest.dynamicLocale}"
+        listWidget = self.mainWindow.FailQuestWidget
+        listWidget.addItem(object)
+    
+    def addFailStandingToScrollList(self):
+        standing = Object()
+        standing.value = self.mainWindow.FailStandingValue.text()
+        standing.dynamicLocale = self.mainWindow.FailStandingDynamicLocale.isChecked()
+        standing.compare = self.mainWindow.FailStandingCompare.currentText()
+        
+        traderSelected = self.mainWindow.FailStandingTrader.currentText()
+        if traderSelected in TraderMap:
+            standing.traderId = TraderMap[traderSelected]
+                          
+        self.failStandingList.append(standing)
+        
+        object = f"TraderId: {standing.traderId} Value: {standing.value} Compare: {standing.compare} dynamicLocale: {standing.dynamicLocale}"
+        listWidget = self.mainWindow.FailStandingWidget
+        listWidget.addItem(object)
+    
     # SCROLL WIDGET REMOVAL
     def removeFinishLoyaltyScrollItem(self):
         selectedIndex = self.mainWindow.FinishLoyaltyWidget.currentRow()
@@ -382,3 +420,14 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.FailExitWidget.currentRow()
         self.mainWindow.FailExitWidget.takeItem(selectedIndex)
         self.failExitList.pop(selectedIndex)
+        
+    def removeFailQuestScrollList(self):
+        selectedIndex = self.mainWindow.FailQuestWidget.currentRow()
+        self.mainWindow.FailQuestWidget.takeItem(selectedIndex)
+        self.failQuestList.pop(selectedIndex)
+    
+    def removeFailStandingScrollList(self):
+        selectedIndex = self.mainWindow.FailStandingWidget.currentRow()
+        self.mainWindow.FailStandingWidget.takeItem(selectedIndex)
+        self.failStandingList.pop(selectedIndex)
+        

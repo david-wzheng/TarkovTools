@@ -1066,12 +1066,269 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </rect>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_14">
             <attribute name="title">
              <string>Quest and Standing</string>
             </attribute>
+            <widget class="QLineEdit" name="FailQuestId">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>30</y>
+               <width>121</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Quest Id</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QLabel" name="Label232">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>10</y>
+               <width>49</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Quest</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="FailQuestStatus">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>30</y>
+               <width>121</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Status</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FailQuestDynamicLocale">
+             <property name="geometry">
+              <rect>
+               <x>270</x>
+               <y>30</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Dynamic Locale</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="FailQuestAddToList">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>60</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="FailQuestRemoveFromList">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>60</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Remove From List</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_24">
+             <property name="geometry">
+              <rect>
+               <x>-10</x>
+               <y>260</y>
+               <width>471</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QListWidget" name="FailQuestWidget">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>90</y>
+               <width>441</width>
+               <height>171</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="FailStandingCompare">
+             <property name="geometry">
+              <rect>
+               <x>190</x>
+               <y>290</y>
+               <width>121</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Compare Method</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="Line" name="line_25">
+             <property name="geometry">
+              <rect>
+               <x>-10</x>
+               <y>520</y>
+               <width>471</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLabel" name="Label232_2">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>270</y>
+               <width>49</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Standing</string>
+             </property>
+            </widget>
+            <widget class="QListWidget" name="FailStandingWidget">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>350</y>
+               <width>441</width>
+               <height>171</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="FailStandingRemoveFromList">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>320</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Remove From List</string>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="FailStandingAddToList">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>320</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="FailStandingDynamicLocale">
+             <property name="geometry">
+              <rect>
+               <x>330</x>
+               <y>290</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Dynamic Locale</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="FailStandingTrader">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>290</y>
+               <width>121</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Trader</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="FailStandingValue">
+             <property name="geometry">
+              <rect>
+               <x>140</x>
+               <y>290</y>
+               <width>41</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>Value</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
            </widget>
            <widget class="QWidget" name="tab_15">
             <attribute name="title">
@@ -2414,32 +2671,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <x>347</x>
            <y>80</y>
            <width>1071</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="Line" name="line_20">
-         <property name="geometry">
-          <rect>
-           <x>870</x>
-           <y>530</y>
-           <width>20</width>
-           <height>381</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-        </widget>
-        <widget class="Line" name="line_21">
-         <property name="geometry">
-          <rect>
-           <x>880</x>
-           <y>520</y>
-           <width>551</width>
            <height>20</height>
           </rect>
          </property>

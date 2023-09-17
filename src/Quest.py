@@ -20,6 +20,8 @@ class Quest:
         
         # Fail
         self.failExitList = []
+        self.failQuestList = []
+        self.failStandingList = []
         
         # Reward List
         self.currencyRewardList = []
@@ -41,28 +43,46 @@ class Quest:
             with open(file_path, "r") as json_file:
                 data = json.load(json_file)
 
-    def generateLoyalty(self, loyaltyList, index):
-        finishLoyalList = []
-        for item in loyaltyList:
-            loyalty = {
-                "_parent": "TraderLoyalty",
-                "_props": {
-                    "id": self.generateRandomId(),
-                    "index": self.availableForFinishIndex,
-                    "parentId": "", 
-                    "dynamicLocale": item.dynamicLocale,
-                    "target": item.traderId,
-                    "value": item.value,
-                    "compareMethod": item.compare,
-                    "visibilityConditions": []
-                },
-                "dynamicLocale": item.dynamicLocale
-            }
-            finishLoyalList.append(loyalty)
-            index += 1
-        return finishLoyalList
-    
     #JSON GENERATION
+    def generateLoyalty(self, standing, index, parent):
+        loyalty = {
+            "_parent": f"{parent}",
+            "_props": {
+                "id": self.generateRandomId(),
+                "index": self.availableForFinishIndex,
+                "parentId": "", 
+                "dynamicLocale": standing.dynamicLocale,
+                "target": standing.traderId,
+                "value": standing.value,
+                "compareMethod": standing.compare,
+                "visibilityConditions": []
+            },
+            "dynamicLocale": standing.dynamicLocale
+        }
+        index += 1
+        return loyalty
+     
+    def generateQuestRequirements(self, condition, index):
+        questData = {
+            "_parent": "Quest",
+            "_props": {
+                "id": self.generateRandomId(),
+                "index": index,
+                "parentId": "", #TODO Investiage this
+                "dynamicLocale": condition.dynamicLocale,
+                "target": condition.questId,
+                "status": [
+                    condition.statusType
+                ],
+                "availableAfter": 0,
+                "dispersion": 0,
+                "visibilityConditions": []
+            },
+            "dynamicLocale": condition.dynamicLocale
+        }
+        index += 1
+        return questData
+    
     #Available For Start
     def generateAvailableForStartLevel(self):
         level = {
@@ -81,36 +101,16 @@ class Quest:
         self.availableForStartIndex += 1
         return level
 
-    def generateAvailableQuestRequirements(self, questList):
-        questData = {
-            "_parent": "Quest",
-            "_props": {
-                "id": self.generateRandomId(),
-                "index": self.availableForStartIndex,
-                "parentId": "", #TODO Investiage this
-                "dynamicLocale": questList.dynamicLocale,
-                "target": questList.questId,
-                "status": [
-                    questList.statusType
-                ],
-                "availableAfter": 0,
-                "visibilityConditions": []
-            },
-            "dynamicLocale": questList.dynamicLocale
-        }
-        self.availableForStartIndex += 1
-        return questData
-
     def generateAvailableForStart(self):
         availableForStart = []      
         if int(self.mainWindow.AvailableForStartLevelRequirement.text()) > 0:
             availableForStart.append(self.generateAvailableForStartLevel())
 
         for quest in self.availableStatusList:
-            availableForStart.append(self.generateAvailableQuestRequirements(quest))
+            availableForStart.append(self.generateQuestRequirements(quest, self.startedRewardIndex))
 
-        for loyalty in self.generateLoyalty(self.availableLoyaltyList, self.availableForStartIndex):
-            availableForStart.append(loyalty)
+        for loyalty in self.standingRewardList:
+            availableForStart.append(self.generateLoyalty(loyalty, self.availableForStartIndex, "TraderStanding"))
 
         return availableForStart
 
@@ -193,8 +193,8 @@ class Quest:
     
     def generateAvailableForFinish(self):
         Finish = []
-        for loyalty in self.generateLoyalty(self.finishLoyaltyList, self.availableForFinishIndex):
-            Finish.append(loyalty)
+        for loyalty in self.finishLoyaltyList:
+            Finish.append(self.generateLoyalty(loyalty, self.availableForFinishIndex, "TraderLoyalty"))
             
         for skill in self.generateFinishSkills():
             Finish.append(skill)
@@ -207,7 +207,7 @@ class Quest:
             
         return Finish
 
-    #Fail
+    #Fail  
     def generatExitStatus(self, condition, index):
         counterCreator = {
             "_parent": "CounterCreator",
@@ -250,6 +250,12 @@ class Quest:
     
     def generateFail(self):
         Fail = []
+        for quest in self.failQuestList:
+            Fail.append(self.generateQuestRequirements(quest, self.failIndex))
+        
+        for standing in self.failStandingList:
+            Fail.append(self.generateLoyalty(standing, self.failIndex, "TraderStanding"))
+        
         for exitStatus in self.failExitList:
             Fail.append(self.generatExitStatus(exitStatus, self.failIndex))
         
