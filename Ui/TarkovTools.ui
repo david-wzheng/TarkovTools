@@ -94,9 +94,9 @@
         <widget class="QPushButton" name="GenerateQuest">
          <property name="geometry">
           <rect>
-           <x>190</x>
+           <x>230</x>
            <y>50</y>
-           <width>141</width>
+           <width>101</width>
            <height>24</height>
           </rect>
          </property>
@@ -2411,7 +2411,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <x>630</x>
            <y>30</y>
            <width>111</width>
-           <height>20</height>
+           <height>21</height>
           </rect>
          </property>
          <property name="text">
@@ -2637,18 +2637,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>170</y>
+           <y>220</y>
            <width>331</width>
-           <height>621</height>
+           <height>641</height>
           </rect>
          </property>
         </widget>
         <widget class="QPushButton" name="RemoveFromQuestFile">
          <property name="geometry">
           <rect>
-           <x>190</x>
-           <y>90</y>
-           <width>141</width>
+           <x>120</x>
+           <y>50</y>
+           <width>91</width>
            <height>24</height>
           </rect>
          </property>
@@ -2661,7 +2661,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <rect>
            <x>10</x>
            <y>50</y>
-           <width>131</width>
+           <width>91</width>
            <height>24</height>
           </rect>
          </property>
@@ -2682,19 +2682,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <string>Save Quest File</string>
          </property>
         </widget>
-        <widget class="QCheckBox" name="ShowLocalizedNames">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>90</y>
-           <width>151</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Show Localized Names</string>
-         </property>
-        </widget>
         <widget class="QPushButton" name="NewQuestFile">
          <property name="geometry">
           <rect>
@@ -2712,7 +2699,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>140</y>
+           <y>190</y>
            <width>331</width>
            <height>21</height>
           </rect>
@@ -2734,13 +2721,100 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>120</y>
+           <y>170</y>
            <width>71</width>
            <height>16</height>
           </rect>
          </property>
          <property name="text">
           <string>Loaded File</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="NewLocaleFile">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>91</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>New Locale File</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="LoadLocaleFile">
+         <property name="geometry">
+          <rect>
+           <x>120</x>
+           <y>90</y>
+           <width>91</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Load Locale File</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="LoadedLocalePath">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>140</y>
+           <width>331</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Loaded File Path</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_18">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>120</y>
+           <width>101</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Loaded Locale file</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="SaveLocaleFile">
+         <property name="geometry">
+          <rect>
+           <x>230</x>
+           <y>90</y>
+           <width>101</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save Locale File</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="ShowLocalizedNames">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>870</y>
+           <width>161</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Show/Hide Localized Names</string>
          </property>
         </widget>
        </widget>

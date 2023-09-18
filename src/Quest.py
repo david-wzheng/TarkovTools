@@ -14,7 +14,10 @@ class Quest:
         # QuestFile
         self.questFile = {}
         self.saveFile = {}
+        self.localeFile = {}
+        self.saveLocaleFile = {}
         self.questFileList = []
+        self.localeFileList = []
       
         # Start/Finish
         self.finishLoyaltyList = []
@@ -43,28 +46,31 @@ class Quest:
         random_seed = ''.join(random.choice(characters) for _ in range(24))
         return random_seed
 
-    def saveQuestToDiskOld(self):
-        executingDirectory = os.path.dirname(os.path.abspath(__file__))
-        savePath = os.path.join(executingDirectory, "/json/")
-        os.makedirs(os.path.dirname(savePath), exist_ok=True)
-        with open(f"./json/quest.json", 'w') as file:
-            file.write(self.setUpQuest())
-        with open(f"./json/locale.json", 'w') as file:
-            file.write(self.setUpQuestLocale())
-
     def saveQuestToDisk(self, file):
-        self.saveQuestFile = {}
-        with open(file, 'w') as file:
-            for quest, value in self.saveFile.items():
-                self.saveFile[f"{quest}"] = value
-            
-            json.dump(self.saveFile, file, sort_keys=True, indent=2)
+        if self.saveFile is not None:
+            with open(file, 'w') as file:
+                for quest, value in self.saveFile.items():
+                    self.saveFile[f"{quest}"] = value               
+        json.dump(self.saveFile, file, sort_keys=True, indent=2)    
+    
+    def saveLocaleToDisk(self, locale):
+        if locale is not None:
+            with open(locale, 'w') as file:
+                for locale, value in self.saveLocaleFile.items():
+                    self.saveLocaleFile[f'{locale}'] = value
+        json.dump(self.setUpQuestLocale(), file, sort_keys=True, indent=2)
     
     def loadQuestFile(self, file):
         if os.path.exists(file):
-            with open(file, "r") as json_file:
-                self.questFile = json.load(json_file)
+            with open(file, "r") as file:
+                self.questFile = json.load(file)
                 self.saveFile = self.questFile
+                
+    def loadLocaleFile(self, file):
+        if os.path.exists(file):
+            with open(file, "r", encoding="utf8") as file:
+                self.localeFile = json.load(file)
+                self.saveLocaleFile = self.localeFile
 
     #JSON GENERATION
     def generateLoyalty(self, standing, index, parent):

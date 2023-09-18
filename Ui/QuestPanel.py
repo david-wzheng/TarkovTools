@@ -17,7 +17,9 @@ class QuestPanel(Quest):
         self.failExitStatusList = []
         self.failExitLocationList = []           
         
+        self.showLocalizedNames = False
         self.openFileName = ""
+        self.openLocaleFileName = ""
         self.selectedQuestEntry = ""
         
         self.addItemsToDropBoxes()
@@ -107,6 +109,10 @@ class QuestPanel(Quest):
         self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
         self.mainWindow.RemoveFromQuestFile.clicked.connect(self.removeQuestFromScrollList)
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
+        self.mainWindow.NewLocaleFile.clicked.connect(self.newLocaleFile)
+        self.mainWindow.LoadLocaleFile.clicked.connect(self.loadLocale)
+        self.mainWindow.SaveLocaleFile.clicked.connect(self.saveLocale)
+        self.mainWindow.ShowLocalizedNames.clicked.connect(self.showLocalizedQuestList)
         
         self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
         # Add To List
@@ -470,12 +476,44 @@ class QuestPanel(Quest):
         file_dialog = QFileDialog()
         file_dialog.setOptions(options)
         file_dialog.setNameFilter("Json files (*.json)")
-        self.openFileName, _ = file_dialog.getOpenFileName(self.mainWindow.centralwidget, "Open Image", "./json", "Json Files (*.json)")
+        self.openFileName, _ = file_dialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
         self.mainWindow.QuestFileWidget.clear()
         self.mainWindow.LoadFilePath.setText(self.openFileName) 
         
         if self.openFileName:
             self.loadQuestListToScrollList(self.openFileName)
+      
+    def loadLocale(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_dialog = QFileDialog()
+        file_dialog.setOptions(options)
+        file_dialog.setNameFilter("Json files (*.json)")
+        self.openLocaleFileName, _ = file_dialog.getOpenFileName(self.mainWindow.centralwidget, "Load Locale.json", "./json", "Json Files (*.json)")
+        self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
+        
+        if self.openLocaleFileName:
+            self.loadLocaleFile(self.openLocaleFileName)
+    
+    def showLocalizedQuestList(self):
+        self.mainWindow.QuestFileWidget.clear()
+        self.questFileList.clear()
+        listWidget = self.mainWindow.QuestFileWidget
+        if self.showLocalizedNames is False:
+            for quest in self.questFile:
+                lookup = quest + " name"
+                object = f"{self.localeFile[lookup]}"
+                self.questFileList.append(quest)
+                listWidget.addItem(object)
+        else:
+            for quest in self.questFile:
+                lookup = quest + " name"
+                object = f"{quest}"
+                self.questFileList.append(quest)
+                listWidget.addItem(object)
+        print(self.showLocalizedNames)
+        self.showLocalizedNames = not self.showLocalizedNames
+
          
     def newSaveFile(self):
         options = QFileDialog.Options()
@@ -483,12 +521,29 @@ class QuestPanel(Quest):
         file_dialog = QFileDialog()
         file_dialog.setOptions(options)
         file_dialog.setNameFilter("Json files (*.json)")    
-        self.openFileName, _ = file_dialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest File", "./json", "Json Files (*.json)")
+        self.openFileName, _ = file_dialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
         self.mainWindow.QuestFileWidget.clear()
         self.mainWindow.LoadFilePath.setText(self.openFileName) 
         
         if self.openFileName:
             self.saveQuestToDisk(self.openFileName)
    
+    def newLocaleFile(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_dialog = QFileDialog()
+        file_dialog.setOptions(options)
+        file_dialog.setNameFilter("Json files (*.json)")    
+        self.openLocaleFileName, _ = file_dialog.getSaveFileName(self.mainWindow.centralwidget, "New Locale File", "./json", "Json Files (*.json)")
+        self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
+        
+        if self.openLocaleFileName:
+            self.saveJsonToDisk(self.openLocaleFileName, self.openLocaleFileName)
+   
     def SaveFile(self):
         self.saveQuestToDisk(self.openFileName)
+        
+    def saveLocale(self):
+        self.saveLocaleToDisk(self.saveLocaleFile)
+        
+    
