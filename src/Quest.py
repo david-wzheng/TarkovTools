@@ -13,11 +13,7 @@ class Quest:
         
         # QuestFile
         self.questFile = {}
-        self.saveFile = {}
         self.localeFile = {}
-        self.saveLocaleFile = {}
-        self.questFileList = []
-        self.localeFileList = []
       
         # Start/Finish
         self.finishLoyaltyList = []
@@ -47,30 +43,30 @@ class Quest:
         return random_seed
 
     def saveQuestToDisk(self, file):
-        if self.saveFile is not None:
+        if self.questFile is not None:
             with open(file, 'w') as file:
-                for quest, value in self.saveFile.items():
-                    self.saveFile[f"{quest}"] = value               
-        json.dump(self.saveFile, file, sort_keys=True, indent=2)    
+                for quest, value in self.questFile.items():
+                    self.questFile[f"{quest}"] = value               
+                json.dump(self.questFile, file, sort_keys=True, indent=2)    
     
     def saveLocaleToDisk(self, locale):
         if locale is not None:
             with open(locale, 'w') as file:
-                for locale, value in self.saveLocaleFile.items():
-                    self.saveLocaleFile[f'{locale}'] = value
-        json.dump(self.setUpQuestLocale(), file, sort_keys=True, indent=2)
+                for locale, value in self.localeFile.items():
+                    self.localeFile[f'{locale}'] = value
+                json.dump(self.localeFile, file, sort_keys=True, indent=2)
     
     def loadQuestFile(self, file):
         if os.path.exists(file):
             with open(file, "r") as file:
+                self.questFile.clear()
                 self.questFile = json.load(file)
-                self.saveFile = self.questFile
                 
     def loadLocaleFile(self, file):
         if os.path.exists(file):
             with open(file, "r", encoding="utf8") as file:
+                self.localeFile.clear()
                 self.localeFile = json.load(file)
-                self.saveLocaleFile = self.localeFile
 
     #JSON GENERATION
     def generateLoyalty(self, standing, index, parent):
@@ -460,20 +456,18 @@ class Quest:
             },
             "side": self.mainWindow.Side.currentText()
         }
-        
-        questDict = {quest["_id"]: quest}
         return quest
     
     def setUpQuestLocale(self):
-        locale =  {}
-        locale[f"{self.mainWindow._Id.text()} name"] = self.mainWindow.QuestName.text()
-        locale[f"{self.mainWindow._Id.text()} description"] = self.mainWindow.Description.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} note"] = self.mainWindow.Note.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} successMessageText"] = self.mainWindow.SuccessMessage.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} failMessageText"] = self.mainWindow.FailMessage.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} changeQuestMessageText"] = self.mainWindow.ChangeMessage.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} location"] = self.getLocationId()
+        localeDict = {}
+        localeDict[f"{self.mainWindow._Id.text()} name"] = self.mainWindow.QuestName.text()
+        localeDict[f"{self.mainWindow._Id.text()} description"] = self.mainWindow.Description.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} note"] = self.mainWindow.Note.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} successMessageText"] = self.mainWindow.SuccessMessage.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} failMessageText"] = self.mainWindow.FailMessage.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} changeQuestMessageText"] = self.mainWindow.ChangeMessage.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} location"] = self.getLocationId()
         
-        result = json.dumps(locale, sort_keys=True, indent=2)
-        return result
+        return localeDict
+        
     

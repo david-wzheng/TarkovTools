@@ -1,4 +1,4 @@
-import os
+import os, re
 
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -16,7 +16,9 @@ class QuestPanel(Quest):
         # Temp Lists
         self.failExitStatusList = []
         self.failExitLocationList = []           
-        
+          
+        self.localizedLookup = []
+        self.selectedQuestIndex = 0  
         self.showLocalizedNames = False
         self.openFileName = ""
         self.openLocaleFileName = ""
@@ -107,12 +109,8 @@ class QuestPanel(Quest):
         self.mainWindow.LoadQuestFile.clicked.connect(self.showLoadFileDialog)
         self.mainWindow.SaveQuestFile.clicked.connect(self.SaveFile)
         self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
-        self.mainWindow.RemoveFromQuestFile.clicked.connect(self.removeQuestFromScrollList)
+        self.mainWindow.RemoveFromQuestFile.clicked.connect(self.deleteQuest)
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
-        self.mainWindow.NewLocaleFile.clicked.connect(self.newLocaleFile)
-        self.mainWindow.LoadLocaleFile.clicked.connect(self.loadLocale)
-        self.mainWindow.SaveLocaleFile.clicked.connect(self.saveLocale)
-        self.mainWindow.ShowLocalizedNames.clicked.connect(self.showLocalizedQuestList)
         
         self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
         # Add To List
@@ -153,23 +151,26 @@ class QuestPanel(Quest):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
         
     # SCROLL WIDGET POPULATION
-    def loadQuestListToScrollList(self, file):
-        self.loadQuestFile(file)
+    def loadQuestListToScrollList(self):
         for quest in self.questFile:
             object = f"{quest}"
-            self.questFileList.append(self.questFile[quest])
             listWidget = self.mainWindow.QuestFileWidget
             listWidget.addItem(object)
+            self.showLocalizedQuestList()
     
     def addQuestToScrollList(self):
         print(self.openFileName)
         quest = self.setUpQuest()
-        self.saveFile[quest["_id"]] = quest
+        self.questFile[quest["_id"]] = quest
+        
+        locales = self.setUpQuestLocale()
+        for locale, value in locales.items():
+            self.localeFile[locale] = value
         
         object = f"{quest['_id']}"
-        self.questFileList.append(quest)
         listWidget = self.mainWindow.QuestFileWidget
         listWidget.addItem(object)
+        self.showLocalizedQuestList()
     
     def editSelectedQuestScrollList(self):
         selectedIndex = self.mainWindow.QuestFileWidget.currentRow()
@@ -461,60 +462,60 @@ class QuestPanel(Quest):
         self.failStandingList.pop(selectedIndex)
       
     def getSelectedTextFromScrollList(self):
-        self.selectedQuestEntry = self.mainWindow.QuestFileWidget.currentItem().text()  
+        self.selectedQuestIndex = self.mainWindow.QuestFileWidget.currentRow()
+        pattern = r'QuestId: (\w+)'
+        match = re.search(pattern, self.mainWindow.QuestFileWidget.currentItem().text())
+        if match:
+            self.selectedQuestEntry = match.group(1)
              
-    def removeQuestFromScrollList(self):
-        selectedIndex = self.mainWindow.QuestFileWidget.currentRow()
-        self.mainWindow.QuestFileWidget.takeItem(selectedIndex)
-        del self.saveFile[self.selectedQuestEntry]
-        self.questFileList.pop(selectedIndex)
+    def deleteQuest(self):
+        self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
+        keysTodelete = []
+        for locale in self.localeFile:
+            if self.selectedQuestEntry in locale:
+                keysTodelete.append(locale)
+        for key in keysTodelete:
+            del self.localeFile[key]
+        del self.questFile[self.selectedQuestEntry]
+        self.showLocalizedQuestList()
         
     #File
     def showLoadFileDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_dialog = QFileDialog()
-        file_dialog.setOptions(options)
-        file_dialog.setNameFilter("Json files (*.json)")
-        self.openFileName, _ = file_dialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
+        fileDialog = QFileDialog()
+        fileDialog.setOptions(options)
+        fileDialog.setNameFilter("Json files (*.json)")
+        self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
         self.mainWindow.QuestFileWidget.clear()
         self.mainWindow.LoadFilePath.setText(self.openFileName) 
         
         if self.openFileName:
-            self.loadQuestListToScrollList(self.openFileName)
+            self.loadQuestFile(self.openFileName)
+            self.loadLocale()
+            self.loadQuestListToScrollList()
+
       
     def loadLocale(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_dialog = QFileDialog()
-        file_dialog.setOptions(options)
-        file_dialog.setNameFilter("Json files (*.json)")
-        self.openLocaleFileName, _ = file_dialog.getOpenFileName(self.mainWindow.centralwidget, "Load Locale.json", "./json", "Json Files (*.json)")
+        fileDialog = QFileDialog()
+        fileDialog.setOptions(options)
+        fileDialog.setNameFilter("Json files (*.json)")
+        self.openLocaleFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Locale.json", "./json", "Json Files (*.json)")
         self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
         
         if self.openLocaleFileName:
             self.loadLocaleFile(self.openLocaleFileName)
     
     def showLocalizedQuestList(self):
-        self.mainWindow.QuestFileWidget.clear()
-        self.questFileList.clear()
         listWidget = self.mainWindow.QuestFileWidget
-        if self.showLocalizedNames is False:
-            for quest in self.questFile:
-                lookup = quest + " name"
-                object = f"{self.localeFile[lookup]}"
-                self.questFileList.append(quest)
-                listWidget.addItem(object)
-        else:
-            for quest in self.questFile:
-                lookup = quest + " name"
-                object = f"{quest}"
-                self.questFileList.append(quest)
-                listWidget.addItem(object)
-        print(self.showLocalizedNames)
-        self.showLocalizedNames = not self.showLocalizedNames
-
-         
+        listWidget.clear()
+        for quest in self.questFile:
+            lookup = quest + " name"
+            object = f"QuestId: {quest}\nQuestName: {self.localeFile[lookup]}"
+            listWidget.addItem(object)
+        
     def newSaveFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
@@ -527,6 +528,7 @@ class QuestPanel(Quest):
         
         if self.openFileName:
             self.saveQuestToDisk(self.openFileName)
+            self.newLocaleFile()
    
     def newLocaleFile(self):
         options = QFileDialog.Options()
@@ -538,12 +540,13 @@ class QuestPanel(Quest):
         self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
         
         if self.openLocaleFileName:
-            self.saveJsonToDisk(self.openLocaleFileName, self.openLocaleFileName)
+            self.saveLocaleToDisk(self.openLocaleFileName)
    
     def SaveFile(self):
         self.saveQuestToDisk(self.openFileName)
+        self.saveLocale()
         
     def saveLocale(self):
-        self.saveLocaleToDisk(self.saveLocaleFile)
+        self.saveLocaleToDisk(self.openLocaleFileName)
         
     
