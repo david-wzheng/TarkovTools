@@ -10,6 +10,12 @@ CurrencyMap = {
     'Dollars': "5696686a4bdc2da3298b456a",
     'Euros': "569668774bdc2da2298b4568"
 }
+
+CurrencyLookup = {
+    "5449016a4bdc2d6f028b456f": 'Roubles',
+    "5696686a4bdc2da3298b456a": 'Dollars',
+    "569668774bdc2da2298b4568": 'Euros'
+}
         
 StatusMap = {
     'Locked': 0,

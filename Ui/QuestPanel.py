@@ -40,17 +40,17 @@ class QuestPanel(Quest):
         self.mainWindow.FailExitStatusStatus.addItems(sorted(leaveStatus))
         
         SideList = [
-            'Pmc', 'Bear', 'Usec', 'Savage'
+            "Pmc", "Bear", "Usec", "Savage"
         ]
         self.mainWindow.Side.addItems(sorted(SideList))
 
         CurrencyList = [
-            'Roubles', 'Dollars', 'Euros'
+            "Roubles", "Dollars", "Euros"
         ]
         self.mainWindow.CurrencyType.addItems(sorted(CurrencyList))
         
         CompareList = [
-            '>=', '<='
+            ">=", "<="
         ]
         self.mainWindow.AvailableForStartLevelRequirementCompare.addItems(sorted(CompareList))
         self.mainWindow.FinishLoyaltyCompare.addItems(sorted(CompareList))
@@ -83,7 +83,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishSkillComboBox.addItems(sorted(SkillList))
         
         locationList = [
-            "FactoryDay", "Customs", "Woods", "Lighthouse",
+            "any", "FactoryDay", "Customs", "Woods", "Lighthouse",
             "Shoreline", "Reserve", "Interchange", "FactoryNight",
             "Labs", "Streets"
         ]
@@ -151,12 +151,13 @@ class QuestPanel(Quest):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
         
     # SCROLL WIDGET POPULATION
-    def loadQuestListToScrollList(self):
+    def refreshQuestList(self):
+        listWidget = self.mainWindow.QuestFileWidget
+        listWidget.clear()
         for quest in self.questFile:
-            object = f"{quest}"
-            listWidget = self.mainWindow.QuestFileWidget
+            lookup = quest + " name"
+            object = f"QuestId: {quest}\nQuestName: {self.localeFile[lookup]}"
             listWidget.addItem(object)
-            self.showLocalizedQuestList()
     
     def addQuestToScrollList(self):
         print(self.openFileName)
@@ -167,14 +168,11 @@ class QuestPanel(Quest):
         for locale, value in locales.items():
             self.localeFile[locale] = value
         
-        object = f"{quest['_id']}"
-        listWidget = self.mainWindow.QuestFileWidget
-        listWidget.addItem(object)
-        self.showLocalizedQuestList()
+        self.refreshQuestList()
     
     def editSelectedQuestScrollList(self):
-        selectedIndex = self.mainWindow.QuestFileWidget.currentRow()
-        pass #TODO
+        self.displayRootValues()
+        pass
     
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
@@ -212,6 +210,9 @@ class QuestPanel(Quest):
         item.value = self.mainWindow.FinishItemAmount.text()
         item.fir = self.mainWindow.FinishItemFIR.isChecked()
         item.encoded = self.mainWindow.FinishItemEncoded.isChecked()
+        item.dogtagLevel = int(self.mainWindow.FinishItemDogTag.text())
+        item.minDurability = int(self.mainWindow.FinishItemMinDura.text())
+        item.maxDurability = int(self.mainWindow.FinishItemMaxDura.text())
 
         self.finishItemList.append(item)
 
@@ -269,7 +270,7 @@ class QuestPanel(Quest):
         if currencyTypeSelected in CurrencyMap:
             currency.id = CurrencyMap[currencyTypeSelected]
 
-        self.currencyRewardList.append(currency)
+        self.itemRewardList.append(currency)
         
         object = f"{currencyTypeSelected} ID: {currency.id} Amount: {currency.value}"
         listWidget = self.mainWindow.SuccessCurrencyWidget
@@ -419,7 +420,7 @@ class QuestPanel(Quest):
     def removeSuccessCurrencyScrollItem(self):
         selectedIndex = self.mainWindow.SuccessCurrencyWidget.currentRow()
         self.mainWindow.SuccessCurrencyWidget.takeItem(selectedIndex)
-        self.currencyRewardList.pop(selectedIndex)
+        self.itemRewardList.pop(selectedIndex)
     
     def removeSuccessStandingScrollItem(self):
         selectedIndex = self.mainWindow.SuccessStandingWidget.currentRow()
@@ -467,7 +468,9 @@ class QuestPanel(Quest):
         match = re.search(pattern, self.mainWindow.QuestFileWidget.currentItem().text())
         if match:
             self.selectedQuestEntry = match.group(1)
-             
+        self.displayQuestValues()
+                  
+    #File
     def deleteQuest(self):
         self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
         keysTodelete = []
@@ -477,9 +480,8 @@ class QuestPanel(Quest):
         for key in keysTodelete:
             del self.localeFile[key]
         del self.questFile[self.selectedQuestEntry]
-        self.showLocalizedQuestList()
+        self.refreshQuestList()
         
-    #File
     def showLoadFileDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
@@ -490,13 +492,13 @@ class QuestPanel(Quest):
         self.mainWindow.QuestFileWidget.clear()
         self.mainWindow.LoadFilePath.setText(self.openFileName) 
         
+        #TODO Add warning!
+        
         if self.openFileName:
             self.loadQuestFile(self.openFileName)
-            self.loadLocale()
-            self.loadQuestListToScrollList()
-
-      
-    def loadLocale(self):
+            self.showLoadLocaleDialog()
+    
+    def showLoadLocaleDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         fileDialog = QFileDialog()
@@ -507,15 +509,9 @@ class QuestPanel(Quest):
         
         if self.openLocaleFileName:
             self.loadLocaleFile(self.openLocaleFileName)
-    
-    def showLocalizedQuestList(self):
-        listWidget = self.mainWindow.QuestFileWidget
-        listWidget.clear()
-        for quest in self.questFile:
-            lookup = quest + " name"
-            object = f"QuestId: {quest}\nQuestName: {self.localeFile[lookup]}"
-            listWidget.addItem(object)
-        
+            print(len(self.localeFile))
+            self.refreshQuestList()
+
     def newSaveFile(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
@@ -526,7 +522,10 @@ class QuestPanel(Quest):
         self.mainWindow.QuestFileWidget.clear()
         self.mainWindow.LoadFilePath.setText(self.openFileName) 
         
+        #TODO Add warning
+        
         if self.openFileName:
+            self.questFile.clear()
             self.saveQuestToDisk(self.openFileName)
             self.newLocaleFile()
    
@@ -539,8 +538,12 @@ class QuestPanel(Quest):
         self.openLocaleFileName, _ = file_dialog.getSaveFileName(self.mainWindow.centralwidget, "New Locale File", "./json", "Json Files (*.json)")
         self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
         
+        # TODO Add warning
+        
         if self.openLocaleFileName:
+            self.localeFile.clear()
             self.saveLocaleToDisk(self.openLocaleFileName)
+            self.refreshQuestList()
    
     def SaveFile(self):
         self.saveQuestToDisk(self.openFileName)
@@ -549,4 +552,338 @@ class QuestPanel(Quest):
     def saveLocale(self):
         self.saveLocaleToDisk(self.openLocaleFileName)
         
+    #Display Quest Values
+    def displayQuestValues(self):
+        self.displayRootValues()
+        self.displayLocales()
+        self.displayAvailableForStart()
+        self.displayAvailableForFinish()
+        self.displayFail()
+        self.displayStartedReward()
+        self.displaySuccessReward()
     
+    def displayRootValues(self):
+        quest = self.questFile[self.selectedQuestEntry]
+        self.mainWindow.QuestName.setText(quest["QuestName"])
+        self.mainWindow._Id.setText(quest["_id"])
+        self.mainWindow.ImagePath.setText(quest["image"])
+        self.mainWindow.CanShowNotifications.setChecked(quest["canShowNotificationsInGame"])
+        self.mainWindow.RequiresKey.setChecked(quest["isKey"])
+        self.mainWindow.Restartable.setChecked(quest["restartable"])
+        self.mainWindow.InstantComplete.setChecked(quest["instantComplete"])
+        self.mainWindow.SecretQuest.setChecked(quest["secretQuest"])
+        self.mainWindow.ImagePath.setText(quest["image"])
+        
+        if quest["location"] == "any":
+            self.mainWindow.LocationComboBox.setCurrentIndex(0)
+        elif quest["location"] == "56f40101d2720b2a4d8b45d6":
+            self.mainWindow.LocationComboBox.setCurrentIndex(1)
+        elif quest["location"] == "55f2d3fd4bdc2d5f408b4567":
+            self.mainWindow.LocationComboBox.setCurrentIndex(2)
+        elif quest["location"] == "59fc81d786f774390775787e":
+            self.mainWindow.LocationComboBox.setCurrentIndex(3)
+        elif quest["location"] == "5714dbc024597771384a510d":
+            self.mainWindow.LocationComboBox.setCurrentIndex(4)
+        elif quest["location"] == "5b0fc42d86f7744a585f9105":
+            self.mainWindow.LocationComboBox.setCurrentIndex(5)
+        elif quest["location"] == "5704e4dad2720bb55b8b4567":
+            self.mainWindow.LocationComboBox.setCurrentIndex(6)
+        elif quest["location"] == "5704e5fad2720bc05b8b4567":
+            self.mainWindow.LocationComboBox.setCurrentIndex(7)
+        elif quest["location"] == "5704e554d2720bac5b8b456e":
+            self.mainWindow.LocationComboBox.setCurrentIndex(8)
+        elif quest["location"] == "5714dc692459777137212e12":
+            self.mainWindow.LocationComboBox.setCurrentIndex(9)
+        elif quest["location"] == "5704e3c2d2720bac5b8b4567":
+            self.mainWindow.LocationComboBox.setCurrentIndex(10)
+            
+        if quest["side"] == "Bear":
+            self.mainWindow.Side.setCurrentIndex(0)
+        elif quest["side"] == "Pmc":
+            self.mainWindow.Side.setCurrentIndex(1)
+        elif quest["side"] == "Savage":
+            self.mainWindow.Side.setCurrentIndex(2)
+        elif quest["side"] == "Usec":
+            self.mainWindow.Side.setCurrentIndex(3)
+            
+        if quest["traderId"] == "579dc571d53a0658a154fbec":
+            self.mainWindow.TradercomboBox.setCurrentIndex(0)
+        elif quest["traderId"] == "5c0647fdd443bc2504c2d371":
+            self.mainWindow.TradercomboBox.setCurrentIndex(1)
+        elif quest["traderId"] == "5a7c2eca46aef81a7ca2145d":
+            self.mainWindow.TradercomboBox.setCurrentIndex(2)
+        elif quest["traderId"] == "5935c25fb3acc3127c3d8cd9":
+            self.mainWindow.TradercomboBox.setCurrentIndex(3)
+        elif quest["traderId"] == "54cb50c76803fa8b248b4571":
+            self.mainWindow.TradercomboBox.setCurrentIndex(4)
+        elif quest["traderId"] == "5ac3b934156ae10c4430e83c":
+            self.mainWindow.TradercomboBox.setCurrentIndex(5)
+        elif quest["traderId"] == "58330581ace78e27b8b10cee":
+            self.mainWindow.TradercomboBox.setCurrentIndex(6)
+        elif quest["traderId"] == "54cb57776803fa99248b456e":
+            self.mainWindow.TradercomboBox.setCurrentIndex(7)
+            
+        if quest["type"] == "Completion":
+            self.mainWindow.Type.setCurrentIndex(0)
+        elif quest["type"] == "Discover":
+            self.mainWindow.Type.setCurrentIndex(1)
+        elif quest["type"] == "Exploration":
+            self.mainWindow.Type.setCurrentIndex(2)
+        elif quest["type"] == "Loyalty":
+            self.mainWindow.Type.setCurrentIndex(3)
+        elif quest["type"] == "Merchant":
+            self.mainWindow.Type.setCurrentIndex(4)
+        elif quest["type"] == "PickUp":
+            self.mainWindow.Type.setCurrentIndex(5)
+        elif quest["type"] == "Skill":
+            self.mainWindow.Type.setCurrentIndex(6)
+        elif quest["type"] == "Standing":
+            self.mainWindow.Type.setCurrentIndex(7)
+        elif quest["type"] == "WeaponAssembly":
+            self.mainWindow.Type.setCurrentIndex(8)
+            
+    def displayLocales(self):  
+        descriptionKey = f"{self.selectedQuestEntry} description"
+        if descriptionKey in self.localeFile:
+            description = self.localeFile[descriptionKey]
+            self.mainWindow.Description.setText(description)
+        
+        successKey = f"{self.selectedQuestEntry} successMessageText"
+        if successKey in self.localeFile:
+            success = self.localeFile[successKey]
+            self.mainWindow.SuccessMessage.setText(success)
+        
+        failKey = f"{self.selectedQuestEntry} failMessageText"
+        if failKey in self.localeFile:
+            fail = self.localeFile[failKey]
+            self.mainWindow.FailMessage.setText(fail)
+        
+        changeKey = f"{self.selectedQuestEntry} changeQuestMessageText"
+        if changeKey in self.localeFile:
+            change = self.localeFile[changeKey]
+            self.mainWindow.ChangeMessage.setText(change)
+        
+        noteKey = f"{self.selectedQuestEntry} note"
+        if noteKey in self.localeFile:
+            note = self.localeFile[noteKey]
+            self.mainWindow.Note.setText(note)
+            
+    def displayAvailableForStart(self):
+        quest = self.questFile[self.selectedQuestEntry]
+        if "AvailableForStart" in quest["conditions"]:
+            self.availableStatusList.clear()
+            self.availableLoyaltyList.clear()
+            self.mainWindow.StartQuestWidget.clear()
+            self.mainWindow.StartLoyaltyWidget.clear()
+            start = quest["conditions"]["AvailableForStart"]
+            for condition in start:
+                # Level
+                if condition["_parent"] == "Level":
+                    self.mainWindow.AvailableForStartLevelRequirement.setText(
+                        f"{condition['_props']['value']}")
+                    self.mainWindow.AvailableForStartDynamicLocaleLevel.setChecked(
+                        condition["_props"]["dynamicLocale"])
+                    if condition['_props']['compareMethod'] == "<=":
+                        self.mainWindow.AvailableForStartLevelRequirementCompare.setCurrentIndex(0)
+                    elif condition['_props']['compareMethod'] == ">=":
+                        self.mainWindow.AvailableForStartLevelRequirementCompare.setCurrentIndex(1)
+                        
+                # Quest
+                elif condition["_parent"] == "Quest":
+                    quest = Object()       
+                    quest.questId = condition["_props"]["target"]
+                    quest.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    quest.statusType = condition["_props"]["status"][0] #TODO Does this ever have more than one element?
+                    
+                    object = f"Status: {quest.statusType} questId: {quest.questId} DynamicLocale: {quest.dynamicLocale}"
+                    
+                    self.availableStatusList.append(quest)
+                    self.mainWindow.StartQuestWidget.addItem(object)
+                    
+                # Loyalty
+                elif condition["_parent"] == "TraderLoyalty":
+                    loyalty = Object()
+                    loyalty.value = condition["_props"]["value"]
+                    loyalty.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    loyalty.compare = condition["_props"]["compareMethod"]
+                    loyalty.traderId = condition["_props"]["target"]
+                    
+                    object = f"Loyalty requirement: {loyalty.traderId} Loyalty: {loyalty.value} Compare: {loyalty.compare} DynamicLocale: {loyalty.dynamicLocale}"
+                    
+                    self.availableLoyaltyList.append(loyalty)
+                    self.mainWindow.StartLoyaltyWidget.addItem(object)
+       
+    def displayAvailableForFinish(self):
+        quest = self.questFile[self.selectedQuestEntry]
+        if "AvailableForFinish" in quest["conditions"]:
+            self.finishLoyaltyList.clear()
+            self.finishSkillList.clear()
+            self.finishItemList.clear()
+            self.mainWindow.FinishLoyaltyWidget.clear()
+            self.mainWindow.FinishSkillWidget.clear()
+            self.mainWindow.FinishItemWidget.clear()
+            finish = quest["conditions"]["AvailableForFinish"]
+            for condition in finish:
+                # Loyalty
+                if condition["_parent"] == "TraderLoyalty":
+                    loyalty = Object()       
+                    loyalty.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    loyalty.value = condition["_props"]["value"]
+                    loyalty.compare = condition["_props"]["compareMethod"]
+                    loyalty.traderId = condition["_props"]["target"]
+                    
+                    object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale}"
+                    self.finishLoyaltyList.append(loyalty)
+                    self.mainWindow.FinishLoyaltyWidget.addItem(object)
+                # Skill
+                elif condition["_parent"] == "Skill":
+                    skill = Object()
+                    skill.skill = condition["_props"]["target"]
+                    skill.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    skill.value = condition["_props"]["value"]
+                    skill.compare = condition["_props"]["compareMethod"]
+                    
+                    object = f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale}"
+                    self.finishSkillList.append(skill)
+                    self.mainWindow.FinishSkillWidget.addItem(object) 
+                # Find Items
+                elif condition["_parent"] == "FindItem":
+                    item = Object()       
+                    item.id = condition["_props"]["target"][0] #TODO Does this ever contain more than one element?
+                    item.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    item.value = condition["_props"]["value"]
+                    item.fir = condition["_props"]["onlyFoundInRaid"]
+                    item.encoded = condition["_props"]["isEncoded"]
+                    item.dogtagLevel = condition["_props"]["dogtagLevel"]
+                    item.minDurability = condition["_props"]["minDurability"]
+                    item.maxDurability = condition["_props"]["maxDurability"]
+                    
+                    object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}"
+                    self.finishItemList.append(item)
+                    self.mainWindow.FinishItemWidget.addItem(object)
+    
+    def displayFail(self):
+        quest = self.questFile[self.selectedQuestEntry]
+        if "Fail" in quest["conditions"]:
+            self.failExitList.clear()
+            self.failQuestList.clear()
+            self.failStandingList.clear()
+            self.mainWindow.FailExitWidget.clear()
+            self.mainWindow.FailQuestWidget.clear()
+            self.mainWindow.FailStandingWidget.clear()
+            fail = quest["conditions"]["Fail"]
+            for condition in fail:
+                # Counter Conditions
+                if condition["_parent"] == "CounterCreator":
+                    if condition["_props"]["counter"]["conditions"][0]["_parent"] == "ExitStatus":
+                        exit = Object()
+                        exit.status = condition["_props"]["counter"]["conditions"][0]["_props"]["status"]
+                        exit.oneSessionOnly = condition["_props"]["oneSessionOnly"]
+                        exit.dynamicLocale = condition["_props"]["dynamicLocale"]
+                        exit.doNotReset = condition["_props"]["doNotResetIfCounterCompleted"]
+                        exit.value = condition["_props"]["value"]
+                      
+                        if condition["_props"]["counter"]["conditions"][1]["_parent"] == "Location":
+                            exit.location = condition["_props"]["counter"]["conditions"][1]["_props"]["target"]
+                                            
+                        exitStatus = " ".join(exit.status)
+                        exitLocations = " ".join(exit.location)
+                        object = f" Exit Status: {exitStatus} \n Exit List: {exitLocations} \n One Session: {exit.oneSessionOnly} Dynamic Locale: {exit.dynamicLocale} \n Do not reset: {exit.doNotReset} Value: {exit.value}"
+                        self.mainWindow.FailExitWidget.addItem(object)
+                        
+                    elif condition["_props"]["counter"]["conditions"][0]["_parent"] == "Kills":
+                        pass
+                    elif condition["_props"]["counter"]["conditions"][0]["_parent"] == "UseItem":
+                        pass
+                # Quest
+                elif condition["_parent"] == "Quest":
+                    quest = Object()
+                    quest.questId = condition["_props"]["target"]
+                    quest.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    quest.statusType = condition["_props"]["status"][0] #TODO Does this ever contain more than one element?  
+                     
+                    object = f"QuestId: {quest.questId} Status: {quest.statusType} dynamicLocale: {quest.dynamicLocale}"
+                    self.failQuestList.append(quest)
+                    self.mainWindow.FailQuestWidget.addItem(object)
+                    
+                # Trader Standing
+                elif condition["_parent"] == "TraderStanding":
+                    standing = Object()
+                    standing.value = condition["_props"]["value"]
+                    standing.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    standing.compare = condition["_props"]["compareMethod"]
+                    standing.traderId = condition["_props"]["target"]
+                    
+                    object = f"TraderId: {standing.traderId} Value: {standing.value} Compare: {standing.compare} dynamicLocale: {standing.dynamicLocale}"
+                    self.failStandingList.append(standing)
+                    self.mainWindow.FailStandingWidget.addItem(object)
+                    
+    def displayStartedReward(self):
+        quest = self.questFile[self.selectedQuestEntry]
+        if "Started" in quest["rewards"]:
+            self.startedItemList.clear()
+            self.mainWindow.StartedItemWidget.clear()
+               
+            started = quest["rewards"]["Started"]
+            for condition in started:
+                # Assort Unlock 
+                 if condition["type"] == "AssortmentUnlock":
+                     pass #TODO
+                 elif condition["type"] == "Item":
+                    item = Object()
+                    item.id = condition["target"]
+                    item.value = condition["value"]
+                    self.startedItemList.append(item)
+        
+                    object = f"Item reward: {item.id} Amount: {item.value}"
+                    self.mainWindow.StartedItemWidget.addItem(object)
+
+    def displaySuccessReward(self):
+        quest = self.questFile[self.selectedQuestEntry]
+        if "Success" in quest["rewards"]:
+            self.standingRewardList.clear()
+            self.itemRewardList.clear()
+            self.assortUnlockList.clear()
+            self.mainWindow.SuccessCurrencyWidget.clear()
+            self.mainWindow.SuccessStandingWidget.clear()
+            self.mainWindow.SuccessItemWidget.clear()
+            self.mainWindow.AssortTraderAssortUnlockWidget.clear()
+            
+            success = quest["rewards"]["Success"]
+            for condition in success:
+                # Assort Unlock 
+                if condition["type"] == "AssortmentUnlock":
+                    assort = Object()
+                    assort.item = condition["target"]
+                    assort.level = condition["loyaltyLevel"]
+                    assort.trader = condition["traderId"]
+                    self.assortUnlockList.append(assort)
+
+                    object = f"TraderId: {assort.trader} Assort unlock: {assort.item} at level: {assort.level}"
+                    self.mainWindow.AssortTraderAssortUnlockWidget.addItem(object)
+                # Experience
+                elif condition["type"] == "Experience":
+                     self.mainWindow.ExperienceAmount.setText(condition["value"])
+                # Trader Standing
+                elif condition["type"] == "TraderStanding":
+                    standing = Object()
+                    standing.value = condition["value"]
+                    standing.trader = condition["target"]
+                    self.standingRewardList.append(standing)
+                    
+                    object = f"TraderId: {standing.trader} Standing reward: {standing.value}"   
+                    self.mainWindow.SuccessCurrencyWidget.addItem(object)
+                # Item
+                elif condition["type"] == "Item":
+                    item = Object()
+                    item.id = condition["target"]
+                    item.value = condition["value"]
+                    self.itemRewardList.append(item)
+                    if item.value in CurrencyLookup:
+                        object = f"Money reward Id: {item.id} Amount: {item.value}"
+                        self.mainWindow.SuccessCurrencyWidget.addItem(object)
+                    else:
+                        object = f"Item reward Id: {item.id} Amount: {item.value}"
+                        self.mainWindow.SuccessItemWidget.addItem(object)
+                        
+

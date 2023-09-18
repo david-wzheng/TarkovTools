@@ -28,7 +28,6 @@ class Quest:
         self.failStandingList = []
         
         # Reward List
-        self.currencyRewardList = []
         self.standingRewardList = []
         self.assortUnlockList = []
         self.itemRewardList = []
@@ -59,13 +58,11 @@ class Quest:
     def loadQuestFile(self, file):
         if os.path.exists(file):
             with open(file, "r") as file:
-                self.questFile.clear()
                 self.questFile = json.load(file)
                 
     def loadLocaleFile(self, file):
         if os.path.exists(file):
             with open(file, "r", encoding="utf8") as file:
-                self.localeFile.clear()
                 self.localeFile = json.load(file)
 
     #JSON GENERATION
@@ -195,11 +192,11 @@ class Quest:
             handover = {
                 "_parent": "HandoverItem",
                 "_props": {
-                    "dogtagLevel": 0, #TODO
+                    "dogtagLevel": token.dogtagLevel, #TODO
                     "id": self.generateRandomId(),
                     "index": self.availableForFinishIndex,
-                    "maxDurability": 100, #TODO
-                    "minDurability": 0, #TODO
+                    "maxDurability": token.maxDurability, #TODO
+                    "minDurability": token.minDurability, #TODO
                     "parentId": "",
                     "isEncoded": token.encoded,
                     "onlyFoundInRaid": token.fir,
@@ -371,14 +368,11 @@ class Quest:
         if self.mainWindow.ExperienceAmount.text() != "":
             Success.append(self.generateExperienceReward())
         
-        for currency in self.generateReward(self.currencyRewardList, self.successRewardIndex):
-            Success.append(currency)
+        for reward in self.generateReward(self.itemRewardList, self.successRewardIndex):
+            Success.append(reward)
         
         for standing in self.generateTraderStandingReward():
             Success.append(standing)
-
-        for item in self.generateReward(self.itemRewardList, self.successRewardIndex):
-            Success.append(item)
             
         for assort in self.generateAssortUnlock():
             Success.append(assort)
@@ -410,7 +404,7 @@ class Quest:
         quest = {
             "_id":  f"{self.mainWindow._Id.text()}",
             "QuestName": f"{self.mainWindow.QuestName.text()}",
-            "canShowNotificationsInGame": f"{self.mainWindow.CanShowNotifications.isChecked()}",
+            "canShowNotificationsInGame": self.mainWindow.CanShowNotifications.isChecked(),
             "acceptPlayerMessage": f"{self.mainWindow._Id.text()} description",
             "changeQuestMessageText": f"{self.mainWindow._Id.text()} changeQuestMessageText",
             "completePlayerMessage": f"{self.mainWindow._Id.text()} successMessageText",
