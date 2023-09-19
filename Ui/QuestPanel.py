@@ -169,6 +169,7 @@ class QuestPanel(Quest):
     def addQuestToScrollList(self):
         quest = self.setUpQuest()
         self.questFile[quest["_id"]] = quest
+        self.mainWindow.CurrentQuestText.setText(quest['QuestName'])
         
         locales = self.setUpQuestLocale()
         for locale, value in locales.items():
@@ -500,16 +501,22 @@ class QuestPanel(Quest):
             self.selectedQuestEntry = match.group(1)
                   
     #File
-    def deleteQuest(self):
-        self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
-        keysTodelete = []
-        for locale in self.localeFile:
-            if self.selectedQuestEntry in locale:
-                keysTodelete.append(locale)
-        for key in keysTodelete:
-            del self.localeFile[key]
-        del self.questFile[self.selectedQuestEntry]
-        self.refreshQuestList()
+    def deleteQuest(self):   
+        dialog = QMessageBox()
+        dialog.setWindowTitle(f"Remove Quest")
+        dialog.setText(f"Are you sure you want to remove {self.questFile[self.selectedQuestEntry]['QuestName']}")
+        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        result = dialog.exec_()
+        if result == QMessageBox.Ok:
+            self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
+            keysTodelete = []
+            for locale in self.localeFile:
+                if self.selectedQuestEntry in locale:
+                    keysTodelete.append(locale)
+            for key in keysTodelete:
+                del self.localeFile[key]
+            del self.questFile[self.selectedQuestEntry]
+            self.refreshQuestList()
         
     def showLoadFileDialog(self):
         options = QFileDialog.Options()
@@ -517,23 +524,31 @@ class QuestPanel(Quest):
         fileDialog = QFileDialog()
         fileDialog.setOptions(options)
         fileDialog.setNameFilter("Json files (*.json)")
-              
-        dialog = QMessageBox()
-        dialog.setWindowTitle("Are you sure?")
-        dialog.setText("Unsaved changes will be lost")
-        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        result = dialog.exec_()
-        if result == QMessageBox.Ok:
-            self.questFile.clear()
-            self.clearAll()
-            self.mainWindow.QuestFileWidget.clear()
-            self.mainWindow.LoadFilePath.setText(self.openFileName)
+          
+        if len(self.questFile) > 0:
+            dialog = QMessageBox()
+            dialog.setWindowTitle("Are you sure?")
+            dialog.setText("Unsaved changes will be lost")
+            dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            result = dialog.exec_()
+            if result == QMessageBox.Ok:
+                self.questFile.clear()
+                self.clearAll()
+                self.mainWindow.QuestFileWidget.clear()
+                self.mainWindow.CurrentQuestText.clear()
+                self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
+                self.mainWindow.LoadFilePath.setText(self.openFileName)
+                self.questFile = Utils.loadJsonFile(self.openFileName)
+                print(f"Loaded Quests: {len(self.questFile)}")
+                self.showLoadLocaleDialog()
+            elif result == QMessageBox.Cancel:
+                pass
+        else:
             self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
+            self.mainWindow.LoadFilePath.setText(self.openFileName)
             self.questFile = Utils.loadJsonFile(self.openFileName)
             print(f"Loaded Quests: {len(self.questFile)}")
             self.showLoadLocaleDialog()
-        elif result == QMessageBox.Cancel:
-            pass
     
     def showLoadLocaleDialog(self):
         options = QFileDialog.Options()
@@ -565,6 +580,7 @@ class QuestPanel(Quest):
         if result == QMessageBox.Ok:
             self.questFile.clear()
             self.clearAll()
+            self.mainWindow.CurrentQuestText.clear()
             self.openFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
             Utils.saveJsonFile(self.openFileName, self.questFile)
             self.newLocaleFile()
@@ -620,7 +636,9 @@ class QuestPanel(Quest):
         # Line Widgets
         lineWidgets = Utils.getWidgetsOfType(self.mainWindow, QLineEdit)
         for lineWidget in lineWidgets:
-            lineWidget.clear()    
+            exclude = ["CurrentQuestText", "LoadedLocalePath", "LoadFilePath", "GithubPath"]
+            if lineWidget.objectName() not in exclude:
+                lineWidget.clear()    
             
         self.mainWindow.FinishItemDogTag.setText("0")
         self.mainWindow.FinishItemMinDura.setText("0")
