@@ -177,7 +177,11 @@ class QuestPanel(Quest):
     
     def editSelectedQuestScrollList(self):
         self.displayQuestValues()
-        pass
+        lookup = self.questFile[self.selectedQuestEntry]["_id"] + " name"
+        if lookup in self.localeFile:
+            self.mainWindow.CurrentQuestText.setText(self.localeFile[lookup])
+        else:
+            self.mainWindow.CurrentQuestText.setText(self.questFile[self.selectedQuestEntry])
     
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
