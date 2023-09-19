@@ -18,6 +18,10 @@
    "value": true
   },
   {
+   "optionDest": "icon_file",
+   "value": "G:/development/TarkovTools/Ui/resources/thumbnail.ico"
+  },
+  {
    "optionDest": "name",
    "value": "TarkovTools"
   },
