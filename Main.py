@@ -1,6 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
-from Ui.ui_mainwindow import Ui_MainWindow
+from Ui.TarkovTools_ui import Ui_MainWindow
 
 from Ui.QuestPanel import QuestPanel
 
