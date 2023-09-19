@@ -4,3 +4,7 @@ output
 Include
 Scripts/normalizer.exe
 Scripts/pipreqs.exe
+Json/en.json
+Json/quests.json
+Json/test.json
+Json/testlocale.json
