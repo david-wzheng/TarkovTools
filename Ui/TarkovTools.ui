@@ -185,7 +185,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </rect>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>2</number>
          </property>
          <property name="tabBarAutoHide">
           <bool>false</bool>
@@ -1066,7 +1066,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </rect>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_14">
             <attribute name="title">
@@ -1184,9 +1184,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="FailQuestWidget">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>0</x>
                <y>90</y>
-               <width>441</width>
+               <width>451</width>
                <height>171</height>
               </rect>
              </property>
@@ -1239,9 +1239,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="FailStandingWidget">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>0</x>
                <y>350</y>
-               <width>441</width>
+               <width>451</width>
                <height>171</height>
               </rect>
              </property>
@@ -1450,9 +1450,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="FailExitWidget">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>0</x>
                <y>300</y>
-               <width>441</width>
+               <width>451</width>
                <height>171</height>
               </rect>
              </property>
@@ -1652,9 +1652,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="StartedItemWidget">
              <property name="geometry">
               <rect>
-               <x>10</x>
-               <y>90</y>
-               <width>441</width>
+               <x>0</x>
+               <y>110</y>
+               <width>451</width>
                <height>192</height>
               </rect>
              </property>
@@ -1676,9 +1676,183 @@ li.checked::marker { content: &quot;\2612&quot;; }
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>280</y>
-               <width>451</width>
+               <y>300</y>
+               <width>461</width>
                <height>20</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="StartedAssortTraderUnlockRemoveFromList">
+             <property name="geometry">
+              <rect>
+               <x>320</x>
+               <y>360</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Remove From List</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="StartedAssortTraderComboBox">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>330</y>
+               <width>131</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Trader</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="Line" name="line_21">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>600</y>
+               <width>451</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLineEdit" name="StartedAssortTraderItemId">
+             <property name="geometry">
+              <rect>
+               <x>160</x>
+               <y>330</y>
+               <width>132</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>24</number>
+             </property>
+             <property name="placeholderText">
+              <string>ItemId</string>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="StartedAssortTraderUnlockAddToList">
+             <property name="geometry">
+              <rect>
+               <x>320</x>
+               <y>330</y>
+               <width>121</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Add To List</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_20">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>390</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Assort Reward List</string>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_21">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>310</y>
+               <width>84</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Assort Unlock</string>
+             </property>
+            </widget>
+            <widget class="QComboBox" name="StartedAssortLoyaltyLevelComboBox">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>360</y>
+               <width>131</width>
+               <height>21</height>
+              </rect>
+             </property>
+             <property name="editable">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Loyalty level</string>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
+             </property>
+            </widget>
+            <widget class="QListWidget" name="StartedAssortTraderWidget">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>410</y>
+               <width>451</width>
+               <height>191</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="Line" name="line_22">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>380</y>
+               <width>451</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+            <widget class="QLabel" name="label_22">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>90</y>
+               <width>111</width>
+               <height>16</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Item Reward List</string>
+             </property>
+            </widget>
+            <widget class="Line" name="line_26">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>80</y>
+               <width>437</width>
+               <height>16</height>
               </rect>
              </property>
              <property name="orientation">
@@ -1688,7 +1862,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </widget>
            <widget class="QWidget" name="tab_8">
             <attribute name="title">
-             <string>Success</string>
+             <string>Success 1</string>
             </attribute>
             <widget class="QLineEdit" name="ExperienceAmount">
              <property name="geometry">
@@ -2017,9 +2191,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="SuccessCurrencyWidget">
              <property name="geometry">
               <rect>
-               <x>20</x>
+               <x>0</x>
                <y>140</y>
-               <width>421</width>
+               <width>451</width>
                <height>131</height>
               </rect>
              </property>
@@ -2066,9 +2240,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="SuccessStandingWidget">
              <property name="geometry">
               <rect>
-               <x>20</x>
+               <x>0</x>
                <y>380</y>
-               <width>421</width>
+               <width>451</width>
                <height>131</height>
               </rect>
              </property>
@@ -2076,9 +2250,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="SuccessItemWidget">
              <property name="geometry">
               <rect>
-               <x>20</x>
+               <x>0</x>
                <y>620</y>
-               <width>421</width>
+               <width>451</width>
                <height>131</height>
               </rect>
              </property>
@@ -2118,7 +2292,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </widget>
            <widget class="QWidget" name="tab_13">
             <attribute name="title">
-             <string>Assort Unlock</string>
+             <string>Success 2</string>
             </attribute>
             <widget class="QLineEdit" name="AssortTraderItemId">
              <property name="geometry">
@@ -2203,9 +2377,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <widget class="QListWidget" name="AssortTraderAssortUnlockWidget">
              <property name="geometry">
               <rect>
-               <x>10</x>
+               <x>0</x>
                <y>100</y>
-               <width>421</width>
+               <width>451</width>
                <height>131</height>
               </rect>
              </property>
