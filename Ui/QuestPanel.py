@@ -869,6 +869,7 @@ class QuestPanel(Quest):
                     standing = Object()
                     standing.value = condition["value"]
                     standing.trader = condition["target"]
+                    standing.dynamicLocale = condition["target"]
                     self.standingRewardList.append(standing)
                     
                     object = f"TraderId: {standing.trader} Standing reward: {standing.value}"   

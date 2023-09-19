@@ -2,3 +2,5 @@
 Lib
 output
 Include
+Scripts/normalizer.exe
+Scripts/pipreqs.exe
