@@ -671,6 +671,7 @@ class QuestPanel(Quest):
         self.mainWindow.SuccessRewardId.clear()
         self.mainWindow.SuccessRewardAmount.clear()
         self.mainWindow.AssortTraderItemId.clear()
+        self.mainWindow.CurrentQuestText.clear()
         
         # Line Widgets - Set default value
         self.mainWindow.FinishItemDogTag.setText("0")
