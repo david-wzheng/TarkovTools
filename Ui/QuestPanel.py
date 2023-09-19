@@ -178,12 +178,18 @@ class QuestPanel(Quest):
         self.refreshQuestList()
     
     def editSelectedQuestScrollList(self):
-        self.displayQuestValues()
-        lookup = self.questFile[self.selectedQuestEntry]["_id"] + " name"
-        if lookup in self.localeFile:
-            self.mainWindow.CurrentQuestText.setText(self.localeFile[lookup])
-        else:
-            self.mainWindow.CurrentQuestText.setText(self.questFile[self.selectedQuestEntry])
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Edit Quest")
+        dialog.setText("Save any unsaved progress with Add/Update quest before proceeding")
+        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
+        result = dialog.exec_()
+        if result == QMessageBox.Ignore:
+            self.displayQuestValues()
+            lookup = self.questFile[self.selectedQuestEntry]["_id"] + " name"
+            if lookup in self.localeFile:
+                self.mainWindow.CurrentQuestText.setText(self.localeFile[lookup])
+            else:
+                self.mainWindow.CurrentQuestText.setText(self.questFile[self.selectedQuestEntry])
     
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
@@ -505,9 +511,9 @@ class QuestPanel(Quest):
         dialog = QMessageBox()
         dialog.setWindowTitle(f"Remove Quest")
         dialog.setText(f"Are you sure you want to remove {self.questFile[self.selectedQuestEntry]['QuestName']}")
-        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
         result = dialog.exec_()
-        if result == QMessageBox.Ok:
+        if result == QMessageBox.Yes:
             self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
             keysTodelete = []
             for locale in self.localeFile:
@@ -525,31 +531,25 @@ class QuestPanel(Quest):
         fileDialog.setOptions(options)
         fileDialog.setNameFilter("Json files (*.json)")
           
-        if len(self.questFile) > 0:
-            dialog = QMessageBox()
-            dialog.setWindowTitle("Are you sure?")
-            dialog.setText("Unsaved changes will be lost")
-            dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-            result = dialog.exec_()
-            if result == QMessageBox.Ok:
-                self.questFile.clear()
-                self.clearAll()
-                self.mainWindow.QuestFileWidget.clear()
-                self.mainWindow.CurrentQuestText.clear()
-                self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
-                self.mainWindow.LoadFilePath.setText(self.openFileName)
-                self.questFile = Utils.loadJsonFile(self.openFileName)
-                print(f"Loaded Quests: {len(self.questFile)}")
-                self.showLoadLocaleDialog()
-            elif result == QMessageBox.Cancel:
-                pass
-        else:
+        
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Load File")
+        dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding \n DO NOT ATTEMPT TO EDIT BSG QUESTS THEY WILL 100% BREAK")
+        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
+        result = dialog.exec_()
+        if result == QMessageBox.Ignore:
+            self.questFile.clear()
+            self.clearAll()
+            self.mainWindow.QuestFileWidget.clear()
+            self.mainWindow.CurrentQuestText.clear()
             self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
             self.mainWindow.LoadFilePath.setText(self.openFileName)
             self.questFile = Utils.loadJsonFile(self.openFileName)
             print(f"Loaded Quests: {len(self.questFile)}")
             self.showLoadLocaleDialog()
-    
+        elif result == QMessageBox.Abort:
+            pass
+
     def showLoadLocaleDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
@@ -573,18 +573,18 @@ class QuestPanel(Quest):
         fileDialog.setNameFilter("Json files (*.json)")
         
         dialog = QMessageBox()
-        dialog.setWindowTitle("Are you sure?")
-        dialog.setText("Unsaved changes will be lost")
-        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        dialog.setWindowTitle("New File")
+        dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding")
+        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
         result = dialog.exec_()
-        if result == QMessageBox.Ok:
+        if result == QMessageBox.Ignore:
             self.questFile.clear()
             self.clearAll()
             self.mainWindow.CurrentQuestText.clear()
             self.openFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
             Utils.saveJsonFile(self.openFileName, self.questFile)
             self.newLocaleFile()
-        elif result == QMessageBox.Cancel:
+        elif result == QMessageBox.Abort:
             pass
     
     def newLocaleFile(self):
