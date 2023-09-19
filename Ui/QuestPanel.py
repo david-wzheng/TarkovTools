@@ -4,7 +4,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 
-from Ui.ui_mainwindow import Ui_MainWindow
+from Ui.TarkovTools_ui import Ui_MainWindow
 from src.Quest import Quest
 from src.constants import *
 
@@ -94,6 +94,7 @@ class QuestPanel(Quest):
             "Prapor", "Therapist", "Fence", "Skier",
             "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
         ]
+        self.mainWindow.StartedAssortTraderComboBox.addItems(sorted(TraderList))
         self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
         self.mainWindow.TraderFinishcomboBox.addItems(sorted(TraderList))
         self.mainWindow.SuccessTrader.addItems(sorted(TraderList))
@@ -103,6 +104,7 @@ class QuestPanel(Quest):
         
         loyaltyLevels = [ '1' , '2', '3', '4']
         self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
+        self.mainWindow.StartedAssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
         
     def setUpSignals(self):
         self.mainWindow.GenerateQuest.clicked.connect(self.addQuestToScrollList)
@@ -117,8 +119,9 @@ class QuestPanel(Quest):
         self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrencyToScrollList)
         self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStandingToScrollList)
         self.mainWindow.SuccessAddItemToList.clicked.connect(self.addSuccessItemToScrollList)
-        self.mainWindow.AssortTraderUnlockAddToList.clicked.connect(self.addAssortUnlockToScrollList)
+        self.mainWindow.AssortTraderUnlockAddToList.clicked.connect(self.addSuccessAssortUnlockToScrollList)
         self.mainWindow.StartedAddItemToList.clicked.connect(self.addStartedItemtoScrollList)
+        self.mainWindow.StartedAssortTraderUnlockAddToList.clicked.connect(self.addStartedAssortUnlockToScrollList)
         self.mainWindow.AvailableForStartAddToList.clicked.connect(self.addAvailableQuestToScrollList)
         self.mainWindow.AvailableForStartLoyaltyAddToList.clicked.connect(self.addAvailableLoyaltyToScrollList)
         self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
@@ -136,6 +139,7 @@ class QuestPanel(Quest):
         self.mainWindow.SuccessRemoveItemFromList.clicked.connect(self.removeSuccessItemScrollItem)
         self.mainWindow.AssortTraderUnlockRemoveFromList.clicked.connect(self.removeAssortUnlockScrollItem)
         self.mainWindow.StartedRemoveItemFromList.clicked.connect(self.removeStartedItemScrollItem)
+        self.mainWindow.StartedAssortTraderUnlockRemoveFromList.clicked.connect(self.removeStartedAssortScrollItem)
         self.mainWindow.AvailableForStartRemoveFromList.clicked.connect(self.removeAvailableQuestScrollItem)
         self.mainWindow.AvailableForStartLoyaltyRemoveFromList.clicked.connect(self.removeAvailableLoyaltyScrollItem)
         self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
@@ -261,6 +265,21 @@ class QuestPanel(Quest):
         object = f"Item reward: {item.id} Amount: {item.value}"
         listWidget = self.mainWindow.StartedItemWidget
         listWidget.addItem(object)
+    
+    def addStartedAssortUnlockToScrollList(self):
+        assort = Object()
+        assort.item = self.mainWindow.StartedAssortTraderItemId.text()
+        assort.level = int(self.mainWindow.StartedAssortLoyaltyLevelComboBox.currentText())
+        
+        traderSelected = self.mainWindow.StartedAssortTraderComboBox.currentText()
+        if traderSelected in TraderMap:
+            assort.trader = TraderMap[traderSelected]
+                
+        self.startedAssortUnlockList.append(assort)
+        
+        object = f"TraderId: {assort.trader} Assort unlock: {assort.item} at level: {assort.level}"
+        listWidget = self.mainWindow.StartedAssortTraderWidget
+        listWidget.addItem(object)
      
     def addSuccessCurrencyToScrollList(self):
         currency = Object()
@@ -300,7 +319,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.SuccessItemWidget
         listWidget.addItem(object)
 
-    def addAssortUnlockToScrollList(self):
+    def addSuccessAssortUnlockToScrollList(self):
         assort = Object()
         assort.item = self.mainWindow.AssortTraderItemId.text()
         assort.level = int(self.mainWindow.AssortLoyaltyLevelComboBox.currentText())
@@ -309,7 +328,7 @@ class QuestPanel(Quest):
         if traderSelected in TraderMap:
             assort.trader = TraderMap[traderSelected]
                 
-        self.assortUnlockList.append(assort)
+        self.successAssortUnlockList.append(assort)
         
         object = f"TraderId: {assort.trader} Assort unlock: {assort.item} at level: {assort.level}"
         listWidget = self.mainWindow.AssortTraderAssortUnlockWidget
@@ -416,6 +435,11 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.StartedItemWidget.currentRow()
         self.mainWindow.StartedItemWidget.takeItem(selectedIndex)
         self.startedItemList.pop(selectedIndex)
+        
+    def removeStartedAssortScrollItem(self):
+        selectedIndex = self.mainWindow.StartedAssortTraderWidget.currentRow()
+        self.mainWindow.StartedAssortTraderWidget.takeItem(selectedIndex)
+        self.startedAssortUnlockList.pop(selectedIndex)
     
     def removeSuccessCurrencyScrollItem(self):
         selectedIndex = self.mainWindow.SuccessCurrencyWidget.currentRow()
@@ -435,7 +459,7 @@ class QuestPanel(Quest):
     def removeAssortUnlockScrollItem(self):
         selectedIndex = self.mainWindow.AssortTraderAssortUnlockWidget.currentRow()
         self.mainWindow.AssortTraderAssortUnlockWidget.takeItem(selectedIndex)
-        self.assortUnlockList.pop(selectedIndex)
+        self.successAssortUnlockList.pop(selectedIndex)
      
     def removeFailExitStatusScrollList(self):
         selectedIndex = self.mainWindow.FailExitStatusWidget.currentRow()
@@ -821,29 +845,47 @@ class QuestPanel(Quest):
     def displayStartedReward(self):
         quest = self.questFile[self.selectedQuestEntry]
         if "Started" in quest["rewards"]:
+            self.startedAssortUnlockList.clear()
             self.startedItemList.clear()
+            self.mainWindow.StartedAssortTraderWidget.clear()
             self.mainWindow.StartedItemWidget.clear()
                
             started = quest["rewards"]["Started"]
             for condition in started:
                 # Assort Unlock 
-                 if condition["type"] == "AssortmentUnlock":
-                     pass #TODO
-                 elif condition["type"] == "Item":
+                if condition["type"] == "AssortmentUnlock":
+                    assort = Object()
+                    assort.item = condition["items"][0]["_tpl"]
+                    assort.level = condition["loyaltyLevel"]
+                    assort.trader = condition["traderId"]            
+                    self.startedAssortUnlockList.append(assort)
+                    
+                    object = f"TraderId: {assort.trader} Assort unlock: {assort.item} at level: {assort.level}"
+                    self.mainWindow.StartedAssortTraderWidget.addItem(object)
+                # Item
+                elif condition["type"] == "Item":
                     item = Object()
                     item.id = condition["target"]
                     item.value = condition["value"]
                     self.startedItemList.append(item)
-        
+    
                     object = f"Item reward: {item.id} Amount: {item.value}"
                     self.mainWindow.StartedItemWidget.addItem(object)
-
+                # Production Scheme
+                elif condition["type"] == "ProductionScheme":
+                    scheme = Object()
+                    scheme.item = condition["target"]
+                    scheme.level = condition["target"]
+                    scheme.trader = condition["target"]
+                    #TODO
+                    self.successAssortUnlockList.append(assort)
+                
     def displaySuccessReward(self):
         quest = self.questFile[self.selectedQuestEntry]
         if "Success" in quest["rewards"]:
             self.standingRewardList.clear()
             self.itemRewardList.clear()
-            self.assortUnlockList.clear()
+            self.successAssortUnlockList.clear()
             self.mainWindow.SuccessCurrencyWidget.clear()
             self.mainWindow.SuccessStandingWidget.clear()
             self.mainWindow.SuccessItemWidget.clear()
@@ -854,10 +896,10 @@ class QuestPanel(Quest):
                 # Assort Unlock 
                 if condition["type"] == "AssortmentUnlock":
                     assort = Object()
-                    assort.item = condition["target"]
+                    assort.item = condition["items"][0]["_tpl"]
                     assort.level = condition["loyaltyLevel"]
                     assort.trader = condition["traderId"]
-                    self.assortUnlockList.append(assort)
+                    self.successAssortUnlockList.append(assort)
 
                     object = f"TraderId: {assort.trader} Assort unlock: {assort.item} at level: {assort.level}"
                     self.mainWindow.AssortTraderAssortUnlockWidget.addItem(object)

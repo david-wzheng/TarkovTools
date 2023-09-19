@@ -1,5 +1,5 @@
 import json, os, string, random
-from Ui.ui_mainwindow import Ui_MainWindow
+from Ui.TarkovTools_ui import Ui_MainWindow
 from src.constants import *
 
 class Quest: 
@@ -29,9 +29,10 @@ class Quest:
         
         # Reward List
         self.standingRewardList = []
-        self.assortUnlockList = []
+        self.successAssortUnlockList = []
         self.itemRewardList = []
         self.startedItemList = []
+        self.startedAssortUnlockList = []
 
         self.Success = []
         self.Started = []
@@ -339,11 +340,14 @@ class Quest:
         for item in self.generateReward(self.startedItemList, self.startedRewardIndex):
             Started.append(item)
 
+        for assort in self.generateAssortUnlock(self.startedAssortUnlockList):
+            Started.append(assort)
+        
         return Started
 
-    def generateAssortUnlock(self):
+    def generateAssortUnlock(self, assorts):
         assortRewardList = []     
-        for assort in self.assortUnlockList:
+        for assort in assorts:
             self.successRewardIndex += 1
             target = self.generateRandomId()
             reward = {
@@ -374,7 +378,7 @@ class Quest:
         for standing in self.generateTraderStandingReward():
             Success.append(standing)
             
-        for assort in self.generateAssortUnlock():
+        for assort in self.generateAssortUnlock(self.successAssortUnlockList):
             Success.append(assort)
         
         return Success
