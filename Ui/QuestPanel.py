@@ -114,7 +114,7 @@ class QuestPanel(Quest):
         self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
         self.mainWindow.RemoveFromQuestFile.clicked.connect(self.deleteQuest)
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
-        self.mainWindow.ClearButton.clicked.connect(self.clearAll)
+        self.mainWindow.ClearButton.clicked.connect(self.clearButton)
         
         self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
         # Add To List
@@ -639,6 +639,17 @@ class QuestPanel(Quest):
         self.mainWindow.CanShowNotifications.setChecked(True)
 
     #Display Quest Values
+    def clearButton(self):
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Are you sure?")
+        dialog.setText("Unsaved changes will be lost")
+        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        result = dialog.exec_()
+        if result == QMessageBox.Ok:
+            self.clearAll()
+        elif result == QMessageBox.Cancel:
+            pass
+    
     def displayQuestValues(self):
         self.clearAll()
         self.displayRootValues()
