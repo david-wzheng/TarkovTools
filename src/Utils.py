@@ -1,6 +1,10 @@
 import json, os
 from Ui.TarkovTools_ui import Ui_MainWindow 
 
+from PySide6.QtCore import *
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+
 class Utils:
     @staticmethod
     def loadJsonFile(path: str):
@@ -18,9 +22,8 @@ class Utils:
     
     # Returns all widgets of a given type
     @staticmethod
-    def getWidgetsOfType(mainWindow: Ui_MainWindow,type):
-        widgets = []
-        for widget in mainWindow.centralwidget.children():
-            if isinstance(widget, type):
-                widgets.append(widget)
+    def getWidgetsOfType(mainWindow: Ui_MainWindow, type):
+        widgets = []            
+        for widget in mainWindow.centralwidget.findChildren(type):
+            widgets.append(widget)
         return widgets

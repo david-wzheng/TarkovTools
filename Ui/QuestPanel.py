@@ -160,6 +160,7 @@ class QuestPanel(Quest):
     def refreshQuestList(self):
         listWidget = self.mainWindow.QuestFileWidget
         listWidget.clear()
+        
         for quest in self.questFile:
             lookup = quest + " name"
             object = f"QuestId: {quest}\nQuestName: {self.localeFile[lookup]}"
@@ -520,7 +521,7 @@ class QuestPanel(Quest):
         dialog = QMessageBox()
         dialog.setWindowTitle("Are you sure?")
         dialog.setText("Unsaved changes will be lost")
-        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Discard)
+        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         result = dialog.exec_()
         if result == QMessageBox.Ok:
             self.questFile.clear()
@@ -531,7 +532,7 @@ class QuestPanel(Quest):
             self.questFile = Utils.loadJsonFile(self.openFileName)
             print(f"Loaded Quests: {len(self.questFile)}")
             self.showLoadLocaleDialog()
-        elif result == QMessageBox.Discard:
+        elif result == QMessageBox.Cancel:
             pass
     
     def showLoadLocaleDialog(self):
@@ -559,15 +560,15 @@ class QuestPanel(Quest):
         dialog = QMessageBox()
         dialog.setWindowTitle("Are you sure?")
         dialog.setText("Unsaved changes will be lost")
-        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Discard)
+        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         result = dialog.exec_()
         if result == QMessageBox.Ok:
             self.questFile.clear()
             self.clearAll()
-            self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
+            self.openFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
             Utils.saveJsonFile(self.openFileName, self.questFile)
             self.newLocaleFile()
-        elif result == QMessageBox.Discard:
+        elif result == QMessageBox.Cancel:
             pass
     
     def newLocaleFile(self):
@@ -576,7 +577,7 @@ class QuestPanel(Quest):
         fileDialog = QFileDialog()
         fileDialog.setOptions(options)
         fileDialog.setNameFilter("Json files (*.json)")    
-        self.openLocaleFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Locale File", "./json", "Json Files (*.json)")
+        self.openLocaleFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Locale.json", "./json", "Json Files (*.json)")
         self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
         
         if self.openLocaleFileName:
@@ -604,136 +605,39 @@ class QuestPanel(Quest):
         self.startedItemList.clear()
         self.startedAssortUnlockList.clear()
         
-        # Combo Boxes - TODO find a better way
-        self.mainWindow.TradercomboBox.clear()
-        self.mainWindow.LocationComboBox.clear()
-        self.mainWindow.Side.clear()
-        self.mainWindow.Type.clear()
-        self.mainWindow.TradercomboBox.clear()
-        self.mainWindow.LocationComboBox.clear()
-        self.mainWindow.Side.clear()
-        self.mainWindow.Type.clear()  
-        self.mainWindow.AvailableForStartTraderComboBox.clear()
-        self.mainWindow.AvailableForStartStatus.clear()
-        self.mainWindow.AvailableCompareLoyaltyComboBox.clear()   
-        self.mainWindow.TraderFinishcomboBox.clear()
-        self.mainWindow.FinishSkillComboBox.clear()
-        self.mainWindow.FinishLoyaltyCompare.clear()
-        self.mainWindow.FinishSkillCompare.clear()
-        self.mainWindow.FailQuestStatus.clear()
-        self.mainWindow.FailStandingTrader.clear()
-        self.mainWindow.FailStandingCompare.clear()
-        self.mainWindow.FailExitStatusStatus.clear()
-        self.mainWindow.FailExitStatusLocation.clear()
-        self.mainWindow.StartedAssortTraderComboBox.clear()
-        self.mainWindow.StartedAssortLoyaltyLevelComboBox.clear()
-        self.mainWindow.CurrencyType.clear()
-        self.mainWindow.SuccessTrader.clear()
-        self.mainWindow.AssortTraderComboBox.clear()
-        self.mainWindow.AssortLoyaltyLevelComboBox.clear()
+        # Combo Boxes
+        comboBoxes = Utils.getWidgetsOfType(self.mainWindow, QComboBox)
+        for box in comboBoxes:
+            box.clear()
         self.addItemsToDropBoxes()
         
-        # List Widgets - TODO find a better way
-        self.mainWindow.StartQuestWidget.clear()
-        self.mainWindow.StartLoyaltyWidget.clear()
-        self.mainWindow.FinishLoyaltyWidget.clear()
-        self.mainWindow.FinishSkillWidget.clear()
-        self.mainWindow.FinishItemWidget.clear()
-        self.mainWindow.FailExitWidget.clear()
-        self.mainWindow.FailQuestWidget.clear()
-        self.mainWindow.FailStandingWidget.clear()
-        self.mainWindow.StartedAssortTraderWidget.clear()
-        self.mainWindow.StartedItemWidget.clear()
-        self.mainWindow.SuccessCurrencyWidget.clear()
-        self.mainWindow.SuccessStandingWidget.clear()
-        self.mainWindow.SuccessItemWidget.clear()
-        self.mainWindow.AssortTraderAssortUnlockWidget.clear()
-        
-        # Line Widgets - Clear - TODO find a better way
-        self.mainWindow.QuestName.clear()
-        self.mainWindow.ImagePath.clear()
-        self.mainWindow._Id.clear()
-        self.mainWindow.TraderIdTextField.clear()
-        self.mainWindow.LocationIdTextField.clear()
-        self.mainWindow.AvailableForStartQuestId.clear()
-        self.mainWindow.AvailableForStartLoyaltyValue.clear()
-        self.mainWindow.FinishLoyaltyValue.clear()
-        self.mainWindow.FinishSkillValue.clear()
-        self.mainWindow.FinishItemAmount.clear()
-        self.mainWindow.FailQuestId.clear()
-        self.mainWindow.FailStandingValue.clear()
-        self.mainWindow.StartedItemId.clear()
-        self.mainWindow.StartedItemAmount.clear()
-        self.mainWindow.StartedAssortTraderItemId.clear()   
-        self.mainWindow.ExperienceAmount.clear()
-        self.mainWindow.CurrencyAmount.clear()
-        self.mainWindow.StandingAmount.clear()
-        self.mainWindow.SuccessRewardId.clear()
-        self.mainWindow.SuccessRewardAmount.clear()
-        self.mainWindow.AssortTraderItemId.clear()
-        self.mainWindow.CurrentQuestText.clear()
-        
-        # Line Widgets - Set default value
+        # List Widgets
+        listWidgets = Utils.getWidgetsOfType(self.mainWindow, QListWidget)
+        for listWidget in listWidgets:
+            if listWidget.objectName() != "QuestFileWidget":
+                listWidget.clear()
+               
+        # Line Widgets
+        lineWidgets = Utils.getWidgetsOfType(self.mainWindow, QLineEdit)
+        for lineWidget in lineWidgets:
+            lineWidget.clear()    
+            
         self.mainWindow.FinishItemDogTag.setText("0")
         self.mainWindow.FinishItemMinDura.setText("0")
         self.mainWindow.FinishItemMaxDura.setText("100")
         self.mainWindow.AvailableForStartLevelRequirement.setText("0")
         
-        # Text Widgets - TODO Find a better way
-        self.mainWindow.Description.clear()
-        self.mainWindow.SuccessMessage.clear()
-        self.mainWindow.FailMessage.clear()
-        self.mainWindow.ChangeMessage.clear()
-        self.mainWindow.Note.clear()
+        # Text Edits
+        textEdits = Utils.getWidgetsOfType(self.mainWindow, QTextEdit)
+        for textWidget in textEdits:
+            textWidget.clear()
         
         # Check Boxes - TODO Find a better way
-        if not self.mainWindow.CanShowNotifications.isChecked():
-            self.mainWindow.CanShowNotifications.setChecked(False)
-        if self.mainWindow.RequiresKey.isChecked():
-            self.mainWindow.RequiresKey.setChecked(False)
-        if self.mainWindow.Restartable.isChecked():
-            self.mainWindow.Restartable.setChecked(False)
-        if self.mainWindow.DynamicLocale.isChecked():
-            self.mainWindow.DynamicLocale.setChecked(False)
-        if self.mainWindow.SecretQuest.isChecked():
-            self.mainWindow.SecretQuest.setChecked(False)
-        if self.mainWindow.InstantComplete.isChecked():
-            self.mainWindow.InstantComplete.setChecked(False)
-        if self.mainWindow.CanShowNotifications.isChecked():
-            self.mainWindow.CanShowNotifications.setChecked(False)
-        if self.mainWindow.RequiresKey.isChecked():
-            self.mainWindow.RequiresKey.setChecked(False)
-        if self.mainWindow.Restartable.isChecked():
-            self.mainWindow.Restartable.setChecked(False)
-        if self.mainWindow.DynamicLocale.isChecked():
-            self.mainWindow.DynamicLocale.setChecked(False)
-        if self.mainWindow.SecretQuest.isChecked():
-            self.mainWindow.SecretQuest.setChecked(False)
-        if self.mainWindow.InstantComplete.isChecked():
-            self.mainWindow.InstantComplete.setChecked(False)      
-        if self.mainWindow.AvailableForStartDynamicLocaleLevel.isChecked():
-            self.mainWindow.AvailableForStartDynamicLocaleLevel.setChecked(False)
-        if self.mainWindow.AvailableForStartDynamicLocaleQuest.isChecked():
-            self.mainWindow.AvailableForStartDynamicLocaleQuest.setChecked(False)
-        if self.mainWindow.AvailableForStartLoyaltyDynamicLocaleQuest.isChecked():
-            self.mainWindow.AvailableForStartLoyaltyDynamicLocaleQuest.setChecked(False)
-        if self.mainWindow.FinishLoyaltyDynamicLocale.isChecked():
-            self.mainWindow.FinishLoyaltyDynamicLocale.setChecked(False)
-        if self.mainWindow.FinishDynamicLocaleSkill.isChecked():
-            self.mainWindow.FinishDynamicLocaleSkill.setChecked(False)
-        if self.mainWindow.FinishItemDynamicLocale.isChecked():
-            self.mainWindow.FinishItemDynamicLocale.setChecked(False)
-        if self.mainWindow.FailQuestDynamicLocale.isChecked():
-            self.mainWindow.FailQuestDynamicLocale.setChecked(False)
-        if self.mainWindow.FailStandingDynamicLocale.isChecked():
-            self.mainWindow.FailStandingDynamicLocale.setChecked(False)
-        if self.mainWindow.FailExitDoNotReset.isChecked():
-            self.mainWindow.FailExitDoNotReset.setChecked(False)
-        if self.mainWindow.FailExitDynamicLocale.isChecked():
-            self.mainWindow.FailExitDynamicLocale.setChecked(False)
-        if self.mainWindow.FailExitOneSession.isChecked():
-            self.mainWindow.FailExitOneSession.setChecked(False)
-    
+        checkBoxes = Utils.getWidgetsOfType(self.mainWindow, QCheckBox)
+        for checkBox in checkBoxes:
+            checkBox.setChecked(False)
+        self.mainWindow.CanShowNotifications.setChecked(True)
+
     #Display Quest Values
     def displayQuestValues(self):
         self.clearAll()
