@@ -1,4 +1,4 @@
-import json, os, string, random
+import string, random
 from Ui.TarkovTools_ui import Ui_MainWindow
 from src.constants import *
 
@@ -13,7 +13,9 @@ class Quest:
         
         # QuestFile
         self.questFile = {}
+        self.questFileCopy = {}
         self.localeFile = {}
+        self.localeFileCopy = {}
       
         # Start/Finish
         self.finishLoyaltyList = []
@@ -34,37 +36,10 @@ class Quest:
         self.startedItemList = []
         self.startedAssortUnlockList = []
 
-        self.Success = []
-        self.Started = []
-
     def generateRandomId(self):
         characters = string.digits + string.ascii_lowercase
         random_seed = ''.join(random.choice(characters) for _ in range(24))
         return random_seed
-
-    def saveQuestToDisk(self, file):
-        if self.questFile is not None:
-            with open(file, 'w') as file:
-                for quest, value in self.questFile.items():
-                    self.questFile[f"{quest}"] = value               
-                json.dump(self.questFile, file, sort_keys=True, indent=2)    
-    
-    def saveLocaleToDisk(self, locale):
-        if locale is not None:
-            with open(locale, 'w') as file:
-                for locale, value in self.localeFile.items():
-                    self.localeFile[f'{locale}'] = value
-                json.dump(self.localeFile, file, sort_keys=True, indent=2)
-    
-    def loadQuestFile(self, file):
-        if os.path.exists(file):
-            with open(file, "r") as file:
-                self.questFile = json.load(file)
-                
-    def loadLocaleFile(self, file):
-        if os.path.exists(file):
-            with open(file, "r", encoding="utf8") as file:
-                self.localeFile = json.load(file)
 
     #JSON GENERATION
     def generateLoyalty(self, standing, index, parent):
@@ -288,7 +263,7 @@ class Quest:
     #Rewards
     def generateExperienceReward(self):
         experience = {
-            "value": self.mainWindow.ExperienceAmount.text(),
+            "value": int(self.mainWindow.ExperienceAmount.text()),
             "id": "5c95107186f7743285178ade",
             "type": "Experience",
             "index": self.successRewardIndex
