@@ -92,7 +92,7 @@ class QuestPanel(Quest):
         self.mainWindow.FailExitStatusLocation.addItems(sorted(locationList))
         
         TraderList = [
-            "Prapor", "Therapist", "Fence", "Skier",
+            "Prapor", "Therapist", "Fence", "Skier", "TarkovTools",
             "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
         ]
         self.mainWindow.StartedAssortTraderComboBox.addItems(sorted(TraderList))

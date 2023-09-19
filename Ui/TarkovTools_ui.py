@@ -1085,7 +1085,7 @@ class Ui_MainWindow(object):
         self._Id.setPlaceholderText(QCoreApplication.translate("MainWindow", u"_id", None))
         self.DynamicLocale.setText(QCoreApplication.translate("MainWindow", u"Dynamic Locale", None))
         self.SuccessMessage.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Success Message (Same as Complete message)", None))
-        self.ImagePath.setText("")
+        self.ImagePath.setText(QCoreApplication.translate("MainWindow", u"Placeholder.png", None))
         self.ImagePath.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Image Path", None))
         self.RequiresKey.setText(QCoreApplication.translate("MainWindow", u"Requires a Key", None))
         self.Restartable.setText(QCoreApplication.translate("MainWindow", u"Restartable", None))

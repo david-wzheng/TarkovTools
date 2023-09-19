@@ -2606,7 +2606,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="text">
-           <string/>
+           <string>Placeholder.png</string>
           </property>
           <property name="maxLength">
            <number>512</number>

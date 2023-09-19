@@ -124,7 +124,7 @@ class Quest:
                     "parentId": "",
                     "dynamicLocale": item.dynamicLocale,
                     "target": item.skill,
-                    "value": item.value,
+                    "value": int(item.value),
                     "compareMethod": item.compare,
                     "visibilityConditions": []
                 },
@@ -373,6 +373,8 @@ class Quest:
         if selectedLocation in LocationMap:
             location = LocationMap[selectedLocation]
             return location
+        if selectedLocation is "any":
+            return "any"
         
     #Setup Quest
     def setUpQuest(self):
@@ -408,7 +410,7 @@ class Quest:
 
             "traderId": f"{self.getTraderId()}",
             "location": f"{self.getLocationId()}",
-            "image": self.mainWindow.ImagePath.text(),
+            "image": f"/files/quest/icon/{self.mainWindow.ImagePath.text()}",
             "type": self.mainWindow.Type.currentText(),
             "isKey": self.mainWindow.RequiresKey.isChecked(),
             "restartable": self.mainWindow.Restartable.isChecked(),

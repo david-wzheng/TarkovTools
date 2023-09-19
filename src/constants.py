@@ -36,7 +36,8 @@ LocationMap = {
     "Interchange": "5714dbc024597771384a510d",
     "FactoryNight": "59fc81d786f774390775787e",
     "Labs": "5b0fc42d86f7744a585f9105",
-    "Streets": "5714dc692459777137212e12"
+    "Streets": "5714dc692459777137212e12",
+    "any": "any"
 }
 
 locationMapTarget = {
@@ -60,5 +61,6 @@ TraderMap = {
     "Peacekeeper": "5935c25fb3acc3127c3d8cd9",
     "Mechanic": "5a7c2eca46aef81a7ca2145d",
     "Ragman": "5ac3b934156ae10c4430e83c",
-    "Jaeger": "5c0647fdd443bc2504c2d371"
+    "Jaeger": "5c0647fdd443bc2504c2d371",
+    "TarkovTools": "TarkovTools"
 }
