@@ -540,6 +540,7 @@ class QuestPanel(Quest):
                     keysTodelete.append(locale)
             for key in keysTodelete:
                 del self.localeFile[key]
+            print(f"Deleting quest with Id: {self.selectedQuestEntry}")
             del self.questFile[self.selectedQuestEntry]
             self.SaveFile(True)
                  
@@ -650,7 +651,6 @@ class QuestPanel(Quest):
 
                 Utils.saveJsonFile(self.openFileName, self.questFile)
                 Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
-                self.clearAll()
                 self.questFile = Utils.loadJsonFile(self.openFileName)
                 self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
                 self.refreshQuestList()
