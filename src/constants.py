@@ -5,6 +5,12 @@ class Object:
          return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
+TypeList = [
+    'WeaponAssembly', 'Merchant', 'Completion', 
+    'Exploration', 'PickUp', 'Discover',
+    'Skill', 'Standing', 'Loyalty'
+]
+
 CurrencyMap = {
     'Roubles': "5449016a4bdc2d6f028b456f",
     'Dollars': "5696686a4bdc2da3298b456a",
@@ -16,6 +22,14 @@ CurrencyLookup = {
     "5696686a4bdc2da3298b456a": 'Dollars',
     "569668774bdc2da2298b4568": 'Euros'
 }
+     
+CurrencyList = [
+    "Roubles", "Dollars", "Euros"
+]
+  
+CompareList = [
+    ">=", "<="
+]
         
 StatusMap = {
     'Locked': 0,
@@ -25,6 +39,10 @@ StatusMap = {
     'Completed': 4,
     'Failed': 5
 }
+
+LeaveStatus = [
+    'Killed', 'Left', 'MissingInAction', 'Survived', "Runner"
+]
 
 LocationMap = {
     "FactoryDay": "55f2d3fd4bdc2d5f408b4567",
@@ -40,6 +58,12 @@ LocationMap = {
     "any": "any"
 }
 
+LocationList = {
+    "any", "FactoryDay", "Customs", "Woods", "Lighthouse",
+    "Shoreline", "Reserve", "Interchange", "FactoryNight",
+    "Labs", "Streets"
+}
+
 locationMapTarget = {
     "FactoryDay": "factory4_day",
     "Customs": "bigmap",
@@ -53,6 +77,15 @@ locationMapTarget = {
     "Streets": "TarkovStreets"
 }
 
+SideList = [
+    "Pmc", "Bear", "Usec", "Savage"
+]
+
+StartStatusList = [
+    'Locked', 'AvailableForStart', 'Accepted',
+    'ReadyForTurnIn', 'Completed', 'Failed'
+]
+
 TraderMap = {
     "Prapor": "54cb50c76803fa8b248b4571",
     "Therapist": "54cb57776803fa99248b456e",
@@ -64,3 +97,26 @@ TraderMap = {
     "Jaeger": "5c0647fdd443bc2504c2d371",
     "TarkovTools": "TarkovTools"
 }
+
+TraderList = [
+    "Prapor", "Therapist", "Fence", "Skier", "TarkovTools",
+    "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
+]
+
+LoyaltyLevels = [ '1' , '2', '3', '4']
+
+SkillList = [
+    "Endurance", "Health", "Immunity",
+    "Metabolism", "Strength", "Vitality",
+    "StressResistance", "Attention", "Charisma",
+    "Intellect", "Memory", "Perception", "AimDrills",
+    "ToubleShooting", "Assault", "Throwables", 
+    "Revolver", "Pistol", "SMG",
+    "HMG", "Shotgun", "Sniper",
+    "DMR", "Crafting", "LMG",
+    "Melee", "RecoilControl", "WeaponModding",
+    "Sniping", "CovertMovement", "ProneMovement", 
+    "Troubleshooting", "FirstAid", "LightVests", 
+    "HeavyVests", "AdvancedModding", "Barter", 
+    "Surgery", "HideoutManagement", "MagDrills"
+]

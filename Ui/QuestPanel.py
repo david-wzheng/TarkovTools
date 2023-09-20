@@ -30,71 +30,37 @@ class QuestPanel(Quest):
         self.setUpControls()
         
     def addItemsToDropBoxes(self):
-        StartStatusList = [
-            'Locked', 'AvailableForStart', 'Accepted',
-            'ReadyForTurnIn', 'Completed', 'Failed'
-        ]
+        # Start Status
         self.mainWindow.AvailableForStartStatus.addItems(sorted(StartStatusList))
         self.mainWindow.FailQuestStatus.addItems(sorted(StartStatusList))
         
-        leaveStatus = ['Killed', 'Left', 'MissingInAction', 'Survived', "Runner"]
-        self.mainWindow.FailExitStatusStatus.addItems(sorted(leaveStatus))
+        # Leave Status
+        self.mainWindow.FailExitStatusStatus.addItems(sorted(LeaveStatus))
         
-        SideList = [
-            "Pmc", "Bear", "Usec", "Savage"
-        ]
+        # Side List
         self.mainWindow.Side.addItems(sorted(SideList))
 
-        CurrencyList = [
-            "Roubles", "Dollars", "Euros"
-        ]
+        # Currency List
         self.mainWindow.CurrencyType.addItems(sorted(CurrencyList))
         
-        CompareList = [
-            ">=", "<="
-        ]
+        # Compare List
         self.mainWindow.AvailableForStartLevelRequirementCompare.addItems(sorted(CompareList))
         self.mainWindow.FinishLoyaltyCompare.addItems(sorted(CompareList))
         self.mainWindow.FinishSkillCompare.addItems(sorted(CompareList))
         self.mainWindow.AvailableCompareLoyaltyComboBox.addItems(sorted(CompareList))
         self.mainWindow.FailStandingCompare.addItems(sorted(CompareList))
         
-        TypeList = [
-            'WeaponAssembly', 'Merchant', 'Completion', 
-            'Exploration', 'PickUp', 'Discover',
-            'Skill', 'Standing', 'Loyalty'
-        ]
+        # Type List
         self.mainWindow.Type.addItems(sorted(TypeList))
         
-        SkillList = [
-            "Endurance", "Health", "Immunity",
-            "Metabolism", "Strength", "Vitality",
-            "StressResistance", "Attention", "Charisma",
-            "Intellect", "Memory", "Perception", "AimDrills",
-            "ToubleShooting", "Assault", "Throwables", 
-            "Revolver", "Pistol", "SMG",
-            "HMG", "Shotgun", "Sniper",
-            "DMR", "Crafting", "LMG",
-            "Melee", "RecoilControl", "WeaponModding",
-            "Sniping", "CovertMovement", "ProneMovement", 
-            "Troubleshooting", "FirstAid", "LightVests", 
-            "HeavyVests", "AdvancedModding", "Barter", 
-            "Surgery", "HideoutManagement", "MagDrills"
-        ]      
+         # Skill List     
         self.mainWindow.FinishSkillComboBox.addItems(sorted(SkillList))
         
-        locationList = [
-            "any", "FactoryDay", "Customs", "Woods", "Lighthouse",
-            "Shoreline", "Reserve", "Interchange", "FactoryNight",
-            "Labs", "Streets"
-        ]
-        self.mainWindow.LocationComboBox.addItems(sorted(locationList))
-        self.mainWindow.FailExitStatusLocation.addItems(sorted(locationList))
+        # Location List
+        self.mainWindow.LocationComboBox.addItems(sorted(LocationList))
+        self.mainWindow.FailExitStatusLocation.addItems(sorted(LocationList))
         
-        TraderList = [
-            "Prapor", "Therapist", "Fence", "Skier", "TarkovTools",
-            "Peacekeeper", "Mechanic", "Ragman", "Jaeger"
-        ]
+        # Trader List
         self.mainWindow.StartedAssortTraderComboBox.addItems(sorted(TraderList))
         self.mainWindow.TradercomboBox.addItems(sorted(TraderList))
         self.mainWindow.TraderFinishcomboBox.addItems(sorted(TraderList))
@@ -103,9 +69,9 @@ class QuestPanel(Quest):
         self.mainWindow.AvailableForStartTraderComboBox.addItems(sorted(TraderList))
         self.mainWindow.FailStandingTrader.addItems(sorted(TraderList))
         
-        loyaltyLevels = [ '1' , '2', '3', '4']
-        self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
-        self.mainWindow.StartedAssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
+        # Loyalty Levels
+        self.mainWindow.AssortLoyaltyLevelComboBox.addItems(sorted(LoyaltyLevels))
+        self.mainWindow.StartedAssortLoyaltyLevelComboBox.addItems(sorted(LoyaltyLevels))
         
     def setUpSignals(self):
         self.mainWindow.LoadQuestFile.clicked.connect(self.showLoadFileDialog)
@@ -114,6 +80,7 @@ class QuestPanel(Quest):
         self.mainWindow.RemoveFromQuestFile.clicked.connect(self.deleteQuest)
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
         self.mainWindow.ClearButton.clicked.connect(self.clearButton)
+        self.mainWindow.ClearConsole.clicked.connect(self.clearConsole)
         
         self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
         # Add To List
@@ -156,6 +123,13 @@ class QuestPanel(Quest):
     
     def setUpControls(self):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
+        
+    def log(self, message):
+        console = self.mainWindow.Console
+        console.addItem(f"Error: {message}")
+        
+    def clearConsole(self):
+        self.mainWindow.Console.clear()
         
     # SCROLL WIDGET POPULATION
     def refreshQuestList(self):
@@ -625,7 +599,7 @@ class QuestPanel(Quest):
    
     def SaveFile(self, bypass = False):        
         if not self.mainWindow._Id.text() and not bypass:
-            print("Save Error: Quest Id cannot be empty!")
+            self.log("Save Error: Failed to add quest - Id is empty.")
             return
         elif bypass:
             # This is only accessed from the remove quest button
@@ -638,8 +612,8 @@ class QuestPanel(Quest):
             print("Saved in Bypass mode.")
         else:
             quest = self.setUpQuest()
-            if not quest["_id"]:
-                print("Save Error: Quest Id is empty")
+            if not self.validate(quest):
+                print("Save Error: Validation Failed.")
                 return
             else: 
                 self.questFile[quest["_id"]] = quest
@@ -656,6 +630,31 @@ class QuestPanel(Quest):
                 self.refreshQuestList()
                 print("Saved in normal mode.")
       
+    def validate(self, quest):
+        if not self.openFileName:
+            self.log("Save Error: No file is Open.")
+            return False
+        elif not self.openLocaleFileName:
+            self.log("Save Error: No locale file is Open.")
+            return False
+        
+        elif not self.mainWindow.QuestName.currentText():
+            self.log("Save Error: Quest name cannot be empty")
+            return False
+        elif not self.mainWindow.TradercomboBox.currentText():
+            self.log("Save Error: Trader cannot be empty.")
+            return False
+        elif not self.mainWindow.LocationComboBox.currentText():
+            self.log("Save Error: Location cannot be empty.")
+            return False
+        elif not self.mainWindow.Side.currentText():
+            self.log("Save Error: Side cannot be empty.")
+            return False
+        elif not self.mainWindow.Type.currentText():
+            self.log("Save Error: Type cannot be empty.")
+            return False
+        return True
+        
     # Clears the locale entry for the selected index and parent condition
     def clearLocale(self, condition, skill):
         for item in self.questFile[self.selectedQuestEntry]["conditions"][condition]:
@@ -691,7 +690,8 @@ class QuestPanel(Quest):
         # List Widgets
         listWidgets = Utils.getWidgetsOfType(self.mainWindow, QListWidget)
         for listWidget in listWidgets:
-            if listWidget.objectName() != "QuestFileWidget":
+            exclude = ["QuestFileWidget", "Console"]    
+            if listWidget.objectName() not in exclude:
                 listWidget.clear()
                
         # Line Widgets
