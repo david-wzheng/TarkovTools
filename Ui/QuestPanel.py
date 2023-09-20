@@ -542,8 +542,6 @@ class QuestPanel(Quest):
                 del self.localeFile[key]
             del self.questFile[self.selectedQuestEntry]
             self.SaveFile(True)
-            self.clearAll()
-            self.refreshQuestList()
                  
     def showLoadFileDialog(self):
         options = QFileDialog.Options()
@@ -629,10 +627,13 @@ class QuestPanel(Quest):
             print("Save Error: Quest Id cannot be empty!")
             return
         elif bypass:
+            # This is only accessed from the remove quest button
             Utils.saveJsonFile(self.openFileName, self.questFile)
             Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+            self.clearAll()
             self.questFile = Utils.loadJsonFile(self.openFileName)
             self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
+            self.refreshQuestList()
             print("Saved in Bypass mode.")
         else:
             quest = self.setUpQuest()
@@ -647,12 +648,13 @@ class QuestPanel(Quest):
                 for locale, value in locales.items():
                     self.localeFile[locale] = value
 
-                self.refreshQuestList()
                 Utils.saveJsonFile(self.openFileName, self.questFile)
                 Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+                self.clearAll()
                 self.questFile = Utils.loadJsonFile(self.openFileName)
                 self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
-                print("Saving quests complete!")
+                self.refreshQuestList()
+                print("Saved in normal mode.")
       
     # Clears the locale entry for the selected index and parent condition
     def clearLocale(self, condition, skill):
