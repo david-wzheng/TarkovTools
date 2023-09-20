@@ -636,9 +636,8 @@ class QuestPanel(Quest):
             return False
         elif not self.openLocaleFileName:
             self.log("Save Error: No locale file is Open.")
-            return False
-        
-        elif not self.mainWindow.QuestName.currentText():
+            return False     
+        elif not self.mainWindow.QuestName.text():
             self.log("Save Error: Quest name cannot be empty")
             return False
         elif not self.mainWindow.TradercomboBox.currentText():
