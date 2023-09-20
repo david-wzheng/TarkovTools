@@ -13,14 +13,13 @@ class Quest:
         
         # QuestFile
         self.questFile = {}
-        self.questFileCopy = {}
         self.localeFile = {}
-        self.localeFileCopy = {}
-      
+            
         # Start/Finish
         self.finishLoyaltyList = []
         self.finishSkillList = []
         self.finishItemList = []
+        self.finishHandoverList = []
         self.availableStatusList = []
         self.availableLoyaltyList = []
         
@@ -42,11 +41,11 @@ class Quest:
         return random_seed
 
     #JSON GENERATION
-    def generateLoyalty(self, standing, index, parent):
+    def generateLoyalty(self, standing, index, parent, objective = 0):
         loyalty = {
             "_parent": f"{parent}",
             "_props": {
-                "id": self.generateRandomId(),
+                "id": f"{self.mainWindow._Id.text()}_TraderLoyalty_{objective}",
                 "index": self.availableForFinishIndex,
                 "parentId": "", 
                 "dynamicLocale": standing.dynamicLocale,
@@ -57,6 +56,7 @@ class Quest:
             },
             "dynamicLocale": standing.dynamicLocale
         }
+        self.localeFile[f"{self.mainWindow._Id.text()}_TraderLoyalty_{objective}"] = standing.text
         index += 1
         return loyalty
      
@@ -101,13 +101,13 @@ class Quest:
 
     def generateAvailableForStart(self):
         availableForStart = []      
-        if int(self.mainWindow.AvailableForStartLevelRequirement.text()) > 0:
+        if self.mainWindow.AvailableForStartLevelRequirement.text() is not None:
             availableForStart.append(self.generateAvailableForStartLevel())
 
         for quest in self.availableStatusList:
             availableForStart.append(self.generateQuestRequirements(quest, self.startedRewardIndex))
 
-        for loyalty in self.standingRewardList:
+        for loyalty in self.availableLoyaltyList:
             availableForStart.append(self.generateLoyalty(loyalty, self.availableForStartIndex, "TraderStanding"))
 
         return availableForStart
@@ -115,11 +115,12 @@ class Quest:
     #Available For Finish
     def generateFinishSkills(self):
         finishSkillList = []
+        objective = 0
         for item in self.finishSkillList:
             skill = {
                 "_parent": "Skill",
                 "_props": {
-                    "id": self.generateRandomId(),
+                    "id":f"{self.mainWindow._Id.text()}_Skill_{objective}",
                     "index": self.availableForFinishIndex,
                     "parentId": "",
                     "dynamicLocale": item.dynamicLocale,
@@ -130,49 +131,56 @@ class Quest:
                 },
                 "dynamicLocale": item.dynamicLocale
             }
+            self.localeFile[f"{self.mainWindow._Id.text()}_Skill_{objective}"] = item.text
+            objective += 1
             finishSkillList.append(skill)
             self.availableForFinishIndex += 1
         return finishSkillList
     
     def generateFinishItems(self):
         finishItemList = []
+        objective = 0
         for token in self.finishItemList:
-            item = {
-                "_parent": "FindItem",
-                "_props": {
-                    "dogtagLevel": 0, #TODO
-                    "id": self.generateRandomId(),
-                    "index": self.availableForFinishIndex,
-                    "maxDurability": 100, #TODO
-                    "minDurability": 0, #TODO
-                    "parentId": "",
-                    "isEncoded": token.encoded,
-                    "onlyFoundInRaid": token.fir,
-                    "dynamicLocale": token.dynamicLocale,
-                    "target": [
-                        token.id
-                    ],
-                    "countInRaid": False, #TODO
-                    "value": token.value,
-                    "visibilityConditions": []
-                },
-                "dynamicLocale": token.dynamicLocale
-            }
-            finishItemList.append(item)
-            self.availableForFinishIndex += 1
-        return finishItemList
+            if token.fir == True:
+                item = {
+                    "_parent": "FindItem",
+                    "_props": {
+                        "dogtagLevel": 0, #TODO
+                        "id": f"{self.mainWindow._Id.text()}_FindItem_{objective}",
+                        "index": self.availableForFinishIndex,
+                        "maxDurability": 100, #TODO
+                        "minDurability": 0, #TODO
+                        "parentId": "",
+                        "isEncoded": token.encoded,
+                        "onlyFoundInRaid": token.fir,
+                        "dynamicLocale": token.dynamicLocale,
+                        "target": [
+                            token.id
+                        ],
+                        "countInRaid": False, #TODO
+                        "value": token.value,
+                        "visibilityConditions": []
+                    },
+                    "dynamicLocale": token.dynamicLocale
+                }
+                self.localeFile[f"{self.mainWindow._Id.text()}_FindItem_{objective}"] = token.find
+                objective += 1
+                finishItemList.append(item)
+                self.availableForFinishIndex += 1
+            return finishItemList
     
     def generateFinishHandover(self):
         finishHandOver = []
-        for token in self.finishItemList:
+        objective = 0
+        for token in self.finishHandoverList:
             handover = {
                 "_parent": "HandoverItem",
                 "_props": {
-                    "dogtagLevel": token.dogtagLevel, #TODO
-                    "id": self.generateRandomId(),
+                    "dogtagLevel": int(token.dogtagLevel),
+                    "id": f"{self.mainWindow._Id.text()}_HandoverItem_{objective}",
                     "index": self.availableForFinishIndex,
-                    "maxDurability": token.maxDurability, #TODO
-                    "minDurability": token.minDurability, #TODO
+                    "maxDurability": int(token.maxDurability),
+                    "minDurability": int(token.minDurability),
                     "parentId": "",
                     "isEncoded": token.encoded,
                     "onlyFoundInRaid": token.fir,
@@ -185,14 +193,18 @@ class Quest:
                 },
                 "dynamicLocale": token.dynamicLocale
             }
+            self.localeFile[f"{self.mainWindow._Id.text()}_HandoverItem_{objective}"] = token.handover
+            objective += 1
             finishHandOver.append(handover)
             self.availableForFinishIndex += 1
         return finishHandOver
     
     def generateAvailableForFinish(self):
         Finish = []
+        objective = 0
         for loyalty in self.finishLoyaltyList:
-            Finish.append(self.generateLoyalty(loyalty, self.availableForFinishIndex, "TraderLoyalty"))
+            Finish.append(self.generateLoyalty(loyalty, self.availableForFinishIndex, "TraderLoyalty", objective))
+            objective += 1
             
         for skill in self.generateFinishSkills():
             Finish.append(skill)
@@ -373,7 +385,7 @@ class Quest:
         if selectedLocation in LocationMap:
             location = LocationMap[selectedLocation]
             return location
-        if selectedLocation is "any":
+        if selectedLocation == "any":
             return "any"
         
     #Setup Quest

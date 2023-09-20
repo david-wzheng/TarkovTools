@@ -129,6 +129,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
         self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkillToScrollList)
         self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItemToScrollList)
+        self.mainWindow.HandoverItemAddToList.clicked.connect(self.addFinishHandoverToScrollList)
         self.mainWindow.FailExitStatusAdd.clicked.connect(self.addFailExitStatusToScrollList)
         self.mainWindow.FailLocationAdd.clicked.connect(self.addFailExitLocationToScrollList)
         self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExitToScrollList)
@@ -147,6 +148,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
         self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
         self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
+        self.mainWindow.FinishHandoverRemoveList.clicked.connect(self.removeFinishItemScrollItem)
         self.mainWindow.FailExitStatusRemove.clicked.connect(self.removeFailExitStatusScrollList)
         self.mainWindow.FailLocationRemove.clicked.connect(self.removeFailExitLocationScrollList)
         self.mainWindow.FailExitRemoveFromList.clicked.connect(self.removeFailExitScrollList)
@@ -196,6 +198,7 @@ class QuestPanel(Quest):
         loyalty.dynamicLocale = self.mainWindow.FinishLoyaltyDynamicLocale.isChecked()
         loyalty.value = self.mainWindow.FinishLoyaltyValue.text()
         loyalty.compare = self.mainWindow.FinishLoyaltyCompare.currentText()
+        loyalty.text = self.mainWindow.FinishLoyaltyObjective.toPlainText()
 
         traderTypeSelected = self.mainWindow.TraderFinishcomboBox.currentText()
         if traderTypeSelected in TraderMap:
@@ -203,7 +206,7 @@ class QuestPanel(Quest):
 
         self.finishLoyaltyList.append(loyalty)
 
-        object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale}"
+        object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale} \nObjective text: {loyalty.text}"
         listWidget = self.mainWindow.FinishLoyaltyWidget
         listWidget.addItem(object)
      
@@ -213,10 +216,11 @@ class QuestPanel(Quest):
         skill.dynamicLocale = self.mainWindow.FinishDynamicLocaleSkill.isChecked()
         skill.value = self.mainWindow.FinishSkillValue.text()
         skill.compare = self.mainWindow.FinishSkillCompare.currentText()
+        skill.text = self.mainWindow.FinishSkillObjective.toPlainText()
 
         self.finishSkillList.append(skill)
 
-        object = f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale}"
+        object = f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale} \nObjective text: {skill.text}"
         listWidget = self.mainWindow.FinishSkillWidget
         listWidget.addItem(object)
     
@@ -230,12 +234,29 @@ class QuestPanel(Quest):
         item.dogtagLevel = int(self.mainWindow.FinishItemDogTag.text())
         item.minDurability = int(self.mainWindow.FinishItemMinDura.text())
         item.maxDurability = int(self.mainWindow.FinishItemMaxDura.text())
+        item.find = self.mainWindow.FinishFindObjective.toPlainText()
 
         self.finishItemList.append(item)
 
-        object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}"
-        listWidget = self.mainWindow.FinishItemWidget
-        listWidget.addItem(object)
+        object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded} \nFind Text: {item.find}"
+        self.mainWindow.FinishItemWidget.addItem(object)
+        
+    def addFinishHandoverToScrollList(self):
+        item = Object()       
+        item.id = self.mainWindow.FinishItemId.text()
+        item.dynamicLocale = self.mainWindow.FinishItemDynamicLocale.isChecked()
+        item.value = self.mainWindow.FinishItemAmount.text()
+        item.fir = self.mainWindow.FinishItemFIR.isChecked()
+        item.encoded = self.mainWindow.FinishItemEncoded.isChecked()
+        item.dogtagLevel = int(self.mainWindow.FinishItemDogTag.text())
+        item.minDurability = int(self.mainWindow.FinishItemMinDura.text())
+        item.maxDurability = int(self.mainWindow.FinishItemMaxDura.text())
+        item.handover = self.mainWindow.FinishHandoverObjective.toPlainText()
+
+        self.finishHandoverList.append(item)
+
+        object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nHandover Text: {item.handover}"
+        self.mainWindow.FinishHandoverWidget.addItem(object)
         
     def addAvailableQuestToScrollList(self):
         quest = Object()       
@@ -255,13 +276,14 @@ class QuestPanel(Quest):
     def addAvailableLoyaltyToScrollList(self):
         loyalty = Object()       
         loyalty.value = self.mainWindow.AvailableForStartLoyaltyValue.text()
-        loyalty.dynamicLocale = self.mainWindow.AvailableForStartDynamicLocaleQuest.isChecked()
+        loyalty.dynamicLocale = self.mainWindow.AvailableForStartLoyaltyDynamicLocaleQuest.isChecked()
         loyalty.compare = self.mainWindow.AvailableCompareLoyaltyComboBox.currentText()
 
         traderSelected = self.mainWindow.AvailableForStartTraderComboBox.currentText()
         if traderSelected in TraderMap:
             loyalty.traderId = TraderMap[traderSelected]
 
+        
         self.availableLoyaltyList.append(loyalty)
 
         object = f"Loyalty requirement: {traderSelected} Loyalty: {loyalty.value} Compare: {loyalty.compare} DynamicLocale: {loyalty.dynamicLocale}"
@@ -423,16 +445,25 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.FinishLoyaltyWidget.currentRow()
         self.mainWindow.FinishLoyaltyWidget.takeItem(selectedIndex)
         self.finishLoyaltyList.pop(selectedIndex)
+        self.clearLocale("AvailableForFinish", "TraderLoyalty")
         
     def removeFinishSkillScrollItem(self):
         selectedIndex = self.mainWindow.FinishSkillWidget.currentRow()
         self.mainWindow.FinishSkillWidget.takeItem(selectedIndex)
         self.finishSkillList.pop(selectedIndex)
+        self.clearLocale("AvailableForFinish", "Skill")
     
     def removeFinishItemScrollItem(self):
         selectedIndex = self.mainWindow.FinishItemWidget.currentRow()
         self.mainWindow.FinishItemWidget.takeItem(selectedIndex)
         self.finishItemList.pop(selectedIndex)
+        self.clearLocale("AvailableForFinish", "FindItem")
+    
+    def removeFinishHandoverScrollItem(self):
+        selectedIndex = self.mainWindow.FinishHandoverWidget.currentRow()
+        self.mainWindow.FinishHandoverWidget.takeItem(selectedIndex)
+        self.finishHandoverList.pop(selectedIndex)
+        self.clearLocale("AvailableForFinish", "HandoverItem")
     
     def removeAvailableQuestScrollItem(self):
         selectedIndex = self.mainWindow.StartQuestWidget.currentRow()
@@ -582,6 +613,7 @@ class QuestPanel(Quest):
             self.clearAll()
             self.mainWindow.CurrentQuestText.clear()
             self.openFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
+            self.mainWindow.LoadFilePath.setText(self.openFileName)
             Utils.saveJsonFile(self.openFileName, self.questFile)
             self.newLocaleFile()
         elif result == QMessageBox.Abort:
@@ -604,11 +636,22 @@ class QuestPanel(Quest):
     def SaveFile(self):
         Utils.saveJsonFile(self.openFileName, self.questFile)
         Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+      
+    # Clears the locale entry for the selected index and parent condition
+    def clearLocale(self, condition, skill):
+        for item in self.questFile[self.selectedQuestEntry]["conditions"][condition]:
+            if item["_parent"] == skill:
+                keytoDelete = item["_props"]["id"]
+                if f"_{skill}_" in keytoDelete:
+                    print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
+                    del self.localeFile[keytoDelete]
+                    
                
     def clearAll(self):
         # Clear Json lists
         self.finishLoyaltyList.clear()
         self.finishSkillList.clear()
+        self.finishHandoverList.clear()
         self.finishItemList.clear()
         self.availableStatusList.clear()
         self.availableLoyaltyList.clear()
@@ -640,6 +683,7 @@ class QuestPanel(Quest):
             if lineWidget.objectName() not in exclude:
                 lineWidget.clear()    
             
+        self.mainWindow.FinishItemDogTag.setText("Placeholder.png")
         self.mainWindow.FinishItemDogTag.setText("0")
         self.mainWindow.FinishItemMinDura.setText("0")
         self.mainWindow.FinishItemMaxDura.setText("100")
@@ -650,7 +694,7 @@ class QuestPanel(Quest):
         for textWidget in textEdits:
             textWidget.clear()
         
-        # Check Boxes - TODO Find a better way
+        # Check Boxes
         checkBoxes = Utils.getWidgetsOfType(self.mainWindow, QCheckBox)
         for checkBox in checkBoxes:
             checkBox.setChecked(False)
@@ -688,7 +732,7 @@ class QuestPanel(Quest):
         self.mainWindow.Restartable.setChecked(quest["restartable"])
         self.mainWindow.InstantComplete.setChecked(quest["instantComplete"])
         self.mainWindow.SecretQuest.setChecked(quest["secretQuest"])
-        self.mainWindow.ImagePath.setText(quest["image"])
+        self.mainWindow.ImagePath.setText(os.path.basename(quest["image"]))
         
         if quest["location"] == "any":
             self.mainWindow.LocationComboBox.setCurrentIndex(0)
@@ -736,8 +780,11 @@ class QuestPanel(Quest):
             self.mainWindow.TradercomboBox.setCurrentIndex(5)
         elif quest["traderId"] == "58330581ace78e27b8b10cee":
             self.mainWindow.TradercomboBox.setCurrentIndex(6)
-        elif quest["traderId"] == "54cb57776803fa99248b456e":
+        elif quest["traderId"] == "TarkovTools":
             self.mainWindow.TradercomboBox.setCurrentIndex(7)
+        elif quest["traderId"] == "54cb57776803fa99248b456e":
+            self.mainWindow.TradercomboBox.setCurrentIndex(8)
+
             
         if quest["type"] == "Completion":
             self.mainWindow.Type.setCurrentIndex(0)
@@ -837,8 +884,9 @@ class QuestPanel(Quest):
                     loyalty.value = condition["_props"]["value"]
                     loyalty.compare = condition["_props"]["compareMethod"]
                     loyalty.traderId = condition["_props"]["target"]
+                    loyalty.text = self.localeFile[condition["_props"]["id"]]
                     
-                    object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale}"
+                    object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale}\nMessage: {loyalty.text}"
                     self.finishLoyaltyList.append(loyalty)
                     self.mainWindow.FinishLoyaltyWidget.addItem(object)
                 # Skill
@@ -848,8 +896,9 @@ class QuestPanel(Quest):
                     skill.dynamicLocale = condition["_props"]["dynamicLocale"]
                     skill.value = condition["_props"]["value"]
                     skill.compare = condition["_props"]["compareMethod"]
+                    skill.text = self.localeFile[condition["_props"]["id"]]
                     
-                    object = f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale}"
+                    object = f"Skill required: {skill.skill} level requirement: {skill.value} compareMethod: {skill.compare} DynamicLocale: {skill.dynamicLocale} \nMessage: {skill.text}"
                     self.finishSkillList.append(skill)
                     self.mainWindow.FinishSkillWidget.addItem(object) 
                 # Find Items
@@ -863,10 +912,26 @@ class QuestPanel(Quest):
                     item.dogtagLevel = condition["_props"]["dogtagLevel"]
                     item.minDurability = condition["_props"]["minDurability"]
                     item.maxDurability = condition["_props"]["maxDurability"]
+                    item.find = self.localeFile[condition["_props"]["id"]]
                     
-                    object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}"
+                    object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nMessage: {item.find}"
                     self.finishItemList.append(item)
                     self.mainWindow.FinishItemWidget.addItem(object)
+                elif condition["_parent"] == "HandoverItem":
+                    item = Object()       
+                    item.id = condition["_props"]["target"][0] #TODO Does this ever contain more than one element?
+                    item.dynamicLocale = condition["_props"]["dynamicLocale"]
+                    item.value = condition["_props"]["value"]
+                    item.fir = condition["_props"]["onlyFoundInRaid"]
+                    item.encoded = condition["_props"]["isEncoded"]
+                    item.dogtagLevel = condition["_props"]["dogtagLevel"]
+                    item.minDurability = condition["_props"]["minDurability"]
+                    item.maxDurability = condition["_props"]["maxDurability"]
+                    item.handover = self.localeFile[condition["_props"]["id"]]
+                    
+                    object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nMessage: {item.handover}"
+                    self.finishHandoverList.append(item)
+                    self.mainWindow.FinishHandoverWidget.addItem(object)
     
     def displayFail(self):
         quest = self.questFile[self.selectedQuestEntry]
