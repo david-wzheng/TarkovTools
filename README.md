@@ -4,6 +4,9 @@ Tarkov tools is a project to make adding content to SPT easier for everyone. Thi
 
 Python 3.11.0+ is required for use.
 
+Client written in Python with QT
+server mod written in Typescript
+
 Disclaimer for mod devs: `I do not recommend using this on a file you currently have working in a production environment.`
 
 Users always make sure to report bugs at the issues section here: https://github.com/dirtbikercj/TarkovTools/issues
