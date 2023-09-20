@@ -97,19 +97,6 @@
            <string>Fail Message</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="GenerateQuest">
-          <property name="geometry">
-           <rect>
-            <x>220</x>
-            <y>50</y>
-            <width>111</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Add/Update Quest</string>
-          </property>
-         </widget>
          <widget class="QTextEdit" name="ChangeMessage">
           <property name="geometry">
            <rect>
@@ -2717,9 +2704,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QPushButton" name="LoadQuestFile">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>120</x>
             <y>10</y>
-            <width>101</width>
+            <width>91</width>
             <height>24</height>
            </rect>
           </property>
@@ -2875,7 +2862,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QPushButton" name="RemoveFromQuestFile">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>230</x>
             <y>50</y>
             <width>101</width>
             <height>24</height>
@@ -2901,14 +2888,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QPushButton" name="SaveQuestFile">
           <property name="geometry">
            <rect>
-            <x>220</x>
+            <x>230</x>
             <y>10</y>
-            <width>111</width>
+            <width>101</width>
             <height>24</height>
            </rect>
           </property>
           <property name="text">
-           <string>Save Quest File</string>
+           <string>Save Quest</string>
           </property>
          </widget>
          <widget class="QPushButton" name="NewQuestFile">

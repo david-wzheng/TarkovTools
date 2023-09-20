@@ -141,33 +141,32 @@ class Quest:
         finishItemList = []
         objective = 0
         for token in self.finishItemList:
-            if token.fir == True:
-                item = {
-                    "_parent": "FindItem",
-                    "_props": {
-                        "dogtagLevel": 0, #TODO
-                        "id": f"{self.mainWindow._Id.text()}_FindItem_{objective}",
-                        "index": self.availableForFinishIndex,
-                        "maxDurability": 100, #TODO
-                        "minDurability": 0, #TODO
-                        "parentId": "",
-                        "isEncoded": token.encoded,
-                        "onlyFoundInRaid": token.fir,
-                        "dynamicLocale": token.dynamicLocale,
-                        "target": [
-                            token.id
-                        ],
-                        "countInRaid": False, #TODO
-                        "value": token.value,
-                        "visibilityConditions": []
-                    },
-                    "dynamicLocale": token.dynamicLocale
-                }
-                self.localeFile[f"{self.mainWindow._Id.text()}_FindItem_{objective}"] = token.find
-                objective += 1
-                finishItemList.append(item)
-                self.availableForFinishIndex += 1
-            return finishItemList
+            item = {
+                "_parent": "FindItem",
+                "_props": {
+                    "dogtagLevel": int(token.dogtagLevel),
+                    "id": f"{self.mainWindow._Id.text()}_FindItem_{objective}",
+                    "index": self.availableForFinishIndex,
+                    "maxDurability": int(token.maxDurability),
+                    "minDurability": int(token.minDurability),
+                    "parentId": "",
+                    "isEncoded": token.encoded,
+                    "onlyFoundInRaid": token.fir,
+                    "dynamicLocale": token.dynamicLocale,
+                    "target": [
+                        token.id
+                    ],
+                    "countInRaid": False, #TODO
+                    "value": token.value,
+                    "visibilityConditions": []
+                },
+                "dynamicLocale": token.dynamicLocale
+            }
+            self.localeFile[f"{self.mainWindow._Id.text()}_FindItem_{objective}"] = token.find
+            objective += 1
+            finishItemList.append(item)
+            self.availableForFinishIndex += 1
+        return finishItemList
     
     def generateFinishHandover(self):
         finishHandOver = []

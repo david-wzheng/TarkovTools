@@ -108,7 +108,6 @@ class QuestPanel(Quest):
         self.mainWindow.StartedAssortLoyaltyLevelComboBox.addItems(sorted(loyaltyLevels))
         
     def setUpSignals(self):
-        self.mainWindow.GenerateQuest.clicked.connect(self.addQuestToScrollList)
         self.mainWindow.LoadQuestFile.clicked.connect(self.showLoadFileDialog)
         self.mainWindow.SaveQuestFile.clicked.connect(self.SaveFile)
         self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
@@ -148,7 +147,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
         self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
         self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
-        self.mainWindow.FinishHandoverRemoveList.clicked.connect(self.removeFinishItemScrollItem)
+        self.mainWindow.FinishHandoverRemoveList.clicked.connect(self.removeFinishHandoverScrollItem)
         self.mainWindow.FailExitStatusRemove.clicked.connect(self.removeFailExitStatusScrollList)
         self.mainWindow.FailLocationRemove.clicked.connect(self.removeFailExitLocationScrollList)
         self.mainWindow.FailExitRemoveFromList.clicked.connect(self.removeFailExitScrollList)
@@ -167,18 +166,7 @@ class QuestPanel(Quest):
             lookup = quest + " name"
             object = f"QuestId: {quest}\nQuestName: {self.localeFile[lookup]}"
             listWidget.addItem(object)
-    
-    def addQuestToScrollList(self):
-        quest = self.setUpQuest()
-        self.questFile[quest["_id"]] = quest
-        self.mainWindow.CurrentQuestText.setText(quest['QuestName'])
-        
-        locales = self.setUpQuestLocale()
-        for locale, value in locales.items():
-            self.localeFile[locale] = value
-        
-        self.refreshQuestList()
-    
+       
     def editSelectedQuestScrollList(self):
         dialog = QMessageBox()
         dialog.setWindowTitle("Edit Quest")
@@ -553,8 +541,10 @@ class QuestPanel(Quest):
             for key in keysTodelete:
                 del self.localeFile[key]
             del self.questFile[self.selectedQuestEntry]
+            self.SaveFile(True)
+            self.clearAll()
             self.refreshQuestList()
-        
+                 
     def showLoadFileDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
@@ -608,6 +598,7 @@ class QuestPanel(Quest):
         dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding")
         dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
         result = dialog.exec_()
+        
         if result == QMessageBox.Ignore:
             self.questFile.clear()
             self.clearAll()
@@ -633,9 +624,35 @@ class QuestPanel(Quest):
             Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
             self.refreshQuestList()
    
-    def SaveFile(self):
-        Utils.saveJsonFile(self.openFileName, self.questFile)
-        Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+    def SaveFile(self, bypass = False):        
+        if not self.mainWindow._Id.text() and not bypass:
+            print("Save Error: Quest Id cannot be empty!")
+            return
+        elif bypass:
+            Utils.saveJsonFile(self.openFileName, self.questFile)
+            Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+            self.questFile = Utils.loadJsonFile(self.openFileName)
+            self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
+            print("Saved in Bypass mode.")
+        else:
+            quest = self.setUpQuest()
+            if not quest["_id"]:
+                print("Save Error: Quest Id is empty")
+                return
+            else: 
+                self.questFile[quest["_id"]] = quest
+                self.mainWindow.CurrentQuestText.setText(quest['QuestName'])
+
+                locales = self.setUpQuestLocale()
+                for locale, value in locales.items():
+                    self.localeFile[locale] = value
+
+                self.refreshQuestList()
+                Utils.saveJsonFile(self.openFileName, self.questFile)
+                Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+                self.questFile = Utils.loadJsonFile(self.openFileName)
+                self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
+                print("Saving quests complete!")
       
     # Clears the locale entry for the selected index and parent condition
     def clearLocale(self, condition, skill):
@@ -645,8 +662,7 @@ class QuestPanel(Quest):
                 if f"_{skill}_" in keytoDelete:
                     print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
                     del self.localeFile[keytoDelete]
-                    
-               
+                               
     def clearAll(self):
         # Clear Json lists
         self.finishLoyaltyList.clear()
@@ -683,7 +699,7 @@ class QuestPanel(Quest):
             if lineWidget.objectName() not in exclude:
                 lineWidget.clear()    
             
-        self.mainWindow.FinishItemDogTag.setText("Placeholder.png")
+        self.mainWindow.ImagePath.setText("Placeholder.png")
         self.mainWindow.FinishItemDogTag.setText("0")
         self.mainWindow.FinishItemMinDura.setText("0")
         self.mainWindow.FinishItemMaxDura.setText("100")
