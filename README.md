@@ -1,6 +1,8 @@
 # TarkovTools
 
-Tarkov tools is a project to make adding content to SPT easier for everyone. Ever wanted to edit some piece of spt content but you didnt know how? This looks to slowly start solving that. Think of the ultimate sandbox mod for both users and mod devs alike. The goal is a complete editor with all the required tools to make any piece of content availiable. For now we start with quests and move onto other things down the road. This is still early in development and bugs will exist, however I believe its mature enough to begin public testing.  
+Tarkov tools is a project to make adding content to SPT easier for everyone. Think SVM, but on a much larger scale. Ever wanted to edit some piece of spt content but you didnt know how? This looks to slowly start solving that. Think of the ultimate sandbox mod for both users and mod devs alike and what you get is Tarkov Tools. The goal is a complete editor with all the required tools to make any piece of content availiable. For now we start with quests and move onto other things down the road. This is still early in development and bugs will exist, however I believe its mature enough to begin public testing.  
+
+Python 3.11.0+ is required for use.
 
 Disclaimer for mod devs: `I do not recommend using this on a file you currently have working in a production environment.`
 
