@@ -126,7 +126,7 @@ class QuestPanel(Quest):
         
     def log(self, message):
         console = self.mainWindow.Console
-        console.insertItem(0, f"Error: {message}")
+        console.insertItem(0, f"{message}")
         
     def clearConsole(self):
         self.mainWindow.Console.clear()
