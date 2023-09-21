@@ -32,6 +32,7 @@ class QuestPanel(Quest):
             Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
             self.mainWindow.LoadFilePath.setText(self.openFileName)
             self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
+            print("Loaded test file in debug mode.")
         
         self.addItemsToDropBoxes()
         self.setUpSignals()
