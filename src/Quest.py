@@ -220,7 +220,7 @@ class Quest:
                             }               
                         ]
                     },
-                    "id": self.generateRandomId(),
+                    "id": f"{self.mainWindow._Id.text()}_VisitPlace_{index}",
                     "index": index,
                     "parentId": "", #TODO
                     "oneSessionOnly": token.oneSession,
@@ -232,6 +232,7 @@ class Quest:
                 },
                 "dynamicLocale": False   
             }
+            self.localeFile[f"{self.mainWindow._Id.text()}_VisitPlace_{index}"] = token.text
             Visits.append(visit)
             index += 1
         return Visits

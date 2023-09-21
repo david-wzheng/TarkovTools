@@ -225,10 +225,11 @@ class QuestPanel(Quest):
     def addFinishVisitToScrollList(self):
         visit = Object()       
         visit.zone = self.mainWindow.FinishZoneName.text()
-        visit.doNotReset = self.mainWindow.FinishZoneName.text()
-        visit.oneSession = self.mainWindow.FinishZoneName.text()
+        visit.doNotReset = self.mainWindow.ZoneDoNotReset.isChecked()
+        visit.oneSession = self.mainWindow.ZoneOneSessionOnly.isChecked()
+        visit.text = self.mainWindow.FinishVisitObjective.toPlainText()
         
-        object = f"Visit Zone: {visit.zone} Do Not reset: {visit.doNotReset} One Session: {visit.oneSession}"
+        object = f"Visit Zone: {visit.zone} Do Not reset: {visit.doNotReset} One Session: {visit.oneSession} \nMessage: {visit.text}"
         self.finishVisitList.append(visit)
         self.mainWindow.ZoneVisitWidget.addItem(object)
         
@@ -442,7 +443,7 @@ class QuestPanel(Quest):
         selectedIndex = self.mainWindow.ZoneVisitWidget.currentRow()
         self.mainWindow.ZoneVisitWidget.takeItem(selectedIndex)
         self.finishVisitList.pop(selectedIndex)
-        #self.clearLocale("AvailableForFinish", "VisitPlace") TODO is this needed?
+        self.clearLocale("AvailableForFinish", "VisitPlace", True)
     
     def removeAvailableQuestScrollItem(self):
         selectedIndex = self.mainWindow.StartQuestWidget.currentRow()
@@ -672,11 +673,16 @@ class QuestPanel(Quest):
         return True
         
     # Clears the locale entry for the selected index and parent condition
-    def clearLocale(self, condition, skill):
+    def clearLocale(self, condition, key, CounterCreator = False):
         for item in self.questFile[self.selectedQuestEntry]["conditions"][condition]:
-            if item["_parent"] == skill:
+            if item["_parent"] == key and CounterCreator:
+                keytoDelete = ["_props"]["counter"]["conditions"][0]["_parent"]
+                if f"_{key}_" in keytoDelete:
+                    print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
+                    del self.localeFile[keytoDelete]    
+            else:
                 keytoDelete = item["_props"]["id"]
-                if f"_{skill}_" in keytoDelete:
+                if f"_{key}_" in keytoDelete:
                     print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
                     del self.localeFile[keytoDelete]
                                
@@ -974,8 +980,9 @@ class QuestPanel(Quest):
                     visit.zone = condition["_props"]["counter"]["conditions"][0]["_props"]["target"]
                     visit.doNotReset = condition["_props"]["doNotResetIfCounterCompleted"]
                     visit.oneSession = condition["_props"]["oneSessionOnly"]
+                    visit.text = self.localeFile[condition["_props"]["id"]]
                     
-                    object = f"Visit Zone: {visit.zone} Do Not reset: {visit.doNotReset} One Session: {visit.oneSession}"
+                    object = f"Visit Zone: {visit.zone} Do Not reset: {visit.doNotReset} One Session: {visit.oneSession}\nMessage: {visit.text}"
                     self.finishVisitList.append(visit)
                     self.mainWindow.ZoneVisitWidget.addItem(object)
                 else:
