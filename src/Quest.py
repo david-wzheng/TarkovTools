@@ -15,14 +15,17 @@ class Quest:
         self.questFile = {}
         self.localeFile = {}
             
-        # Start/Finish
+        # Start
+        self.availableStatusList = []
+        self.availableLoyaltyList = []
+            
+        # Finish
         self.finishLoyaltyList = []
         self.finishSkillList = []
         self.finishItemList = []
         self.finishHandoverList = []
-        self.availableStatusList = []
-        self.availableLoyaltyList = []
-        
+        self.finishVisitList = []
+            
         # Fail
         self.failExitList = []
         self.failQuestList = []
@@ -198,6 +201,41 @@ class Quest:
             self.availableForFinishIndex += 1
         return finishHandOver
     
+    def generateFinishVisit(self):
+        Visits = []
+        index = 0
+        for token in self.finishVisitList:
+            visit = {
+                "_parent": "CounterCreator",
+                "_props": {
+                    "counter": {
+                        "id": self.generateRandomId(),
+                        "conditions": [ {
+                                "_parent": "VisitPlace",
+                                "_props": {
+                                    "target": token.zone,
+                                    "value": "1",
+                                    "id": self.generateRandomId()
+                                }
+                            }               
+                        ]
+                    },
+                    "id": self.generateRandomId(),
+                    "index": index,
+                    "parentId": "", #TODO
+                    "oneSessionOnly": token.oneSession,
+                    "dynamicLocale": False,
+                    "type": "Exploration",
+                    "doNotResetIfCounterCompleted": token.doNotReset,
+                    "value": "1",
+                    "visibilityConditions": [] #TODO
+                },
+                "dynamicLocale": False   
+            }
+            Visits.append(visit)
+            index += 1
+        return Visits
+    
     def generateAvailableForFinish(self):
         Finish = []
         objective = 0
@@ -213,6 +251,9 @@ class Quest:
             
         for handoverItem in self.generateFinishHandover():
             Finish.append(handoverItem)
+        
+        for visitPlace in self.generateFinishVisit():
+            Finish.append(visitPlace)
             
         return Finish
 

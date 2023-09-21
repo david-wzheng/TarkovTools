@@ -38,7 +38,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>Tarkov Tools 0.0.8</string>
+   <string>Tarkov Tools 0.0.9</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -547,7 +547,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </rect>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>3</number>
             </property>
             <property name="tabBarAutoHide">
              <bool>false</bool>
@@ -1089,6 +1089,112 @@ li.checked::marker { content: &quot;\2612&quot;; }
               </property>
               <property name="text">
                <string>Handover: Uses the same props from above.</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="tab_19">
+             <attribute name="title">
+              <string>Visit Place</string>
+             </attribute>
+             <widget class="QLabel" name="label_31">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>10</y>
+                <width>101</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visit Place&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="ZoneOneSessionOnly">
+              <property name="geometry">
+               <rect>
+                <x>110</x>
+                <y>10</y>
+                <width>121</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>One Session Only</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="ZoneDoNotReset">
+              <property name="geometry">
+               <rect>
+                <x>240</x>
+                <y>10</y>
+                <width>201</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Do Not reset if counter completed</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="ZoneRemoveFromList">
+              <property name="geometry">
+               <rect>
+                <x>320</x>
+                <y>80</y>
+                <width>121</width>
+                <height>24</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Remove from List</string>
+              </property>
+             </widget>
+             <widget class="QListWidget" name="ZoneVisitWidget">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>110</y>
+                <width>451</width>
+                <height>241</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="ZoneAddToList">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>80</y>
+                <width>121</width>
+                <height>24</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Add To List</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="FinishZoneName">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>40</y>
+                <width>211</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="placeholderText">
+               <string>Zone Name</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_32">
+              <property name="geometry">
+               <rect>
+                <x>180</x>
+                <y>80</y>
+                <width>91</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is very WIP.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </widget>
@@ -2487,34 +2593,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </widget>
            </widget>
           </widget>
-          <widget class="QWidget" name="tab">
-           <attribute name="title">
-            <string>Json</string>
-           </attribute>
-           <widget class="QTabWidget" name="tabWidget_4">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>451</width>
-              <height>971</height>
-             </rect>
-            </property>
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <widget class="QWidget" name="tab_9">
-             <attribute name="title">
-              <string>Quest.Json</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_10">
-             <attribute name="title">
-              <string>Locale.json</string>
-             </attribute>
-            </widget>
-           </widget>
-          </widget>
          </widget>
          <widget class="QCheckBox" name="CanShowNotifications">
           <property name="geometry">
@@ -3032,7 +3110,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="text">
-           <string>ALPHA VERSION 0.0.8 NOT FEATURE COMPLETE. REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS</string>
+           <string>ALPHA VERSION 0.0.9 NOT FEATURE COMPLETE. REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS</string>
           </property>
           <property name="wordWrap">
            <bool>false</bool>

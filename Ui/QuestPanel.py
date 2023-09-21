@@ -96,6 +96,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkillToScrollList)
         self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItemToScrollList)
         self.mainWindow.HandoverItemAddToList.clicked.connect(self.addFinishHandoverToScrollList)
+        self.mainWindow.ZoneAddToList.clicked.connect(self.addFinishVisitToScrollList)
         self.mainWindow.FailExitStatusAdd.clicked.connect(self.addFailExitStatusToScrollList)
         self.mainWindow.FailLocationAdd.clicked.connect(self.addFailExitLocationToScrollList)
         self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExitToScrollList)
@@ -115,6 +116,7 @@ class QuestPanel(Quest):
         self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
         self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
         self.mainWindow.FinishHandoverRemoveList.clicked.connect(self.removeFinishHandoverScrollItem)
+        self.mainWindow.ZoneRemoveFromList.clicked.connect(self.removeFinishVisitScrollItem)
         self.mainWindow.FailExitStatusRemove.clicked.connect(self.removeFailExitStatusScrollList)
         self.mainWindow.FailLocationRemove.clicked.connect(self.removeFailExitLocationScrollList)
         self.mainWindow.FailExitRemoveFromList.clicked.connect(self.removeFailExitScrollList)
@@ -219,6 +221,16 @@ class QuestPanel(Quest):
 
         object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nHandover Text: {item.handover}"
         self.mainWindow.FinishHandoverWidget.addItem(object)
+      
+    def addFinishVisitToScrollList(self):
+        visit = Object()       
+        visit.zone = self.mainWindow.FinishZoneName.text()
+        visit.doNotReset = self.mainWindow.FinishZoneName.text()
+        visit.oneSession = self.mainWindow.FinishZoneName.text()
+        
+        object = f"Visit Zone: {visit.zone} Do Not reset: {visit.doNotReset} One Session: {visit.oneSession}"
+        self.finishVisitList.append(visit)
+        self.mainWindow.ZoneVisitWidget.addItem(object)
         
     def addAvailableQuestToScrollList(self):
         quest = Object()       
@@ -232,8 +244,7 @@ class QuestPanel(Quest):
         self.availableStatusList.append(quest)
 
         object = f"Status: {statusSelected} questId: {quest.questId} DynamicLocale: {quest.dynamicLocale}"
-        listWidget = self.mainWindow.StartQuestWidget
-        listWidget.addItem(object)
+        self.mainWindow.StartQuestWidget.addItem(object)
         
     def addAvailableLoyaltyToScrollList(self):
         loyalty = Object()       
@@ -427,6 +438,12 @@ class QuestPanel(Quest):
         self.finishHandoverList.pop(selectedIndex)
         self.clearLocale("AvailableForFinish", "HandoverItem")
     
+    def removeFinishVisitScrollItem(self):
+        selectedIndex = self.mainWindow.ZoneVisitWidget.currentRow()
+        self.mainWindow.ZoneVisitWidget.takeItem(selectedIndex)
+        self.finishVisitList.pop(selectedIndex)
+        #self.clearLocale("AvailableForFinish", "VisitPlace") TODO is this needed?
+    
     def removeAvailableQuestScrollItem(self):
         selectedIndex = self.mainWindow.StartQuestWidget.currentRow()
         self.mainWindow.StartQuestWidget.takeItem(selectedIndex)
@@ -612,7 +629,7 @@ class QuestPanel(Quest):
             print("Saved in Bypass mode.")
         else:
             quest = self.setUpQuest()
-            if not self.validate(quest):
+            if not self.validate():
                 print("Save Error: Validation Failed.")
                 return
             else: 
@@ -669,6 +686,7 @@ class QuestPanel(Quest):
         self.finishSkillList.clear()
         self.finishHandoverList.clear()
         self.finishItemList.clear()
+        self.finishVisitList.clear()
         self.availableStatusList.clear()
         self.availableLoyaltyList.clear()
         self.failExitList.clear()
@@ -951,6 +969,15 @@ class QuestPanel(Quest):
                     object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nMessage: {item.handover}"
                     self.finishHandoverList.append(item)
                     self.mainWindow.FinishHandoverWidget.addItem(object)
+                elif condition["_props"]["counter"]["conditions"][0]["_parent"] == "VisitPlace":
+                    visit = Object()       
+                    visit.zone = condition["_props"]["counter"]["conditions"][0]["_props"]["target"]
+                    visit.doNotReset = condition["_props"]["doNotResetIfCounterCompleted"]
+                    visit.oneSession = condition["_props"]["oneSessionOnly"]
+                    
+                    object = f"Visit Zone: {visit.zone} Do Not reset: {visit.doNotReset} One Session: {visit.oneSession}"
+                    self.finishVisitList.append(visit)
+                    self.mainWindow.ZoneVisitWidget.addItem(object)
                 else:
                     self.log(f"Unhandled: {quest['_id']} AFF {condition['_parent']} \n This is okay.")
     
