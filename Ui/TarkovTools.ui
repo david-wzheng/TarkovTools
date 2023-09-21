@@ -38,7 +38,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>Tarkov Tools 0.0.9</string>
+   <string>Tarkov Tools</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -178,7 +178,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="tabBarAutoHide">
            <bool>false</bool>
@@ -3075,7 +3075,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QLabel" name="Author">
           <property name="geometry">
            <rect>
-            <x>370</x>
+            <x>350</x>
             <y>900</y>
             <width>171</width>
             <height>21</height>
@@ -3091,7 +3091,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QLineEdit" name="GithubPath">
           <property name="geometry">
            <rect>
-            <x>550</x>
+            <x>530</x>
             <y>900</y>
             <width>231</width>
             <height>21</height>
@@ -3116,14 +3116,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QLabel" name="ALPHAVERSION">
           <property name="geometry">
            <rect>
-            <x>790</x>
+            <x>770</x>
             <y>900</y>
             <width>661</width>
             <height>21</height>
            </rect>
           </property>
           <property name="text">
-           <string>ALPHA VERSION 0.0.9 NOT FEATURE COMPLETE. REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS</string>
+           <string>ALPHA VERSION NOT FEATURE COMPLETE. REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS</string>
           </property>
           <property name="wordWrap">
            <bool>false</bool>
@@ -3159,9 +3159,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
           <property name="geometry">
            <rect>
             <x>460</x>
-            <y>870</y>
+            <y>871</y>
             <width>221</width>
-            <height>21</height>
+            <height>20</height>
            </rect>
           </property>
           <property name="text">
@@ -3235,7 +3235,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <widget class="QPushButton" name="ClearConsole">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>10</x>
             <y>900</y>
             <width>101</width>
             <height>24</height>

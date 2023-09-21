@@ -9,8 +9,17 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
-        self.questPanel = QuestPanel(self.ui) 
+        
+        self.version = "0.0.9"       
+        debug = False
+        
+        if debug:
+            self.title = f"Tarkov Tools {self.version} - Debug"
+        else:
+            self.title = f"Tarkov Tools {self.version}" 
+                    
+        self.setWindowTitle(self.title)
+        self.questPanel = QuestPanel(self.ui, debug) 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

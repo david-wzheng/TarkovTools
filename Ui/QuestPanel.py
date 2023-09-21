@@ -10,20 +10,28 @@ from src.constants import *
 from src.Utils import *
 
 class QuestPanel(Quest):
-    def __init__(self, mainWindow: Ui_MainWindow):
+    def __init__(self, mainWindow: Ui_MainWindow, debug: bool):
         super().__init__(mainWindow)
         self.mainWindow = mainWindow
-        
+        self.debug = debug
+              
         # Temp Lists
         self.failExitStatusList = []
         self.failExitLocationList = []           
           
         self.localizedLookup = []
         self.selectedQuestIndex = 0  
-        self.showLocalizedNames = False
         self.openFileName = ""
         self.openLocaleFileName = ""
         self.selectedQuestEntry = ""
+        
+        if debug:
+            self.openFileName = f"/Json/test.json"
+            self.openLocaleFileName = f"/Json/testlocale.json"
+            Utils.saveJsonFile(self.openFileName, self.questFile)
+            Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+            self.mainWindow.LoadFilePath.setText(self.openFileName)
+            self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
         
         self.addItemsToDropBoxes()
         self.setUpSignals()
@@ -76,7 +84,7 @@ class QuestPanel(Quest):
     def setUpSignals(self):
         self.mainWindow.LoadQuestFile.clicked.connect(self.loadFileDialog)
         self.mainWindow.SaveQuestFile.clicked.connect(self.SaveFile)
-        self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
+        self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuest)
         self.mainWindow.RemoveFromQuestFile.clicked.connect(self.deleteQuest)
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
         self.mainWindow.ClearButton.clicked.connect(self.clearButton)
@@ -193,7 +201,7 @@ class QuestPanel(Quest):
             object = f"QuestId: {quest}\nQuestName: {self.localeFile[lookup]}"
             listWidget.addItem(object)
        
-    def editSelectedQuestScrollList(self):
+    def editSelectedQuest(self):
         dialog = QMessageBox()
         dialog.setWindowTitle("Edit Quest")
         dialog.setText("Save any unsaved progress with Add/Update quest before proceeding")
@@ -319,7 +327,7 @@ class QuestPanel(Quest):
             print("Saved in Bypass mode.")
         else:
             quest = self.setUpQuest()
-            if not self.validate():
+            if not self.validate() and not self.debug:
                 print("Save Error: Validation Failed.")
                 return
             else: 
