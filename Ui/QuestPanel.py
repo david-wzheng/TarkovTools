@@ -74,36 +74,36 @@ class QuestPanel(Quest):
         self.mainWindow.StartedAssortLoyaltyLevelComboBox.addItems(sorted(LoyaltyLevels))
         
     def setUpSignals(self):
-        self.mainWindow.LoadQuestFile.clicked.connect(self.showLoadFileDialog)
+        self.mainWindow.LoadQuestFile.clicked.connect(self.loadFileDialog)
         self.mainWindow.SaveQuestFile.clicked.connect(self.SaveFile)
         self.mainWindow.EditQuest.clicked.connect(self.editSelectedQuestScrollList)
         self.mainWindow.RemoveFromQuestFile.clicked.connect(self.deleteQuest)
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
         self.mainWindow.ClearButton.clicked.connect(self.clearButton)
         self.mainWindow.ClearConsole.clicked.connect(self.clearConsole)
-        self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
+        self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedText)
         self.setupAddSignals()
         self.setupRemoveSignals()
         
     def setupAddSignals(self):
-        self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrencyToScrollList)
-        self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStandingToScrollList)
-        self.mainWindow.SuccessAddItemToList.clicked.connect(self.addSuccessItemToScrollList)
-        self.mainWindow.AssortTraderUnlockAddToList.clicked.connect(self.addSuccessAssortUnlockToScrollList)
-        self.mainWindow.StartedAddItemToList.clicked.connect(self.addStartedItemtoScrollList)
-        self.mainWindow.StartedAssortTraderUnlockAddToList.clicked.connect(self.addStartedAssortUnlockToScrollList)
-        self.mainWindow.AvailableForStartAddToList.clicked.connect(self.addAvailableQuestToScrollList)
-        self.mainWindow.AvailableForStartLoyaltyAddToList.clicked.connect(self.addAvailableLoyaltyToScrollList)
-        self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyaltyToScrollList)
-        self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkillToScrollList)
-        self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItemToScrollList)
-        self.mainWindow.HandoverItemAddToList.clicked.connect(self.addFinishHandoverToScrollList)
-        self.mainWindow.ZoneAddToList.clicked.connect(self.addFinishVisitToScrollList)
-        self.mainWindow.FailExitStatusAdd.clicked.connect(self.addFailExitStatusToScrollList)
-        self.mainWindow.FailLocationAdd.clicked.connect(self.addFailExitLocationToScrollList)
-        self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExitToScrollList)
-        self.mainWindow.FailQuestAddToList.clicked.connect(self.addFailQuestToScrollList)
-        self.mainWindow.FailStandingAddToList.clicked.connect(self.addFailStandingToScrollList)
+        self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrency)
+        self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStanding)
+        self.mainWindow.SuccessAddItemToList.clicked.connect(self.addSuccessItem)
+        self.mainWindow.AssortTraderUnlockAddToList.clicked.connect(self.addSuccessAssortUnlock)
+        self.mainWindow.StartedAddItemToList.clicked.connect(self.addStartedItem)
+        self.mainWindow.StartedAssortTraderUnlockAddToList.clicked.connect(self.addStartedAssortUnlock)
+        self.mainWindow.AvailableForStartAddToList.clicked.connect(self.addAvailableQuest)
+        self.mainWindow.AvailableForStartLoyaltyAddToList.clicked.connect(self.addAvailableLoyalty)
+        self.mainWindow.FinishLoyaltyAddToList.clicked.connect(self.addFinishLoyalty)
+        self.mainWindow.FinishSkillAddToList.clicked.connect(self.addFinishSkill)
+        self.mainWindow.FinishItemAddToList.clicked.connect(self.addFinishItem)
+        self.mainWindow.HandoverItemAddToList.clicked.connect(self.addFinishHandover)
+        self.mainWindow.ZoneAddToList.clicked.connect(self.addFinishVisit)
+        self.mainWindow.FailExitStatusAdd.clicked.connect(self.addFailExitStatus)
+        self.mainWindow.FailLocationAdd.clicked.connect(self.addFailExitLocation)
+        self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExit)
+        self.mainWindow.FailQuestAddToList.clicked.connect(self.addFailQuest)
+        self.mainWindow.FailStandingAddToList.clicked.connect(self.addFailStanding)
           
     def setupRemoveSignals(self):
         self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
@@ -225,7 +225,7 @@ class QuestPanel(Quest):
             del self.questFile[self.selectedQuestEntry]
             self.SaveFile(True)
                  
-    def showLoadFileDialog(self):
+    def loadFileDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         fileDialog = QFileDialog()
@@ -247,11 +247,11 @@ class QuestPanel(Quest):
             self.mainWindow.LoadFilePath.setText(self.openFileName)
             self.questFile = Utils.loadJsonFile(self.openFileName)
             print(f"Loaded Quests: {len(self.questFile)}")
-            self.showLoadLocaleDialog()
+            self.loadLocaleDialog()
         elif result == QMessageBox.Abort:
             pass
 
-    def showLoadLocaleDialog(self):
+    def loadLocaleDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         fileDialog = QFileDialog()
@@ -428,9 +428,27 @@ class QuestPanel(Quest):
         for checkBox in checkBoxes:
             checkBox.setChecked(False)
         self.mainWindow.CanShowNotifications.setChecked(True)
+    
+    def clearButton(self):
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Are you sure?")
+        dialog.setText("Unsaved changes will be lost")
+        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        result = dialog.exec_()
+        if result == QMessageBox.Ok:
+            self.clearAll()
+        elif result == QMessageBox.Cancel:
+            pass
+    
+    def getSelectedText(self):
+        self.selectedQuestIndex = self.mainWindow.QuestFileWidget.currentRow()
+        pattern = r'QuestId: (\w+)'
+        match = re.search(pattern, self.mainWindow.QuestFileWidget.currentItem().text())
+        if match:
+            self.selectedQuestEntry = match.group(1)
  
     # SCROLL WIDGET POPULATION
-    def addFinishLoyaltyToScrollList(self):
+    def addFinishLoyalty(self):
         loyalty = Object()       
         loyalty.dynamicLocale = self.mainWindow.FinishLoyaltyDynamicLocale.isChecked()
         loyalty.value = self.mainWindow.FinishLoyaltyValue.text()
@@ -447,7 +465,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FinishLoyaltyWidget
         listWidget.addItem(object)
      
-    def addFinishSkillToScrollList(self):
+    def addFinishSkill(self):
         skill = Object()       
         skill.skill = self.mainWindow.FinishSkillComboBox.currentText()
         skill.dynamicLocale = self.mainWindow.FinishDynamicLocaleSkill.isChecked()
@@ -461,7 +479,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FinishSkillWidget
         listWidget.addItem(object)
     
-    def addFinishItemToScrollList(self):
+    def addFinishItem(self):
         item = Object()       
         item.id = self.mainWindow.FinishItemId.text()
         item.dynamicLocale = self.mainWindow.FinishItemDynamicLocale.isChecked()
@@ -478,7 +496,7 @@ class QuestPanel(Quest):
         object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded} \nFind Text: {item.find}"
         self.mainWindow.FinishItemWidget.addItem(object)
         
-    def addFinishHandoverToScrollList(self):
+    def addFinishHandover(self):
         item = Object()       
         item.id = self.mainWindow.FinishItemId.text()
         item.dynamicLocale = self.mainWindow.FinishItemDynamicLocale.isChecked()
@@ -495,7 +513,7 @@ class QuestPanel(Quest):
         object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nHandover Text: {item.handover}"
         self.mainWindow.FinishHandoverWidget.addItem(object)
       
-    def addFinishVisitToScrollList(self):
+    def addFinishVisit(self):
         visit = Object()       
         visit.zone = self.mainWindow.FinishZoneName.text()
         visit.doNotReset = self.mainWindow.ZoneDoNotReset.isChecked()
@@ -506,7 +524,7 @@ class QuestPanel(Quest):
         self.finishVisitList.append(visit)
         self.mainWindow.ZoneVisitWidget.addItem(object)
         
-    def addAvailableQuestToScrollList(self):
+    def addAvailableQuest(self):
         quest = Object()       
         quest.questId = self.mainWindow.AvailableForStartQuestId.text()
         quest.dynamicLocale = self.mainWindow.AvailableForStartDynamicLocaleQuest.isChecked()
@@ -520,7 +538,7 @@ class QuestPanel(Quest):
         object = f"Status: {statusSelected} questId: {quest.questId} DynamicLocale: {quest.dynamicLocale}"
         self.mainWindow.StartQuestWidget.addItem(object)
         
-    def addAvailableLoyaltyToScrollList(self):
+    def addAvailableLoyalty(self):
         loyalty = Object()       
         loyalty.value = self.mainWindow.AvailableForStartLoyaltyValue.text()
         loyalty.dynamicLocale = self.mainWindow.AvailableForStartLoyaltyDynamicLocaleQuest.isChecked()
@@ -537,7 +555,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.StartLoyaltyWidget
         listWidget.addItem(object)
 
-    def addStartedItemtoScrollList(self):
+    def addStartedItem(self):
         item = Object()
         item.id = self.mainWindow.StartedItemId.text()
         item.value = self.mainWindow.StartedItemAmount.text()
@@ -548,7 +566,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.StartedItemWidget
         listWidget.addItem(object)
     
-    def addStartedAssortUnlockToScrollList(self):
+    def addStartedAssortUnlock(self):
         assort = Object()
         assort.item = self.mainWindow.StartedAssortTraderItemId.text()
         assort.level = int(self.mainWindow.StartedAssortLoyaltyLevelComboBox.currentText())
@@ -563,7 +581,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.StartedAssortTraderWidget
         listWidget.addItem(object)
      
-    def addSuccessCurrencyToScrollList(self):
+    def addSuccessCurrency(self):
         currency = Object()
         currency.value = self.mainWindow.CurrencyAmount.text()
 
@@ -577,7 +595,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.SuccessCurrencyWidget
         listWidget.addItem(object)
 
-    def addSuccessStandingToScrollList(self):
+    def addSuccessStanding(self):
         standing = Object()
         standing.value = self.mainWindow.StandingAmount.text()
           
@@ -591,7 +609,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.SuccessStandingWidget
         listWidget.addItem(object)
 
-    def addSuccessItemToScrollList(self):
+    def addSuccessItem(self):
         item = Object()
         item.id = self.mainWindow.SuccessRewardId.text()
         item.value = self.mainWindow.SuccessRewardAmount.text()
@@ -601,7 +619,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.SuccessItemWidget
         listWidget.addItem(object)
 
-    def addSuccessAssortUnlockToScrollList(self):
+    def addSuccessAssortUnlock(self):
         assort = Object()
         assort.item = self.mainWindow.AssortTraderItemId.text()
         assort.level = int(self.mainWindow.AssortLoyaltyLevelComboBox.currentText())
@@ -616,7 +634,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.AssortTraderAssortUnlockWidget
         listWidget.addItem(object)
 
-    def addFailExitStatusToScrollList(self):
+    def addFailExitStatus(self):
         value = self.mainWindow.FailExitStatusStatus.currentText()
                 
         self.failExitStatusList.append(value)
@@ -624,7 +642,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FailExitStatusWidget
         listWidget.addItem(object)
     
-    def addFailExitLocationToScrollList(self):        
+    def addFailExitLocation(self):        
         locationSelected = self.mainWindow.FailExitStatusLocation.currentText()
         if locationSelected in locationMapTarget:
             value = locationMapTarget[locationSelected]    
@@ -634,7 +652,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FailExitLocationWidget
         listWidget.addItem(object)
     
-    def addFailExitToScrollList(self):
+    def addFailExit(self):
         exit = Object()
         exit.status = self.failExitStatusList
         exit.location = self.failExitLocationList
@@ -656,7 +674,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FailExitWidget
         listWidget.addItem(object)
     
-    def addFailQuestToScrollList(self):
+    def addFailQuest(self):
         quest = Object()
         quest.questId = self.mainWindow.FailQuestId.text()
         quest.dynamicLocale = self.mainWindow.FailQuestDynamicLocale.isChecked()
@@ -671,7 +689,7 @@ class QuestPanel(Quest):
         listWidget = self.mainWindow.FailQuestWidget
         listWidget.addItem(object)
     
-    def addFailStandingToScrollList(self):
+    def addFailStanding(self):
         standing = Object()
         standing.value = self.mainWindow.FailStandingValue.text()
         standing.dynamicLocale = self.mainWindow.FailStandingDynamicLocale.isChecked()
@@ -686,26 +704,8 @@ class QuestPanel(Quest):
         object = f"TraderId: {standing.traderId} Value: {standing.value} Compare: {standing.compare} dynamicLocale: {standing.dynamicLocale}"
         listWidget = self.mainWindow.FailStandingWidget
         listWidget.addItem(object)
-           
-    def getSelectedTextFromScrollList(self):
-        self.selectedQuestIndex = self.mainWindow.QuestFileWidget.currentRow()
-        pattern = r'QuestId: (\w+)'
-        match = re.search(pattern, self.mainWindow.QuestFileWidget.currentItem().text())
-        if match:
-            self.selectedQuestEntry = match.group(1)
-    
-    #Display Quest Values
-    def clearButton(self):
-        dialog = QMessageBox()
-        dialog.setWindowTitle("Are you sure?")
-        dialog.setText("Unsaved changes will be lost")
-        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        result = dialog.exec_()
-        if result == QMessageBox.Ok:
-            self.clearAll()
-        elif result == QMessageBox.Cancel:
-            pass
-    
+     
+    #Display Quest Values  
     def displayQuestValues(self):
         self.clearAll()
         self.displayRootValues()
