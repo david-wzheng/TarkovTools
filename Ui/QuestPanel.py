@@ -175,9 +175,9 @@ class QuestPanel(Quest):
     def clearConsole(self):
         self.mainWindow.Console.clear()
      
-    # Remove from a specific widget providing the associated list
-    # Can also provide a condition to delete a locale entry for
     def removeFromWidget(self, widget, list, condition = None, key = None, counterCreator = False):
+        # Remove from a specific widget providing the associated list
+        # Can also provide a condition to delete a locale entry for
         selectedIndex = widget.currentRow()
         widget.takeItem(selectedIndex)
         list.pop(selectedIndex)
@@ -207,6 +207,228 @@ class QuestPanel(Quest):
             else:
                 self.mainWindow.CurrentQuestText.setText(self.questFile[self.selectedQuestEntry])
     
+    def deleteQuest(self):   
+        dialog = QMessageBox()
+        dialog.setWindowTitle(f"Remove Quest")
+        dialog.setText(f"Are you sure you want to remove {self.questFile[self.selectedQuestEntry]['QuestName']}")
+        dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        result = dialog.exec_()
+        if result == QMessageBox.Yes:
+            self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
+            keysTodelete = []
+            for locale in self.localeFile:
+                if self.selectedQuestEntry in locale:
+                    keysTodelete.append(locale)
+            for key in keysTodelete:
+                del self.localeFile[key]
+            print(f"Deleting quest with Id: {self.selectedQuestEntry}")
+            del self.questFile[self.selectedQuestEntry]
+            self.SaveFile(True)
+                 
+    def showLoadFileDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        fileDialog = QFileDialog()
+        fileDialog.setOptions(options)
+        fileDialog.setNameFilter("Json files (*.json)")
+          
+        
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Load File")
+        dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding \n DO NOT ATTEMPT TO EDIT BSG QUESTS THEY WILL 100% BREAK")
+        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
+        result = dialog.exec_()
+        if result == QMessageBox.Ignore:
+            self.questFile.clear()
+            self.clearAll()
+            self.mainWindow.QuestFileWidget.clear()
+            self.mainWindow.CurrentQuestText.clear()
+            self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
+            self.mainWindow.LoadFilePath.setText(self.openFileName)
+            self.questFile = Utils.loadJsonFile(self.openFileName)
+            print(f"Loaded Quests: {len(self.questFile)}")
+            self.showLoadLocaleDialog()
+        elif result == QMessageBox.Abort:
+            pass
+
+    def showLoadLocaleDialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        fileDialog = QFileDialog()
+        fileDialog.setOptions(options)
+        fileDialog.setNameFilter("Json files (*.json)")
+        self.openLocaleFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Locale.json", "./json", "Json Files (*.json)")
+        self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
+        
+        if self.openLocaleFileName:
+            self.localeFile.clear()
+            self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
+            print(f"Loaded Locales: {len(self.localeFile)}")
+            self.refreshQuestList()
+
+    def newSaveFile(self):  
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        fileDialog = QFileDialog()
+        fileDialog.setOptions(options)
+        fileDialog.setNameFilter("Json files (*.json)")
+        
+        dialog = QMessageBox()
+        dialog.setWindowTitle("New File")
+        dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding")
+        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
+        result = dialog.exec_()
+        
+        if result == QMessageBox.Ignore:
+            self.questFile.clear()
+            self.clearAll()
+            self.mainWindow.CurrentQuestText.clear()
+            self.openFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
+            self.mainWindow.LoadFilePath.setText(self.openFileName)
+            Utils.saveJsonFile(self.openFileName, self.questFile)
+            self.newLocaleFile()
+        elif result == QMessageBox.Abort:
+            pass
+    
+    def newLocaleFile(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        fileDialog = QFileDialog()
+        fileDialog.setOptions(options)
+        fileDialog.setNameFilter("Json files (*.json)")    
+        self.openLocaleFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Locale.json", "./json", "Json Files (*.json)")
+        self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
+        
+        if self.openLocaleFileName:
+            self.localeFile.clear()
+            Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+            self.refreshQuestList()
+   
+    def SaveFile(self, bypass = False):        
+        if not self.mainWindow._Id.text() and not bypass:
+            self.log("Save Error: Failed to add quest - Id is empty.")
+            return
+        elif bypass:
+            # This is only accessed from the remove quest button
+            Utils.saveJsonFile(self.openFileName, self.questFile)
+            Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+            self.clearAll()
+            self.questFile = Utils.loadJsonFile(self.openFileName)
+            self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
+            self.refreshQuestList()
+            print("Saved in Bypass mode.")
+        else:
+            quest = self.setUpQuest()
+            if not self.validate():
+                print("Save Error: Validation Failed.")
+                return
+            else: 
+                self.questFile[quest["_id"]] = quest
+                self.mainWindow.CurrentQuestText.setText(quest['QuestName'])
+
+                locales = self.setUpQuestLocale()
+                for locale, value in locales.items():
+                    self.localeFile[locale] = value
+
+                Utils.saveJsonFile(self.openFileName, self.questFile)
+                Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
+                self.questFile = Utils.loadJsonFile(self.openFileName)
+                self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
+                self.refreshQuestList()
+                print("Saved in normal mode.")
+      
+    def validate(self):
+        if not self.openFileName:
+            self.log("Save Error: No file is Open.")
+            return False
+        elif not self.openLocaleFileName:
+            self.log("Save Error: No locale file is Open.")
+            return False     
+        elif not self.mainWindow.QuestName.text():
+            self.log("Save Error: Quest name cannot be empty")
+            return False
+        elif not self.mainWindow.TradercomboBox.currentText():
+            self.log("Save Error: Trader cannot be empty.")
+            return False
+        elif not self.mainWindow.LocationComboBox.currentText():
+            self.log("Save Error: Location cannot be empty.")
+            return False
+        elif not self.mainWindow.Side.currentText():
+            self.log("Save Error: Side cannot be empty.")
+            return False
+        elif not self.mainWindow.Type.currentText():
+            self.log("Save Error: Type cannot be empty.")
+            return False
+        return True
+        
+    def clearLocale(self, condition, key, CounterCreator = False):
+        for item in self.questFile[self.selectedQuestEntry]["conditions"][condition]:
+            if item["_parent"] == key and CounterCreator:
+                keytoDelete = ["_props"]["counter"]["conditions"][0]["_parent"]
+                if f"_{key}_" in keytoDelete:
+                    print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
+                    del self.localeFile[keytoDelete]    
+            else:
+                keytoDelete = item["_props"]["id"]
+                if f"_{key}_" in keytoDelete:
+                    print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
+                    del self.localeFile[keytoDelete]
+                               
+    def clearAll(self):
+        # Clear Json lists
+        self.finishLoyaltyList.clear()
+        self.finishSkillList.clear()
+        self.finishHandoverList.clear()
+        self.finishItemList.clear()
+        self.finishVisitList.clear()
+        self.availableStatusList.clear()
+        self.availableLoyaltyList.clear()
+        self.failExitList.clear()
+        self.failQuestList.clear()
+        self.failStandingList.clear()
+        self.standingRewardList.clear()
+        self.successAssortUnlockList.clear()
+        self.itemRewardList.clear()
+        self.startedItemList.clear()
+        self.startedAssortUnlockList.clear()
+        
+        # Combo Boxes
+        comboBoxes = Utils.getWidgetsOfType(self.mainWindow, QComboBox)
+        for box in comboBoxes:
+            box.clear()
+        self.addItemsToDropBoxes()
+        
+        # List Widgets
+        listWidgets = Utils.getWidgetsOfType(self.mainWindow, QListWidget)
+        for listWidget in listWidgets:
+            exclude = ["QuestFileWidget", "Console"]    
+            if listWidget.objectName() not in exclude:
+                listWidget.clear()
+               
+        # Line Widgets
+        lineWidgets = Utils.getWidgetsOfType(self.mainWindow, QLineEdit)
+        for lineWidget in lineWidgets:
+            exclude = ["CurrentQuestText", "LoadedLocalePath", "LoadFilePath", "GithubPath"]
+            if lineWidget.objectName() not in exclude:
+                lineWidget.clear()    
+            
+        self.mainWindow.ImagePath.setText("Placeholder.png")
+        self.mainWindow.FinishItemDogTag.setText("0")
+        self.mainWindow.FinishItemMinDura.setText("0")
+        self.mainWindow.FinishItemMaxDura.setText("100")
+        self.mainWindow.AvailableForStartLevelRequirement.setText("0")
+        
+        # Text Edits
+        textEdits = Utils.getWidgetsOfType(self.mainWindow, QTextEdit)
+        for textWidget in textEdits:
+            textWidget.clear()
+        
+        # Check Boxes
+        checkBoxes = Utils.getWidgetsOfType(self.mainWindow, QCheckBox)
+        for checkBox in checkBoxes:
+            checkBox.setChecked(False)
+        self.mainWindow.CanShowNotifications.setChecked(True)
+ 
     # SCROLL WIDGET POPULATION
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
@@ -471,231 +693,7 @@ class QuestPanel(Quest):
         match = re.search(pattern, self.mainWindow.QuestFileWidget.currentItem().text())
         if match:
             self.selectedQuestEntry = match.group(1)
-                  
-    #File
-    def deleteQuest(self):   
-        dialog = QMessageBox()
-        dialog.setWindowTitle(f"Remove Quest")
-        dialog.setText(f"Are you sure you want to remove {self.questFile[self.selectedQuestEntry]['QuestName']}")
-        dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
-        result = dialog.exec_()
-        if result == QMessageBox.Yes:
-            self.mainWindow.FailStandingWidget.takeItem(self.selectedQuestIndex)
-            keysTodelete = []
-            for locale in self.localeFile:
-                if self.selectedQuestEntry in locale:
-                    keysTodelete.append(locale)
-            for key in keysTodelete:
-                del self.localeFile[key]
-            print(f"Deleting quest with Id: {self.selectedQuestEntry}")
-            del self.questFile[self.selectedQuestEntry]
-            self.SaveFile(True)
-                 
-    def showLoadFileDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-        fileDialog = QFileDialog()
-        fileDialog.setOptions(options)
-        fileDialog.setNameFilter("Json files (*.json)")
-          
-        
-        dialog = QMessageBox()
-        dialog.setWindowTitle("Load File")
-        dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding \n DO NOT ATTEMPT TO EDIT BSG QUESTS THEY WILL 100% BREAK")
-        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
-        result = dialog.exec_()
-        if result == QMessageBox.Ignore:
-            self.questFile.clear()
-            self.clearAll()
-            self.mainWindow.QuestFileWidget.clear()
-            self.mainWindow.CurrentQuestText.clear()
-            self.openFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Quest.json", "./json", "Json Files (*.json)")
-            self.mainWindow.LoadFilePath.setText(self.openFileName)
-            self.questFile = Utils.loadJsonFile(self.openFileName)
-            print(f"Loaded Quests: {len(self.questFile)}")
-            self.showLoadLocaleDialog()
-        elif result == QMessageBox.Abort:
-            pass
-
-    def showLoadLocaleDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-        fileDialog = QFileDialog()
-        fileDialog.setOptions(options)
-        fileDialog.setNameFilter("Json files (*.json)")
-        self.openLocaleFileName, _ = fileDialog.getOpenFileName(self.mainWindow.centralwidget, "Load Locale.json", "./json", "Json Files (*.json)")
-        self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
-        
-        if self.openLocaleFileName:
-            self.localeFile.clear()
-            self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
-            print(f"Loaded Locales: {len(self.localeFile)}")
-            self.refreshQuestList()
-
-    def newSaveFile(self):  
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-        fileDialog = QFileDialog()
-        fileDialog.setOptions(options)
-        fileDialog.setNameFilter("Json files (*.json)")
-        
-        dialog = QMessageBox()
-        dialog.setWindowTitle("New File")
-        dialog.setText("Save any unsaved progress with 'Add/Update Quest' \n then saving the file with 'Save Quest File' before proceeding")
-        dialog.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
-        result = dialog.exec_()
-        
-        if result == QMessageBox.Ignore:
-            self.questFile.clear()
-            self.clearAll()
-            self.mainWindow.CurrentQuestText.clear()
-            self.openFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Quest.json", "./json", "Json Files (*.json)")
-            self.mainWindow.LoadFilePath.setText(self.openFileName)
-            Utils.saveJsonFile(self.openFileName, self.questFile)
-            self.newLocaleFile()
-        elif result == QMessageBox.Abort:
-            pass
     
-    def newLocaleFile(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.ReadOnly
-        fileDialog = QFileDialog()
-        fileDialog.setOptions(options)
-        fileDialog.setNameFilter("Json files (*.json)")    
-        self.openLocaleFileName, _ = fileDialog.getSaveFileName(self.mainWindow.centralwidget, "New Locale.json", "./json", "Json Files (*.json)")
-        self.mainWindow.LoadedLocalePath.setText(self.openLocaleFileName) 
-        
-        if self.openLocaleFileName:
-            self.localeFile.clear()
-            Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
-            self.refreshQuestList()
-   
-    def SaveFile(self, bypass = False):        
-        if not self.mainWindow._Id.text() and not bypass:
-            self.log("Save Error: Failed to add quest - Id is empty.")
-            return
-        elif bypass:
-            # This is only accessed from the remove quest button
-            Utils.saveJsonFile(self.openFileName, self.questFile)
-            Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
-            self.clearAll()
-            self.questFile = Utils.loadJsonFile(self.openFileName)
-            self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
-            self.refreshQuestList()
-            print("Saved in Bypass mode.")
-        else:
-            quest = self.setUpQuest()
-            if not self.validate():
-                print("Save Error: Validation Failed.")
-                return
-            else: 
-                self.questFile[quest["_id"]] = quest
-                self.mainWindow.CurrentQuestText.setText(quest['QuestName'])
-
-                locales = self.setUpQuestLocale()
-                for locale, value in locales.items():
-                    self.localeFile[locale] = value
-
-                Utils.saveJsonFile(self.openFileName, self.questFile)
-                Utils.saveJsonFile(self.openLocaleFileName, self.localeFile)
-                self.questFile = Utils.loadJsonFile(self.openFileName)
-                self.localeFile = Utils.loadJsonFile(self.openLocaleFileName)
-                self.refreshQuestList()
-                print("Saved in normal mode.")
-      
-    def validate(self):
-        if not self.openFileName:
-            self.log("Save Error: No file is Open.")
-            return False
-        elif not self.openLocaleFileName:
-            self.log("Save Error: No locale file is Open.")
-            return False     
-        elif not self.mainWindow.QuestName.text():
-            self.log("Save Error: Quest name cannot be empty")
-            return False
-        elif not self.mainWindow.TradercomboBox.currentText():
-            self.log("Save Error: Trader cannot be empty.")
-            return False
-        elif not self.mainWindow.LocationComboBox.currentText():
-            self.log("Save Error: Location cannot be empty.")
-            return False
-        elif not self.mainWindow.Side.currentText():
-            self.log("Save Error: Side cannot be empty.")
-            return False
-        elif not self.mainWindow.Type.currentText():
-            self.log("Save Error: Type cannot be empty.")
-            return False
-        return True
-        
-    # Clears the locale entry for the selected index and parent condition
-    def clearLocale(self, condition, key, CounterCreator = False):
-        for item in self.questFile[self.selectedQuestEntry]["conditions"][condition]:
-            if item["_parent"] == key and CounterCreator:
-                keytoDelete = ["_props"]["counter"]["conditions"][0]["_parent"]
-                if f"_{key}_" in keytoDelete:
-                    print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
-                    del self.localeFile[keytoDelete]    
-            else:
-                keytoDelete = item["_props"]["id"]
-                if f"_{key}_" in keytoDelete:
-                    print(f"Deleting key: {self.localeFile[keytoDelete]} from locale file")
-                    del self.localeFile[keytoDelete]
-                               
-    def clearAll(self):
-        # Clear Json lists
-        self.finishLoyaltyList.clear()
-        self.finishSkillList.clear()
-        self.finishHandoverList.clear()
-        self.finishItemList.clear()
-        self.finishVisitList.clear()
-        self.availableStatusList.clear()
-        self.availableLoyaltyList.clear()
-        self.failExitList.clear()
-        self.failQuestList.clear()
-        self.failStandingList.clear()
-        self.standingRewardList.clear()
-        self.successAssortUnlockList.clear()
-        self.itemRewardList.clear()
-        self.startedItemList.clear()
-        self.startedAssortUnlockList.clear()
-        
-        # Combo Boxes
-        comboBoxes = Utils.getWidgetsOfType(self.mainWindow, QComboBox)
-        for box in comboBoxes:
-            box.clear()
-        self.addItemsToDropBoxes()
-        
-        # List Widgets
-        listWidgets = Utils.getWidgetsOfType(self.mainWindow, QListWidget)
-        for listWidget in listWidgets:
-            exclude = ["QuestFileWidget", "Console"]    
-            if listWidget.objectName() not in exclude:
-                listWidget.clear()
-               
-        # Line Widgets
-        lineWidgets = Utils.getWidgetsOfType(self.mainWindow, QLineEdit)
-        for lineWidget in lineWidgets:
-            exclude = ["CurrentQuestText", "LoadedLocalePath", "LoadFilePath", "GithubPath"]
-            if lineWidget.objectName() not in exclude:
-                lineWidget.clear()    
-            
-        self.mainWindow.ImagePath.setText("Placeholder.png")
-        self.mainWindow.FinishItemDogTag.setText("0")
-        self.mainWindow.FinishItemMinDura.setText("0")
-        self.mainWindow.FinishItemMaxDura.setText("100")
-        self.mainWindow.AvailableForStartLevelRequirement.setText("0")
-        
-        # Text Edits
-        textEdits = Utils.getWidgetsOfType(self.mainWindow, QTextEdit)
-        for textWidget in textEdits:
-            textWidget.clear()
-        
-        # Check Boxes
-        checkBoxes = Utils.getWidgetsOfType(self.mainWindow, QCheckBox)
-        for checkBox in checkBoxes:
-            checkBox.setChecked(False)
-        self.mainWindow.CanShowNotifications.setChecked(True)
-
     #Display Quest Values
     def clearButton(self):
         dialog = QMessageBox()
