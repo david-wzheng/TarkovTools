@@ -81,9 +81,11 @@ class QuestPanel(Quest):
         self.mainWindow.NewQuestFile.clicked.connect(self.newSaveFile)
         self.mainWindow.ClearButton.clicked.connect(self.clearButton)
         self.mainWindow.ClearConsole.clicked.connect(self.clearConsole)
-        
         self.mainWindow.QuestFileWidget.clicked.connect(self.getSelectedTextFromScrollList)
-        # Add To List
+        self.setupAddSignals()
+        self.setupRemoveSignals()
+        
+    def setupAddSignals(self):
         self.mainWindow.SuccessAddCurrencyToList.clicked.connect(self.addSuccessCurrencyToScrollList)
         self.mainWindow.SuccessAddStandingToList.clicked.connect(self.addSuccessStandingToScrollList)
         self.mainWindow.SuccessAddItemToList.clicked.connect(self.addSuccessItemToScrollList)
@@ -102,26 +104,66 @@ class QuestPanel(Quest):
         self.mainWindow.FailExitAddToList.clicked.connect(self.addFailExitToScrollList)
         self.mainWindow.FailQuestAddToList.clicked.connect(self.addFailQuestToScrollList)
         self.mainWindow.FailStandingAddToList.clicked.connect(self.addFailStandingToScrollList)
+          
+    def setupRemoveSignals(self):
+        self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.SuccessCurrencyWidget, self.itemRewardList))
         
-        # Remove From List
-        self.mainWindow.SuccessCurrencyRemoveFromList.clicked.connect(self.removeSuccessCurrencyScrollItem)
-        self.mainWindow.SuccessRemoveStandingFromList.clicked.connect(self.removeSuccessStandingScrollItem)
-        self.mainWindow.SuccessRemoveItemFromList.clicked.connect(self.removeSuccessItemScrollItem)
-        self.mainWindow.AssortTraderUnlockRemoveFromList.clicked.connect(self.removeAssortUnlockScrollItem)
-        self.mainWindow.StartedRemoveItemFromList.clicked.connect(self.removeStartedItemScrollItem)
-        self.mainWindow.StartedAssortTraderUnlockRemoveFromList.clicked.connect(self.removeStartedAssortScrollItem)
-        self.mainWindow.AvailableForStartRemoveFromList.clicked.connect(self.removeAvailableQuestScrollItem)
-        self.mainWindow.AvailableForStartLoyaltyRemoveFromList.clicked.connect(self.removeAvailableLoyaltyScrollItem)
-        self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(self.removeFinishLoyaltyScrollItem)
-        self.mainWindow.FinishSkillRemoveFromList.clicked.connect(self.removeFinishSkillScrollItem)
-        self.mainWindow.FinishItemRemoveFromList.clicked.connect(self.removeFinishItemScrollItem)
-        self.mainWindow.FinishHandoverRemoveList.clicked.connect(self.removeFinishHandoverScrollItem)
-        self.mainWindow.ZoneRemoveFromList.clicked.connect(self.removeFinishVisitScrollItem)
-        self.mainWindow.FailExitStatusRemove.clicked.connect(self.removeFailExitStatusScrollList)
-        self.mainWindow.FailLocationRemove.clicked.connect(self.removeFailExitLocationScrollList)
-        self.mainWindow.FailExitRemoveFromList.clicked.connect(self.removeFailExitScrollList)
-        self.mainWindow.FailQuestRemoveFromList.clicked.connect(self.removeFailQuestScrollList)
-        self.mainWindow.FailStandingRemoveFromList.clicked.connect(self.removeFailStandingScrollList)
+        self.mainWindow.SuccessRemoveStandingFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.SuccessStandingWidget, self.standingRewardList))
+        
+        self.mainWindow.SuccessRemoveItemFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.SuccessItemWidget, self.itemRewardList))
+        
+        self.mainWindow.AssortTraderUnlockRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.AssortTraderAssortUnlockWidget, self.successAssortUnlockList))
+        
+        self.mainWindow.StartedRemoveItemFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.StartedItemWidget, self.startedItemList))
+        
+        self.mainWindow.StartedAssortTraderUnlockRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.StartedAssortTraderWidget, self.startedAssortUnlockList))
+        
+        self.mainWindow.AvailableForStartRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.StartQuestWidget, self.availableStatusList))
+        
+        self.mainWindow.AvailableForStartLoyaltyRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.StartLoyaltyWidget, self.availableLoyaltyList))
+        
+        self.mainWindow.FinishLoyaltyRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FinishLoyaltyWidget, self.finishLoyaltyList,
+            "AvailableForFinish", "TraderLoyalty"))
+        
+        self.mainWindow.FinishSkillRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FinishSkillWidget, self.finishSkillList,
+            "AvailableForFinish", "Skill"))
+        
+        self.mainWindow.FinishItemRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FinishItemWidget, self.finishItemList,
+            "AvailableForFinish", "FindItem"))
+        
+        self.mainWindow.FinishHandoverRemoveList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FinishHandoverWidget, self.finishHandoverList,
+            "AvailableForFinish", "HandoverItem"))
+        
+        self.mainWindow.ZoneRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.ZoneVisitWidget, self.finishVisitList,
+            "AvailableForFinish", "VisitPlace", True))
+        
+        self.mainWindow.FailExitStatusRemove.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FailExitStatusWidget, self.failExitStatusList))
+        
+        self.mainWindow.FailLocationRemove.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FailExitLocationWidget, self.failExitLocationList))
+        
+        self.mainWindow.FailExitRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FailExitWidget, self.failExitList))
+        
+        self.mainWindow.FailQuestRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FailQuestWidget, self.failQuestList))
+        
+        self.mainWindow.FailStandingRemoveFromList.clicked.connect(lambda: self.removeFromWidget(
+            self.mainWindow.FailStandingWidget, self.failStandingList))
     
     def setUpControls(self):
         self.mainWindow.AvailableForStartLevelRequirement.setValidator(QIntValidator(1, 999))
@@ -132,8 +174,16 @@ class QuestPanel(Quest):
         
     def clearConsole(self):
         self.mainWindow.Console.clear()
-        
-    # SCROLL WIDGET POPULATION
+     
+    # Remove from a specific widget providing the associated list
+    # Can also provide a condition to delete a locale entry for
+    def removeFromWidget(self, widget, list, condition = None, key = None, counterCreator = False):
+        selectedIndex = widget.currentRow()
+        widget.takeItem(selectedIndex)
+        list.pop(selectedIndex)
+        if condition:
+            self.clearLocale(condition, key, counterCreator)
+                
     def refreshQuestList(self):
         listWidget = self.mainWindow.QuestFileWidget
         listWidget.clear()
@@ -157,6 +207,7 @@ class QuestPanel(Quest):
             else:
                 self.mainWindow.CurrentQuestText.setText(self.questFile[self.selectedQuestEntry])
     
+    # SCROLL WIDGET POPULATION
     def addFinishLoyaltyToScrollList(self):
         loyalty = Object()       
         loyalty.dynamicLocale = self.mainWindow.FinishLoyaltyDynamicLocale.isChecked()
@@ -413,103 +464,7 @@ class QuestPanel(Quest):
         object = f"TraderId: {standing.traderId} Value: {standing.value} Compare: {standing.compare} dynamicLocale: {standing.dynamicLocale}"
         listWidget = self.mainWindow.FailStandingWidget
         listWidget.addItem(object)
-    
-    # SCROLL WIDGET REMOVAL
-    def removeFinishLoyaltyScrollItem(self):
-        selectedIndex = self.mainWindow.FinishLoyaltyWidget.currentRow()
-        self.mainWindow.FinishLoyaltyWidget.takeItem(selectedIndex)
-        self.finishLoyaltyList.pop(selectedIndex)
-        self.clearLocale("AvailableForFinish", "TraderLoyalty")
-        
-    def removeFinishSkillScrollItem(self):
-        selectedIndex = self.mainWindow.FinishSkillWidget.currentRow()
-        self.mainWindow.FinishSkillWidget.takeItem(selectedIndex)
-        self.finishSkillList.pop(selectedIndex)
-        self.clearLocale("AvailableForFinish", "Skill")
-    
-    def removeFinishItemScrollItem(self):
-        selectedIndex = self.mainWindow.FinishItemWidget.currentRow()
-        self.mainWindow.FinishItemWidget.takeItem(selectedIndex)
-        self.finishItemList.pop(selectedIndex)
-        self.clearLocale("AvailableForFinish", "FindItem")
-    
-    def removeFinishHandoverScrollItem(self):
-        selectedIndex = self.mainWindow.FinishHandoverWidget.currentRow()
-        self.mainWindow.FinishHandoverWidget.takeItem(selectedIndex)
-        self.finishHandoverList.pop(selectedIndex)
-        self.clearLocale("AvailableForFinish", "HandoverItem")
-    
-    def removeFinishVisitScrollItem(self):
-        selectedIndex = self.mainWindow.ZoneVisitWidget.currentRow()
-        self.mainWindow.ZoneVisitWidget.takeItem(selectedIndex)
-        self.finishVisitList.pop(selectedIndex)
-        self.clearLocale("AvailableForFinish", "VisitPlace", True)
-    
-    def removeAvailableQuestScrollItem(self):
-        selectedIndex = self.mainWindow.StartQuestWidget.currentRow()
-        self.mainWindow.StartQuestWidget.takeItem(selectedIndex)
-        self.availableStatusList.pop(selectedIndex)
-    
-    def removeAvailableLoyaltyScrollItem(self):
-        selectedIndex = self.mainWindow.StartLoyaltyWidget.currentRow()
-        self.mainWindow.StartLoyaltyWidget.takeItem(selectedIndex)
-        self.availableLoyaltyList.pop(selectedIndex)
-    
-    def removeStartedItemScrollItem(self):
-        selectedIndex = self.mainWindow.StartedItemWidget.currentRow()
-        self.mainWindow.StartedItemWidget.takeItem(selectedIndex)
-        self.startedItemList.pop(selectedIndex)
-        
-    def removeStartedAssortScrollItem(self):
-        selectedIndex = self.mainWindow.StartedAssortTraderWidget.currentRow()
-        self.mainWindow.StartedAssortTraderWidget.takeItem(selectedIndex)
-        self.startedAssortUnlockList.pop(selectedIndex)
-    
-    def removeSuccessCurrencyScrollItem(self):
-        selectedIndex = self.mainWindow.SuccessCurrencyWidget.currentRow()
-        self.mainWindow.SuccessCurrencyWidget.takeItem(selectedIndex)
-        self.itemRewardList.pop(selectedIndex)
-    
-    def removeSuccessStandingScrollItem(self):
-        selectedIndex = self.mainWindow.SuccessStandingWidget.currentRow()
-        self.mainWindow.SuccessStandingWidget.takeItem(selectedIndex)
-        self.standingRewardList.pop(selectedIndex)
-    
-    def removeSuccessItemScrollItem(self):
-        selectedIndex = self.mainWindow.SuccessItemWidget.currentRow()
-        self.mainWindow.SuccessItemWidget.takeItem(selectedIndex)
-        self.itemRewardList.pop(selectedIndex)
-        
-    def removeAssortUnlockScrollItem(self):
-        selectedIndex = self.mainWindow.AssortTraderAssortUnlockWidget.currentRow()
-        self.mainWindow.AssortTraderAssortUnlockWidget.takeItem(selectedIndex)
-        self.successAssortUnlockList.pop(selectedIndex)
-     
-    def removeFailExitStatusScrollList(self):
-        selectedIndex = self.mainWindow.FailExitStatusWidget.currentRow()
-        self.mainWindow.FailExitStatusWidget.takeItem(selectedIndex)
-        self.failExitStatusList.pop(selectedIndex)
-    
-    def removeFailExitLocationScrollList(self):
-        selectedIndex = self.mainWindow.FailExitLocationWidget.currentRow()
-        self.mainWindow.FailExitLocationWidget.takeItem(selectedIndex)
-        self.failExitLocationList.pop(selectedIndex)
-          
-    def removeFailExitScrollList(self):
-        selectedIndex = self.mainWindow.FailExitWidget.currentRow()
-        self.mainWindow.FailExitWidget.takeItem(selectedIndex)
-        self.failExitList.pop(selectedIndex)
-        
-    def removeFailQuestScrollList(self):
-        selectedIndex = self.mainWindow.FailQuestWidget.currentRow()
-        self.mainWindow.FailQuestWidget.takeItem(selectedIndex)
-        self.failQuestList.pop(selectedIndex)
-    
-    def removeFailStandingScrollList(self):
-        selectedIndex = self.mainWindow.FailStandingWidget.currentRow()
-        self.mainWindow.FailStandingWidget.takeItem(selectedIndex)
-        self.failStandingList.pop(selectedIndex)
-      
+           
     def getSelectedTextFromScrollList(self):
         self.selectedQuestIndex = self.mainWindow.QuestFileWidget.currentRow()
         pattern = r'QuestId: (\w+)'
