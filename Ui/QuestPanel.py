@@ -630,7 +630,7 @@ class QuestPanel(Quest):
                 self.refreshQuestList()
                 print("Saved in normal mode.")
       
-    def validate(self, quest):
+    def validate(self):
         if not self.openFileName:
             self.log("Save Error: No file is Open.")
             return False
@@ -888,6 +888,8 @@ class QuestPanel(Quest):
                     
                     self.availableLoyaltyList.append(loyalty)
                     self.mainWindow.StartLoyaltyWidget.addItem(object)
+                else:
+                    self.log(f"Unhandled: {quest['_id']} AOS {condition['_parent']} \n This is okay.")
        
     def displayAvailableForFinish(self):
         quest = self.questFile[self.selectedQuestEntry]
@@ -945,10 +947,12 @@ class QuestPanel(Quest):
                     item.minDurability = condition["_props"]["minDurability"]
                     item.maxDurability = condition["_props"]["maxDurability"]
                     item.handover = self.localeFile[condition["_props"]["id"]]
-                    
+                
                     object = f"Item Id: {item.id} Amount: {item.value} DynamicLocale: {item.dynamicLocale} FIR requirement: {item.fir} Encoded Requirement: {item.encoded}\nMessage: {item.handover}"
                     self.finishHandoverList.append(item)
                     self.mainWindow.FinishHandoverWidget.addItem(object)
+                else:
+                    self.log(f"Unhandled: {quest['_id']} AFF {condition['_parent']} \n This is okay.")
     
     def displayFail(self):
         quest = self.questFile[self.selectedQuestEntry]
@@ -999,6 +1003,8 @@ class QuestPanel(Quest):
                     object = f"TraderId: {standing.traderId} Value: {standing.value} Compare: {standing.compare} dynamicLocale: {standing.dynamicLocale}"
                     self.failStandingList.append(standing)
                     self.mainWindow.FailStandingWidget.addItem(object)
+                else:
+                    self.log(f"Unhandled: {quest['_id']} FAIL {condition['_parent']} \n This is okay.")
                     
     def displayStartedReward(self):
         quest = self.questFile[self.selectedQuestEntry]
@@ -1032,6 +1038,8 @@ class QuestPanel(Quest):
                     scheme.trader = condition["target"]
                     #TODO
                     self.successAssortUnlockList.append(assort)
+                else:
+                    self.log(f"Unhandled: {quest['_id']} SR {condition['_parent']} \n This is okay.")
                 
     def displaySuccessReward(self):
         quest = self.questFile[self.selectedQuestEntry]
@@ -1073,5 +1081,7 @@ class QuestPanel(Quest):
                     else:
                         object = f"Item reward Id: {item.id} Amount: {item.value}"
                         self.mainWindow.SuccessItemWidget.addItem(object)
+                else:
+                    self.log(f"Unhandled: {quest['_id']} SRS {condition['_parent']} \n This is okay.")
     
     
