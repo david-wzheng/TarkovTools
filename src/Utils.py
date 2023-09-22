@@ -1,5 +1,5 @@
 import json, os
-from Ui.TarkovTools_ui import Ui_MainWindow 
+from src.Ui.TarkovTools_ui import Ui_MainWindow 
 
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *

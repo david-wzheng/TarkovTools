@@ -4,7 +4,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 
-from Ui.TarkovTools_ui import Ui_MainWindow
+from src.Ui.TarkovTools_ui import Ui_MainWindow
 from src.Quest import Quest
 from src.constants import *
 from src.Utils import *

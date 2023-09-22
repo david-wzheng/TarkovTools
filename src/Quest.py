@@ -1,5 +1,5 @@
 import string, random
-from Ui.TarkovTools_ui import Ui_MainWindow
+from src.Ui.TarkovTools_ui import Ui_MainWindow
 from src.constants import *
 
 class Quest: 
