@@ -13,7 +13,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         
         self.version = "0.0.9"       
-        debug = True
+        debug = False
         
         if debug:
             self.title = f"Tarkov Tools {self.version} - SPT-AKI 3.6.1 Debug"
