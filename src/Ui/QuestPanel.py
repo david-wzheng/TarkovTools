@@ -471,8 +471,7 @@ class QuestPanel(Quest):
         self.finishLoyaltyList.append(loyalty)
 
         object = f"Trader: {loyalty.traderId} Loyalty Requirement: {loyalty.value} DynamicLocale: {loyalty.dynamicLocale} \nObjective text: {loyalty.text}"
-        listWidget = self.mainWindow.FinishLoyaltyWidget
-        listWidget.addItem(object)
+        self.mainWindow.FinishLoyaltyWidget.addItem(object)
      
     def addFinishSkill(self):
         skill = Object()       
