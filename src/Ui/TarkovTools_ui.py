@@ -941,18 +941,14 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1755, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
-        self.menuTools = QMenu(self.menubar)
-        self.menuTools.setObjectName(u"menuTools")
         MainWindow.setMenuBar(self.menubar)
 
         self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuTools.menuAction())
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionSave_As)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSettings)
-        self.menuTools.addAction(self.actionPower_Search)
 
         self.retranslateUi(MainWindow)
 
@@ -1187,6 +1183,5 @@ class Ui_MainWindow(object):
         self.ALPHAVERSION.setText(QCoreApplication.translate("MainWindow", u"ALPHA VERSION  REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.QuestCreator), QCoreApplication.translate("MainWindow", u"Quest Creator", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
-        self.menuTools.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))
     # retranslateUi
 

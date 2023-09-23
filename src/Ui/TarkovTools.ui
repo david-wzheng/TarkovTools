@@ -2936,14 +2936,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <addaction name="actionPower_Search"/>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuTools"/>
   </widget>
   <action name="actionOpen">
    <property name="text">

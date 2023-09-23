@@ -1,18 +1,16 @@
 import sys
+from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication, QMainWindow
 from src.Ui.TarkovTools_ui import Ui_MainWindow
-from src.Ui.PowerSearch_ui import Ui_MainWindow as PowerSearch_ui
+from src.Ui.PowerSearch_ui import Ui_PowerSearch
 
 from src.Ui.QuestPanel import QuestPanel
-from src.ReferenceTool import ReferenceTool
+from src.PowerSearch import PowerSearch
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
-        self.ui = Ui_MainWindow()
-        #self.search = PowerSearch_ui()
-        self.ui.setupUi(self)
-        #self.search.setupUi(self)
+        super().__init__()
+        self.setupUi(self)
         
         self.version = "0.0.9"       
         debug = True
@@ -23,10 +21,22 @@ class MainWindow(QMainWindow):
             self.title = f"Tarkov Tools {self.version} - SPT-AKI 3.6.1" 
                     
         self.setWindowTitle(self.title)
-        self.questPanel = QuestPanel(self.ui, debug)
-        self.referenceTool = ReferenceTool(self.ui, debug)
-        
+        self.questPanel = QuestPanel(self, debug)
 
+        self.openPowerSearchAction = QAction("Open Power Search", self)
+        self.menuBar().addAction(self.openPowerSearchAction)
+        self.openPowerSearchAction.triggered.connect(self.openPowerSearch)
+ 
+    def openPowerSearch(self, debug):
+        self.powerSearch = PowerSearchWindow()
+        self.referenceTool = PowerSearch(self.powerSearch, debug)
+        self.powerSearch.show()       
+    
+class PowerSearchWindow(QMainWindow, Ui_PowerSearch):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)    
+     
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle('Fusion')

@@ -16,39 +16,42 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLineEdit, QListWidget, QListWidgetItem,
-    QMainWindow, QMenuBar, QSizePolicy, QStatusBar,
-    QWidget)
+    QMainWindow, QSizePolicy, QWidget)
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        if not MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(379, 477)
-        self.centralwidget = QWidget(MainWindow)
+class Ui_PowerSearch(object):
+    def setupUi(self, PowerSearch):
+        if not PowerSearch.objectName():
+            PowerSearch.setObjectName(u"PowerSearch")
+        PowerSearch.resize(364, 439)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(PowerSearch.sizePolicy().hasHeightForWidth())
+        PowerSearch.setSizePolicy(sizePolicy)
+        PowerSearch.setMinimumSize(QSize(364, 439))
+        PowerSearch.setMaximumSize(QSize(364, 480))
+        self.centralwidget = QWidget(PowerSearch)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.PowerSearch = QLineEdit(self.centralwidget)
-        self.PowerSearch.setObjectName(u"PowerSearch")
-        self.PowerSearch.setGeometry(QRect(10, 10, 361, 21))
-        self.PowerSearchListView = QListWidget(self.centralwidget)
-        self.PowerSearchListView.setObjectName(u"PowerSearchListView")
-        self.PowerSearchListView.setGeometry(QRect(10, 50, 361, 391))
-        self.PowerSearchListView.setMinimumSize(QSize(361, 391))
-        self.PowerSearchListView.setMaximumSize(QSize(361, 391))
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 379, 22))
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.Search = QLineEdit(self.centralwidget)
+        self.Search.setObjectName(u"Search")
+        self.Search.setGeometry(QRect(10, 10, 341, 21))
+        self.Search.setClearButtonEnabled(True)
+        self.Results = QListWidget(self.centralwidget)
+        self.Results.setObjectName(u"Results")
+        self.Results.setGeometry(QRect(10, 40, 341, 391))
+        sizePolicy.setHeightForWidth(self.Results.sizePolicy().hasHeightForWidth())
+        self.Results.setSizePolicy(sizePolicy)
+        self.Results.setMinimumSize(QSize(0, 0))
+        self.Results.setMaximumSize(QSize(349, 391))
+        PowerSearch.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(PowerSearch)
 
-        QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(PowerSearch)
     # setupUi
 
-    def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Power Search", None))
+    def retranslateUi(self, PowerSearch):
+        PowerSearch.setWindowTitle(QCoreApplication.translate("PowerSearch", u"Power Search", None))
+        self.Search.setText(QCoreApplication.translate("PowerSearch", u"Search by Id, name, or localized name", None))
     # retranslateUi
 
