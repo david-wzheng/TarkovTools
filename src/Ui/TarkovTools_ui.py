@@ -20,21 +20,21 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
     QGridLayout, QHBoxLayout, QLabel, QLayout,
     QLineEdit, QListWidget, QListWidgetItem, QMainWindow,
     QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QStatusBar, QTabWidget, QTextEdit, QWidget)
+    QTabWidget, QTextEdit, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1755, 907)
+        MainWindow.resize(1755, 866)
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(1755, 907))
-        MainWindow.setMaximumSize(QSize(3840, 2160))
+        MainWindow.setMinimumSize(QSize(1755, 866))
+        MainWindow.setMaximumSize(QSize(1755, 866))
         MainWindow.setMouseTracking(False)
         MainWindow.setAcceptDrops(False)
         icon = QIcon()
@@ -78,247 +78,215 @@ class Ui_MainWindow(object):
         self.QuestCreator.setSizePolicy(sizePolicy)
         self.gridLayoutWidget = QWidget(self.QuestCreator)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(0, 0, 351, 791))
-        self.gridLayout = QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayoutWidget.setGeometry(QRect(0, 0, 351, 751))
+        self.FileManagerLayout = QGridLayout(self.gridLayoutWidget)
+        self.FileManagerLayout.setObjectName(u"FileManagerLayout")
+        self.FileManagerLayout.setContentsMargins(0, 0, 0, 0)
         self.RemoveFromQuestFile = QPushButton(self.gridLayoutWidget)
         self.RemoveFromQuestFile.setObjectName(u"RemoveFromQuestFile")
 
-        self.gridLayout.addWidget(self.RemoveFromQuestFile, 2, 3, 1, 1)
+        self.FileManagerLayout.addWidget(self.RemoveFromQuestFile, 2, 3, 1, 1)
 
         self.CurrentQuestText = QLineEdit(self.gridLayoutWidget)
         self.CurrentQuestText.setObjectName(u"CurrentQuestText")
         self.CurrentQuestText.setReadOnly(True)
         self.CurrentQuestText.setClearButtonEnabled(False)
 
-        self.gridLayout.addWidget(self.CurrentQuestText, 3, 1, 1, 3)
+        self.FileManagerLayout.addWidget(self.CurrentQuestText, 3, 1, 1, 3)
 
         self.LoadQuestFile = QPushButton(self.gridLayoutWidget)
         self.LoadQuestFile.setObjectName(u"LoadQuestFile")
 
-        self.gridLayout.addWidget(self.LoadQuestFile, 1, 2, 1, 1)
+        self.FileManagerLayout.addWidget(self.LoadQuestFile, 1, 2, 1, 1)
 
         self.QuestFileWidget = QListWidget(self.gridLayoutWidget)
         self.QuestFileWidget.setObjectName(u"QuestFileWidget")
 
-        self.gridLayout.addWidget(self.QuestFileWidget, 6, 1, 2, 3)
+        self.FileManagerLayout.addWidget(self.QuestFileWidget, 6, 1, 2, 3)
 
         self.LoadedLocalePath = QLineEdit(self.gridLayoutWidget)
         self.LoadedLocalePath.setObjectName(u"LoadedLocalePath")
         self.LoadedLocalePath.setReadOnly(True)
         self.LoadedLocalePath.setClearButtonEnabled(False)
 
-        self.gridLayout.addWidget(self.LoadedLocalePath, 4, 1, 1, 3)
+        self.FileManagerLayout.addWidget(self.LoadedLocalePath, 4, 1, 1, 3)
 
         self.SaveQuestFile = QPushButton(self.gridLayoutWidget)
         self.SaveQuestFile.setObjectName(u"SaveQuestFile")
 
-        self.gridLayout.addWidget(self.SaveQuestFile, 1, 3, 1, 1)
+        self.FileManagerLayout.addWidget(self.SaveQuestFile, 1, 3, 1, 1)
 
         self.LoadFilePath = QLineEdit(self.gridLayoutWidget)
         self.LoadFilePath.setObjectName(u"LoadFilePath")
         self.LoadFilePath.setReadOnly(True)
         self.LoadFilePath.setClearButtonEnabled(False)
 
-        self.gridLayout.addWidget(self.LoadFilePath, 5, 1, 1, 3)
+        self.FileManagerLayout.addWidget(self.LoadFilePath, 5, 1, 1, 3)
 
         self.Console = QListWidget(self.gridLayoutWidget)
         self.Console.setObjectName(u"Console")
 
-        self.gridLayout.addWidget(self.Console, 9, 1, 1, 3)
+        self.FileManagerLayout.addWidget(self.Console, 9, 1, 1, 3)
 
         self.NewQuestFile = QPushButton(self.gridLayoutWidget)
         self.NewQuestFile.setObjectName(u"NewQuestFile")
 
-        self.gridLayout.addWidget(self.NewQuestFile, 1, 1, 1, 1)
+        self.FileManagerLayout.addWidget(self.NewQuestFile, 1, 1, 1, 1)
 
         self.EditQuest = QPushButton(self.gridLayoutWidget)
         self.EditQuest.setObjectName(u"EditQuest")
 
-        self.gridLayout.addWidget(self.EditQuest, 2, 1, 1, 1)
+        self.FileManagerLayout.addWidget(self.EditQuest, 2, 1, 1, 1)
 
         self.label_29 = QLabel(self.gridLayoutWidget)
         self.label_29.setObjectName(u"label_29")
 
-        self.gridLayout.addWidget(self.label_29, 8, 2, 1, 1)
+        self.FileManagerLayout.addWidget(self.label_29, 8, 2, 1, 1)
 
         self.ClearConsole = QPushButton(self.gridLayoutWidget)
         self.ClearConsole.setObjectName(u"ClearConsole")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(113)
+        sizePolicy1.setHeightForWidth(self.ClearConsole.sizePolicy().hasHeightForWidth())
+        self.ClearConsole.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.ClearConsole, 10, 2, 1, 1)
+        self.FileManagerLayout.addWidget(self.ClearConsole, 2, 2, 1, 1)
 
         self.gridLayoutWidget_2 = QWidget(self.QuestCreator)
         self.gridLayoutWidget_2.setObjectName(u"gridLayoutWidget_2")
         self.gridLayoutWidget_2.setGeometry(QRect(360, 0, 901, 101))
-        self.gridLayout_2 = QGridLayout(self.gridLayoutWidget_2)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.RootEditorLayout = QGridLayout(self.gridLayoutWidget_2)
+        self.RootEditorLayout.setObjectName(u"RootEditorLayout")
+        self.RootEditorLayout.setContentsMargins(0, 0, 0, 0)
         self._Id = QLineEdit(self.gridLayoutWidget_2)
         self._Id.setObjectName(u"_Id")
         self._Id.setMaxLength(24)
         self._Id.setClearButtonEnabled(True)
 
-        self.gridLayout_2.addWidget(self._Id, 0, 0, 1, 1)
+        self.RootEditorLayout.addWidget(self._Id, 0, 0, 1, 1)
 
         self.DynamicLocale = QCheckBox(self.gridLayoutWidget_2)
         self.DynamicLocale.setObjectName(u"DynamicLocale")
         self.DynamicLocale.setChecked(False)
 
-        self.gridLayout_2.addWidget(self.DynamicLocale, 1, 1, 1, 1)
+        self.RootEditorLayout.addWidget(self.DynamicLocale, 1, 1, 1, 1)
 
         self.ImagePath = QLineEdit(self.gridLayoutWidget_2)
         self.ImagePath.setObjectName(u"ImagePath")
         self.ImagePath.setMaxLength(512)
         self.ImagePath.setClearButtonEnabled(True)
 
-        self.gridLayout_2.addWidget(self.ImagePath, 2, 0, 1, 1)
+        self.RootEditorLayout.addWidget(self.ImagePath, 2, 0, 1, 1)
 
         self.InstantComplete = QCheckBox(self.gridLayoutWidget_2)
         self.InstantComplete.setObjectName(u"InstantComplete")
         self.InstantComplete.setChecked(False)
 
-        self.gridLayout_2.addWidget(self.InstantComplete, 2, 2, 1, 1)
+        self.RootEditorLayout.addWidget(self.InstantComplete, 2, 2, 1, 1)
 
         self.SecretQuest = QCheckBox(self.gridLayoutWidget_2)
         self.SecretQuest.setObjectName(u"SecretQuest")
         self.SecretQuest.setChecked(False)
 
-        self.gridLayout_2.addWidget(self.SecretQuest, 1, 2, 1, 1)
+        self.RootEditorLayout.addWidget(self.SecretQuest, 1, 2, 1, 1)
 
         self.TradercomboBox = QComboBox(self.gridLayoutWidget_2)
         self.TradercomboBox.setObjectName(u"TradercomboBox")
 
-        self.gridLayout_2.addWidget(self.TradercomboBox, 0, 3, 1, 1)
+        self.RootEditorLayout.addWidget(self.TradercomboBox, 0, 3, 1, 1)
 
         self.RequiresKey = QCheckBox(self.gridLayoutWidget_2)
         self.RequiresKey.setObjectName(u"RequiresKey")
 
-        self.gridLayout_2.addWidget(self.RequiresKey, 0, 2, 1, 1)
+        self.RootEditorLayout.addWidget(self.RequiresKey, 0, 2, 1, 1)
 
         self.Restartable = QCheckBox(self.gridLayoutWidget_2)
         self.Restartable.setObjectName(u"Restartable")
         self.Restartable.setChecked(False)
 
-        self.gridLayout_2.addWidget(self.Restartable, 2, 1, 1, 1)
+        self.RootEditorLayout.addWidget(self.Restartable, 2, 1, 1, 1)
 
         self.CanShowNotifications = QCheckBox(self.gridLayoutWidget_2)
         self.CanShowNotifications.setObjectName(u"CanShowNotifications")
         self.CanShowNotifications.setChecked(True)
 
-        self.gridLayout_2.addWidget(self.CanShowNotifications, 0, 1, 1, 1)
+        self.RootEditorLayout.addWidget(self.CanShowNotifications, 0, 1, 1, 1)
 
         self.Side = QComboBox(self.gridLayoutWidget_2)
         self.Side.setObjectName(u"Side")
         self.Side.setEditable(False)
         self.Side.setModelColumn(0)
 
-        self.gridLayout_2.addWidget(self.Side, 2, 3, 1, 1)
+        self.RootEditorLayout.addWidget(self.Side, 2, 3, 1, 1)
 
         self.LocationComboBox = QComboBox(self.gridLayoutWidget_2)
         self.LocationComboBox.setObjectName(u"LocationComboBox")
 
-        self.gridLayout_2.addWidget(self.LocationComboBox, 1, 3, 1, 1)
+        self.RootEditorLayout.addWidget(self.LocationComboBox, 1, 3, 1, 1)
 
         self.QuestName = QLineEdit(self.gridLayoutWidget_2)
         self.QuestName.setObjectName(u"QuestName")
         self.QuestName.setClearButtonEnabled(True)
 
-        self.gridLayout_2.addWidget(self.QuestName, 1, 0, 1, 1)
+        self.RootEditorLayout.addWidget(self.QuestName, 1, 0, 1, 1)
 
         self.Type = QComboBox(self.gridLayoutWidget_2)
         self.Type.setObjectName(u"Type")
 
-        self.gridLayout_2.addWidget(self.Type, 2, 4, 1, 1)
+        self.RootEditorLayout.addWidget(self.Type, 2, 4, 1, 1)
 
         self.LocationIdTextField = QLineEdit(self.gridLayoutWidget_2)
         self.LocationIdTextField.setObjectName(u"LocationIdTextField")
         self.LocationIdTextField.setMaxLength(24)
         self.LocationIdTextField.setClearButtonEnabled(True)
 
-        self.gridLayout_2.addWidget(self.LocationIdTextField, 1, 4, 1, 1)
+        self.RootEditorLayout.addWidget(self.LocationIdTextField, 1, 4, 1, 1)
 
         self.TraderIdTextField = QLineEdit(self.gridLayoutWidget_2)
         self.TraderIdTextField.setObjectName(u"TraderIdTextField")
         self.TraderIdTextField.setMaxLength(24)
         self.TraderIdTextField.setClearButtonEnabled(True)
 
-        self.gridLayout_2.addWidget(self.TraderIdTextField, 0, 4, 1, 1)
+        self.RootEditorLayout.addWidget(self.TraderIdTextField, 0, 4, 1, 1)
 
         self.gridLayoutWidget_3 = QWidget(self.QuestCreator)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(360, 110, 901, 631))
-        self.gridLayout_3 = QGridLayout(self.gridLayoutWidget_3)
-        self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.gridLayoutWidget_3.setGeometry(QRect(360, 110, 901, 641))
+        self.LocaleLayout = QGridLayout(self.gridLayoutWidget_3)
+        self.LocaleLayout.setObjectName(u"LocaleLayout")
+        self.LocaleLayout.setContentsMargins(0, 0, 0, 0)
         self.FailMessage = QTextEdit(self.gridLayoutWidget_3)
         self.FailMessage.setObjectName(u"FailMessage")
 
-        self.gridLayout_3.addWidget(self.FailMessage, 1, 0, 1, 1)
+        self.LocaleLayout.addWidget(self.FailMessage, 1, 0, 1, 1)
 
         self.SuccessMessage = QTextEdit(self.gridLayoutWidget_3)
         self.SuccessMessage.setObjectName(u"SuccessMessage")
 
-        self.gridLayout_3.addWidget(self.SuccessMessage, 0, 1, 1, 1)
+        self.LocaleLayout.addWidget(self.SuccessMessage, 0, 1, 1, 1)
 
         self.Note = QTextEdit(self.gridLayoutWidget_3)
         self.Note.setObjectName(u"Note")
 
-        self.gridLayout_3.addWidget(self.Note, 2, 0, 1, 1)
+        self.LocaleLayout.addWidget(self.Note, 2, 0, 1, 1)
 
         self.ChangeMessage = QTextEdit(self.gridLayoutWidget_3)
         self.ChangeMessage.setObjectName(u"ChangeMessage")
 
-        self.gridLayout_3.addWidget(self.ChangeMessage, 1, 1, 1, 1)
+        self.LocaleLayout.addWidget(self.ChangeMessage, 1, 1, 1, 1)
 
         self.Description = QTextEdit(self.gridLayoutWidget_3)
         self.Description.setObjectName(u"Description")
 
-        self.gridLayout_3.addWidget(self.Description, 0, 0, 1, 1)
-
-        self.gridLayoutWidget_4 = QWidget(self.QuestCreator)
-        self.gridLayoutWidget_4.setObjectName(u"gridLayoutWidget_4")
-        self.gridLayoutWidget_4.setGeometry(QRect(360, 750, 901, 80))
-        self.gridLayout_4 = QGridLayout(self.gridLayoutWidget_4)
-        self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.GithubPath = QLineEdit(self.gridLayoutWidget_4)
-        self.GithubPath.setObjectName(u"GithubPath")
-        self.GithubPath.setMaxLength(512)
-        self.GithubPath.setReadOnly(True)
-        self.GithubPath.setClearButtonEnabled(False)
-
-        self.gridLayout_4.addWidget(self.GithubPath, 1, 1, 1, 1)
-
-        self.ClearButton = QPushButton(self.gridLayoutWidget_4)
-        self.ClearButton.setObjectName(u"ClearButton")
-
-        self.gridLayout_4.addWidget(self.ClearButton, 0, 0, 1, 1)
-
-        self.Author = QLabel(self.gridLayoutWidget_4)
-        self.Author.setObjectName(u"Author")
-        self.Author.setWordWrap(False)
-
-        self.gridLayout_4.addWidget(self.Author, 1, 0, 1, 1)
-
-        self.Author_2 = QLabel(self.gridLayoutWidget_4)
-        self.Author_2.setObjectName(u"Author_2")
-        self.Author_2.setWordWrap(False)
-
-        self.gridLayout_4.addWidget(self.Author_2, 0, 1, 1, 1)
-
-        self.ALPHAVERSION = QLabel(self.gridLayoutWidget_4)
-        self.ALPHAVERSION.setObjectName(u"ALPHAVERSION")
-        self.ALPHAVERSION.setWordWrap(False)
-
-        self.gridLayout_4.addWidget(self.ALPHAVERSION, 1, 2, 1, 1)
+        self.LocaleLayout.addWidget(self.Description, 0, 0, 1, 1)
 
         self.gridLayoutWidget_5 = QWidget(self.QuestCreator)
         self.gridLayoutWidget_5.setObjectName(u"gridLayoutWidget_5")
-        self.gridLayoutWidget_5.setGeometry(QRect(1270, 0, 451, 821))
-        self.gridLayout_5 = QGridLayout(self.gridLayoutWidget_5)
-        self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.gridLayoutWidget_5.setGeometry(QRect(1270, 0, 451, 751))
+        self.PropertiesLayout = QGridLayout(self.gridLayoutWidget_5)
+        self.PropertiesLayout.setObjectName(u"PropertiesLayout")
+        self.PropertiesLayout.setContentsMargins(0, 0, 0, 0)
         self.tabWidget_2 = QTabWidget(self.gridLayoutWidget_5)
         self.tabWidget_2.setObjectName(u"tabWidget_2")
         self.tabWidget_2.setTabBarAutoHide(False)
@@ -368,7 +336,7 @@ class Ui_MainWindow(object):
         self.AvailableForStartRemoveFromList.setGeometry(QRect(310, 100, 121, 24))
         self.StartLoyaltyWidget = QListWidget(self.tab_4)
         self.StartLoyaltyWidget.setObjectName(u"StartLoyaltyWidget")
-        self.StartLoyaltyWidget.setGeometry(QRect(0, 370, 451, 211))
+        self.StartLoyaltyWidget.setGeometry(QRect(0, 370, 451, 351))
         self.AvailableForStartLoyaltyRemoveFromList = QPushButton(self.tab_4)
         self.AvailableForStartLoyaltyRemoveFromList.setObjectName(u"AvailableForStartLoyaltyRemoveFromList")
         self.AvailableForStartLoyaltyRemoveFromList.setGeometry(QRect(310, 340, 121, 24))
@@ -407,7 +375,7 @@ class Ui_MainWindow(object):
         self.checkBox_10.setChecked(False)
         self.tabWidget_5 = QTabWidget(self.tab_3)
         self.tabWidget_5.setObjectName(u"tabWidget_5")
-        self.tabWidget_5.setGeometry(QRect(0, 0, 461, 771))
+        self.tabWidget_5.setGeometry(QRect(0, 0, 461, 791))
         self.tabWidget_5.setTabBarAutoHide(False)
         self.tab_11 = QWidget()
         self.tab_11.setObjectName(u"tab_11")
@@ -429,7 +397,7 @@ class Ui_MainWindow(object):
         self.FinishLoyaltyRemoveFromList.setGeometry(QRect(320, 230, 121, 24))
         self.FinishLoyaltyWidget = QListWidget(self.tab_11)
         self.FinishLoyaltyWidget.setObjectName(u"FinishLoyaltyWidget")
-        self.FinishLoyaltyWidget.setGeometry(QRect(0, 260, 451, 611))
+        self.FinishLoyaltyWidget.setGeometry(QRect(0, 260, 451, 431))
         self.FinishLoyaltyAddToList = QPushButton(self.tab_11)
         self.FinishLoyaltyAddToList.setObjectName(u"FinishLoyaltyAddToList")
         self.FinishLoyaltyAddToList.setGeometry(QRect(10, 230, 121, 24))
@@ -466,7 +434,7 @@ class Ui_MainWindow(object):
         self.FinishSkillComboBox.setGeometry(QRect(10, 20, 121, 22))
         self.FinishSkillWidget = QListWidget(self.tab_12)
         self.FinishSkillWidget.setObjectName(u"FinishSkillWidget")
-        self.FinishSkillWidget.setGeometry(QRect(0, 260, 451, 471))
+        self.FinishSkillWidget.setGeometry(QRect(0, 260, 451, 431))
         self.FinishSkillObjective = QTextEdit(self.tab_12)
         self.FinishSkillObjective.setObjectName(u"FinishSkillObjective")
         self.FinishSkillObjective.setGeometry(QRect(0, 60, 451, 161))
@@ -531,13 +499,13 @@ class Ui_MainWindow(object):
         self.FinishHandoverObjective.setGeometry(QRect(0, 400, 451, 81))
         self.FinishHandoverWidget = QListWidget(self.tab_18)
         self.FinishHandoverWidget.setObjectName(u"FinishHandoverWidget")
-        self.FinishHandoverWidget.setGeometry(QRect(0, 540, 451, 181))
+        self.FinishHandoverWidget.setGeometry(QRect(0, 520, 451, 171))
         self.FinishHandoverRemoveList = QPushButton(self.tab_18)
         self.FinishHandoverRemoveList.setObjectName(u"FinishHandoverRemoveList")
-        self.FinishHandoverRemoveList.setGeometry(QRect(320, 500, 121, 24))
+        self.FinishHandoverRemoveList.setGeometry(QRect(320, 490, 121, 24))
         self.HandoverItemAddToList = QPushButton(self.tab_18)
         self.HandoverItemAddToList.setObjectName(u"HandoverItemAddToList")
-        self.HandoverItemAddToList.setGeometry(QRect(10, 500, 121, 24))
+        self.HandoverItemAddToList.setGeometry(QRect(10, 490, 121, 24))
         self.label_28 = QLabel(self.tab_18)
         self.label_28.setObjectName(u"label_28")
         self.label_28.setGeometry(QRect(0, 380, 251, 16))
@@ -558,7 +526,7 @@ class Ui_MainWindow(object):
         self.ZoneRemoveFromList.setGeometry(QRect(320, 160, 121, 24))
         self.ZoneVisitWidget = QListWidget(self.tab_19)
         self.ZoneVisitWidget.setObjectName(u"ZoneVisitWidget")
-        self.ZoneVisitWidget.setGeometry(QRect(0, 190, 451, 241))
+        self.ZoneVisitWidget.setGeometry(QRect(0, 190, 451, 501))
         self.ZoneAddToList = QPushButton(self.tab_19)
         self.ZoneAddToList.setObjectName(u"ZoneAddToList")
         self.ZoneAddToList.setGeometry(QRect(10, 160, 121, 24))
@@ -616,17 +584,12 @@ class Ui_MainWindow(object):
         self.FailStandingCompare.setGeometry(QRect(190, 290, 121, 21))
         self.FailStandingCompare.setEditable(False)
         self.FailStandingCompare.setModelColumn(0)
-        self.line_25 = QFrame(self.tab_14)
-        self.line_25.setObjectName(u"line_25")
-        self.line_25.setGeometry(QRect(-10, 520, 471, 20))
-        self.line_25.setFrameShape(QFrame.HLine)
-        self.line_25.setFrameShadow(QFrame.Sunken)
         self.Label232_2 = QLabel(self.tab_14)
         self.Label232_2.setObjectName(u"Label232_2")
         self.Label232_2.setGeometry(QRect(10, 270, 49, 16))
         self.FailStandingWidget = QListWidget(self.tab_14)
         self.FailStandingWidget.setObjectName(u"FailStandingWidget")
-        self.FailStandingWidget.setGeometry(QRect(0, 350, 451, 171))
+        self.FailStandingWidget.setGeometry(QRect(0, 350, 451, 341))
         self.FailStandingRemoveFromList = QPushButton(self.tab_14)
         self.FailStandingRemoveFromList.setObjectName(u"FailStandingRemoveFromList")
         self.FailStandingRemoveFromList.setGeometry(QRect(140, 320, 121, 24))
@@ -679,12 +642,7 @@ class Ui_MainWindow(object):
         self.label_16.setGeometry(QRect(10, 0, 61, 16))
         self.FailExitWidget = QListWidget(self.tab_15)
         self.FailExitWidget.setObjectName(u"FailExitWidget")
-        self.FailExitWidget.setGeometry(QRect(0, 300, 451, 171))
-        self.line_23 = QFrame(self.tab_15)
-        self.line_23.setObjectName(u"line_23")
-        self.line_23.setGeometry(QRect(-10, 470, 471, 20))
-        self.line_23.setFrameShape(QFrame.HLine)
-        self.line_23.setFrameShadow(QFrame.Sunken)
+        self.FailExitWidget.setGeometry(QRect(0, 300, 451, 391))
         self.FailExitAddToList = QPushButton(self.tab_15)
         self.FailExitAddToList.setObjectName(u"FailExitAddToList")
         self.FailExitAddToList.setGeometry(QRect(10, 270, 75, 24))
@@ -712,7 +670,7 @@ class Ui_MainWindow(object):
         self.tab_6.setObjectName(u"tab_6")
         self.tabWidget_3 = QTabWidget(self.tab_6)
         self.tabWidget_3.setObjectName(u"tabWidget_3")
-        self.tabWidget_3.setGeometry(QRect(0, 0, 461, 981))
+        self.tabWidget_3.setGeometry(QRect(0, 0, 461, 721))
         self.tabWidget_3.setTabShape(QTabWidget.Rounded)
         self.tab_7 = QWidget()
         self.tab_7.setObjectName(u"tab_7")
@@ -751,11 +709,6 @@ class Ui_MainWindow(object):
         self.StartedAssortTraderComboBox.setGeometry(QRect(0, 330, 131, 21))
         self.StartedAssortTraderComboBox.setEditable(False)
         self.StartedAssortTraderComboBox.setModelColumn(0)
-        self.line_21 = QFrame(self.tab_7)
-        self.line_21.setObjectName(u"line_21")
-        self.line_21.setGeometry(QRect(0, 600, 451, 16))
-        self.line_21.setFrameShape(QFrame.HLine)
-        self.line_21.setFrameShadow(QFrame.Sunken)
         self.StartedAssortTraderItemId = QLineEdit(self.tab_7)
         self.StartedAssortTraderItemId.setObjectName(u"StartedAssortTraderItemId")
         self.StartedAssortTraderItemId.setGeometry(QRect(160, 330, 132, 21))
@@ -777,7 +730,7 @@ class Ui_MainWindow(object):
         self.StartedAssortLoyaltyLevelComboBox.setModelColumn(0)
         self.StartedAssortTraderWidget = QListWidget(self.tab_7)
         self.StartedAssortTraderWidget.setObjectName(u"StartedAssortTraderWidget")
-        self.StartedAssortTraderWidget.setGeometry(QRect(0, 410, 451, 191))
+        self.StartedAssortTraderWidget.setGeometry(QRect(0, 410, 451, 281))
         self.line_22 = QFrame(self.tab_7)
         self.line_22.setObjectName(u"line_22")
         self.line_22.setGeometry(QRect(0, 380, 451, 16))
@@ -955,8 +908,26 @@ class Ui_MainWindow(object):
         self.tabWidget_3.addTab(self.tab_13, "")
         self.tabWidget_2.addTab(self.tab_6, "")
 
-        self.gridLayout_5.addWidget(self.tabWidget_2, 0, 0, 1, 1)
+        self.PropertiesLayout.addWidget(self.tabWidget_2, 0, 0, 1, 1)
 
+        self.GithubPathLabel = QLineEdit(self.QuestCreator)
+        self.GithubPathLabel.setObjectName(u"GithubPathLabel")
+        self.GithubPathLabel.setGeometry(QRect(150, 770, 231, 20))
+        self.GithubPathLabel.setMaxLength(512)
+        self.GithubPathLabel.setReadOnly(True)
+        self.GithubPathLabel.setClearButtonEnabled(False)
+        self.ClearButton = QPushButton(self.QuestCreator)
+        self.ClearButton.setObjectName(u"ClearButton")
+        self.ClearButton.setGeometry(QRect(10, 770, 131, 21))
+        self.ALPHAVERSION = QLabel(self.QuestCreator)
+        self.ALPHAVERSION.setObjectName(u"ALPHAVERSION")
+        self.ALPHAVERSION.setGeometry(QRect(390, 770, 421, 21))
+        self.ALPHAVERSION.setWordWrap(False)
+        self.line = QFrame(self.QuestCreator)
+        self.line.setObjectName(u"line")
+        self.line.setGeometry(QRect(7, 750, 1721, 20))
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
         self.tabWidget.addTab(self.QuestCreator, "")
 
         self.horizontalLayout_2.addWidget(self.tabWidget)
@@ -973,9 +944,6 @@ class Ui_MainWindow(object):
         self.menuTools = QMenu(self.menubar)
         self.menuTools.setObjectName(u"menuTools")
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuTools.menuAction())
@@ -990,8 +958,8 @@ class Ui_MainWindow(object):
 
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(1)
-        self.tabWidget_5.setCurrentIndex(1)
-        self.tabWidget_6.setCurrentIndex(0)
+        self.tabWidget_5.setCurrentIndex(2)
+        self.tabWidget_6.setCurrentIndex(2)
         self.tabWidget_3.setCurrentIndex(2)
 
 
@@ -1018,7 +986,7 @@ class Ui_MainWindow(object):
         self.NewQuestFile.setText(QCoreApplication.translate("MainWindow", u"New Quest File", None))
         self.EditQuest.setText(QCoreApplication.translate("MainWindow", u"Edit Quest", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"Error Console", None))
-        self.ClearConsole.setText(QCoreApplication.translate("MainWindow", u"Clear Console", None))
+        self.ClearConsole.setText(QCoreApplication.translate("MainWindow", u"Clear Error Console", None))
         self._Id.setText("")
         self._Id.setPlaceholderText(QCoreApplication.translate("MainWindow", u"_id", None))
         self.DynamicLocale.setText(QCoreApplication.translate("MainWindow", u"Dynamic Locale", None))
@@ -1054,12 +1022,6 @@ class Ui_MainWindow(object):
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.Description.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Description (Same as Start and Accept messages)", None))
-        self.GithubPath.setText(QCoreApplication.translate("MainWindow", u"https://github.com/dirtbikercj/TarkovTools", None))
-        self.GithubPath.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Github Path", None))
-        self.ClearButton.setText(QCoreApplication.translate("MainWindow", u"Clear All", None))
-        self.Author.setText(QCoreApplication.translate("MainWindow", u"Author: Dirtbikercj Github Repo:", None))
-        self.Author_2.setText(QCoreApplication.translate("MainWindow", u"Warning: Will clear all unsaved progress!", None))
-        self.ALPHAVERSION.setText(QCoreApplication.translate("MainWindow", u"ALPHA VERSION  REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS", None))
         self.AvailableForStartLevelRequirement.setInputMask("")
         self.AvailableForStartLevelRequirement.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.AvailableForStartLevelRequirement.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Level requirement", None))
@@ -1219,6 +1181,10 @@ class Ui_MainWindow(object):
         self.AssortLoyaltyLevelComboBox.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Loyalty level", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_13), QCoreApplication.translate("MainWindow", u"Success 2", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"Rewards", None))
+        self.GithubPathLabel.setText(QCoreApplication.translate("MainWindow", u"https://github.com/dirtbikercj/TarkovTools", None))
+        self.GithubPathLabel.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Github Path", None))
+        self.ClearButton.setText(QCoreApplication.translate("MainWindow", u"Clear All Editor Fields", None))
+        self.ALPHAVERSION.setText(QCoreApplication.translate("MainWindow", u"ALPHA VERSION  REPORT ALL BUGS. DO NOT ATTEMPT TO EDIT BSG QUESTS", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.QuestCreator), QCoreApplication.translate("MainWindow", u"Quest Creator", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuTools.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))
