@@ -1,0 +1,124 @@
+{
+  "_id": "TarkovTools",
+  "working": true,
+  "availableInRaid": false,
+  "items_buy": {
+      "category": [
+        "5422acb9af1c889c16000029",
+        "5485a8684bdc2da71d8b4567",
+        "5448fe124bdc2da5018b4567",
+        "57864a66245977548f04a81f",
+        "57864ee62459775490116fc1",
+        "57864bb7245977548b3b66c2",
+        "5c164d2286f774194c5e69fa",
+        "5447e0e74bdc2d3c308b4567",
+        "616eb7aea207f41933308f46",
+        "543be6674bdc2df1348b4569",
+        "543be5664bdc2dd4348b4569",
+        "567849dd4bdc2d150f8b456e",
+        "543be5e94bdc2df1348b4568",
+        "5448eb774bdc2d0a728b4567",
+        "5448e5284bdc2dcb718b4567",
+        "5448e53e4bdc2d60728b4567",
+        "5448f3a64bdc2d60728b456a",
+        "5448e54d4bdc2dcc718b4568",
+        "543be5f84bdc2dd4348b456a",
+        "5795f317245977243854e041",
+        "5671435f4bdc2d96058b4569",
+        "57bef4c42459772e8d35a53b",
+        "57864a3d24597754843f8721",
+        "57864c8c245977548867e7f1",
+        "5447e1d04bdc2dff2f8b4567",
+        "57864e4c24597754843f8723",
+        "543be6564bdc2df4348b4568",
+        "5d650c3e815116009f6201d2",
+        "5448ecbe4bdc2d60728b4568",
+        "590c745b86f7743cc433c5f2",
+        "5c99f98d86f7745c314214b3",
+        "57864ada245977548638de91"
+      ],
+      "id_list": []
+  },
+  "items_buy_prohibited": {},
+  "customization_seller": false,
+  "name": "TarkovTools",
+	"surname": "TarkovTools",
+	"nickname": "TarkovTools",
+  "firstname": "TarkovTools",
+	"location": "Streets of Tarkov",
+  "description": "A tool box filled with goodies somewhere in the ally ways of the streets of tarkov.",
+	"avatar": "/files/trader/avatar/TarkovTools.png",
+  "balance_rub": 250000,
+  "balance_dol": 0,
+  "balance_eur": 0,
+  "unlockedByDefault": true,
+  "discount": 0,
+  "discount_end": 0,
+  "buyer_up": true,
+  "currency": "RUB",
+  "nextResupply": 1615141448,
+  "repair": {
+      "availability": false,
+      "quality": "0",
+      "excluded_id_list": [],
+      "excluded_category": [],
+      "currency": "5449016a4bdc2d6f028b456f",
+      "currency_coefficient": 1,
+      "price_rate": 1
+  },
+  "insurance": {
+      "availability": false,
+      "min_payment": 0,
+      "min_return_hour": 0,
+      "max_return_hour": 0,
+      "max_storage_time": 99,
+      "excluded_category": []
+  },
+  "gridHeight": 300,
+  "loyaltyLevels": [
+    {
+      "buy_price_coef": 65,
+      "exchange_price_coef": 0,
+      "heal_price_coef": 0,
+      "insurance_price_coef": 10,
+      "minLevel": 1,
+      "minSalesSum": 0,
+      "minStanding": 0,
+      "repair_price_coef": 175
+    },
+    {
+      "buy_price_coef": 65,
+      "exchange_price_coef": 0,
+      "heal_price_coef": 0,
+      "insurance_price_coef": "11",
+      "minLevel": 1,
+      "minSalesSum": 1,
+      "minStanding": 0.0,
+      "repair_price_coef": 180
+    },
+    {
+      "buy_price_coef": 65,
+      "exchange_price_coef": 0,
+      "heal_price_coef": 0,
+      "insurance_price_coef": "12",
+      "minLevel": 1,
+      "minSalesSum": 1,
+      "minStanding": 0.0,
+      "repair_price_coef": 185
+    },
+    {
+      "buy_price_coef": 65,
+      "exchange_price_coef": 0,
+      "heal_price_coef": 0,
+      "insurance_price_coef": "13",
+      "minLevel": 1,
+      "minSalesSum": 1,
+      "minStanding": 0.0,
+      "repair_price_coef": 195
+    }
+      
+  ],
+  "sell_category": [
+     
+  ]
+}

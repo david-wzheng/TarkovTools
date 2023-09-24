@@ -1,5 +1,5 @@
-import json, os, string, random
-from Ui.ui_mainwindow import Ui_MainWindow
+import string, random
+from src.Ui.TarkovTools_ui import Ui_MainWindow
 from src.constants import *
 
 class Quest: 
@@ -9,56 +9,81 @@ class Quest:
         self.availableForStartIndex: int = 0
         self.startedRewardIndex: int = 0
         self.successRewardIndex: int = 0
+        self.failIndex: int = 0
         
-        # Start/Finish
+        # QuestFile
+        self.questFile = {}
+        self.localeFile = {}
+            
+        # Start
+        self.availableStatusList = []
+        self.availableLoyaltyList = []
+            
+        # Finish
         self.finishLoyaltyList = []
         self.finishSkillList = []
         self.finishItemList = []
-        self.availableStatusList = []
-        self.availableLoyaltyList = []
+        self.finishHandoverList = []
+        self.finishVisitList = []
+            
+        # Fail
+        self.failExitList = []
+        self.failQuestList = []
+        self.failStandingList = []
         
         # Reward List
-        self.currencyRewardList = []
         self.standingRewardList = []
-        self.assortUnlockList = []
+        self.successAssortUnlockList = []
         self.itemRewardList = []
         self.startedItemList = []
-
-        self.Success = []
-        self.Started = []
+        self.startedAssortUnlockList = []
 
     def generateRandomId(self):
         characters = string.digits + string.ascii_lowercase
         random_seed = ''.join(random.choice(characters) for _ in range(24))
         return random_seed
 
-    def loadQuestFile(self):
-        if os.path.exists(file_path):
-            with open(file_path, "r") as json_file:
-                data = json.load(json_file)
-
-    def generateLoyalty(self, loyaltyList, index):
-        finishLoyalList = []
-        for item in loyaltyList:
-            loyalty = {
-                "_parent": "TraderLoyalty",
-                "_props": {
-                    "id": self.generateRandomId(),
-                    "index": self.availableForFinishIndex,
-                    "parentId": "", 
-                    "dynamicLocale": item.dynamicLocale,
-                    "target": item.traderId,
-                    "value": item.value,
-                    "compareMethod": item.compare,
-                    "visibilityConditions": []
-                },
-                "dynamicLocale": item.dynamicLocale
-            }
-            finishLoyalList.append(loyalty)
-            index += 1
-        return finishLoyalList
-    
     #JSON GENERATION
+    def generateLoyalty(self, standing, index, parent, objective = 0):
+        loyalty = {
+            "_parent": f"{parent}",
+            "_props": {
+                "id": f"{self.mainWindow._Id.text()}_TraderLoyalty_{objective}",
+                "index": self.availableForFinishIndex,
+                "parentId": "", 
+                "dynamicLocale": standing.dynamicLocale,
+                "target": standing.traderId,
+                "value": standing.value,
+                "compareMethod": standing.compare,
+                "visibilityConditions": []
+            },
+            "dynamicLocale": standing.dynamicLocale
+        }
+        self.localeFile[f"{self.mainWindow._Id.text()}_TraderLoyalty_{objective}"] = standing.text
+        index += 1
+        return loyalty
+     
+    def generateQuestRequirements(self, condition, index):
+        questData = {
+            "_parent": "Quest",
+            "_props": {
+                "id": self.generateRandomId(),
+                "index": index,
+                "parentId": "", #TODO Investiage this
+                "dynamicLocale": condition.dynamicLocale,
+                "target": condition.questId,
+                "status": [
+                    condition.statusType
+                ],
+                "availableAfter": 0,
+                "dispersion": 0,
+                "visibilityConditions": []
+            },
+            "dynamicLocale": condition.dynamicLocale
+        }
+        index += 1
+        return questData
+    
     #Available For Start
     def generateAvailableForStartLevel(self):
         level = {
@@ -77,72 +102,56 @@ class Quest:
         self.availableForStartIndex += 1
         return level
 
-    def generateAvailableQuestRequirements(self, questList):
-        questData = {
-            "_parent": "Quest",
-            "_props": {
-                "id": self.generateRandomId(),
-                "index": self.availableForStartIndex,
-                "parentId": "", #TODO Investiage this
-                "dynamicLocale": questList.dynamicLocale,
-                "target": questList.questId,
-                "status": [
-                    questList.statusType
-                ],
-                "availableAfter": 0,
-                "visibilityConditions": []
-            },
-            "dynamicLocale": questList.dynamicLocale
-        }
-        self.availableForStartIndex += 1
-        return questData
-
     def generateAvailableForStart(self):
         availableForStart = []      
-        if int(self.mainWindow.AvailableForStartLevelRequirement.text()) > 0:
+        if self.mainWindow.AvailableForStartLevelRequirement.text() is not None:
             availableForStart.append(self.generateAvailableForStartLevel())
 
         for quest in self.availableStatusList:
-            availableForStart.append(self.generateAvailableQuestRequirements(quest))
+            availableForStart.append(self.generateQuestRequirements(quest, self.startedRewardIndex))
 
-        for loyalty in self.generateLoyalty(self.availableLoyaltyList, self.availableForStartIndex):
-            availableForStart.append(loyalty)
+        for loyalty in self.availableLoyaltyList:
+            availableForStart.append(self.generateLoyalty(loyalty, self.availableForStartIndex, "TraderStanding"))
 
         return availableForStart
 
     #Available For Finish
     def generateFinishSkills(self):
         finishSkillList = []
+        objective = 0
         for item in self.finishSkillList:
             skill = {
                 "_parent": "Skill",
                 "_props": {
-                    "id": self.generateRandomId(),
+                    "id":f"{self.mainWindow._Id.text()}_Skill_{objective}",
                     "index": self.availableForFinishIndex,
                     "parentId": "",
                     "dynamicLocale": item.dynamicLocale,
                     "target": item.skill,
-                    "value": item.value,
+                    "value": int(item.value),
                     "compareMethod": item.compare,
                     "visibilityConditions": []
                 },
                 "dynamicLocale": item.dynamicLocale
             }
+            self.localeFile[f"{self.mainWindow._Id.text()}_Skill_{objective}"] = item.text
+            objective += 1
             finishSkillList.append(skill)
             self.availableForFinishIndex += 1
         return finishSkillList
     
     def generateFinishItems(self):
         finishItemList = []
+        objective = 0
         for token in self.finishItemList:
             item = {
                 "_parent": "FindItem",
                 "_props": {
-                    "dogtagLevel": 0, #TODO
-                    "id": self.generateRandomId(),
+                    "dogtagLevel": int(token.dogtagLevel),
+                    "id": f"{self.mainWindow._Id.text()}_FindItem_{objective}",
                     "index": self.availableForFinishIndex,
-                    "maxDurability": 100, #TODO
-                    "minDurability": 0, #TODO
+                    "maxDurability": int(token.maxDurability),
+                    "minDurability": int(token.minDurability),
                     "parentId": "",
                     "isEncoded": token.encoded,
                     "onlyFoundInRaid": token.fir,
@@ -156,21 +165,24 @@ class Quest:
                 },
                 "dynamicLocale": token.dynamicLocale
             }
+            self.localeFile[f"{self.mainWindow._Id.text()}_FindItem_{objective}"] = token.find
+            objective += 1
             finishItemList.append(item)
             self.availableForFinishIndex += 1
         return finishItemList
     
     def generateFinishHandover(self):
         finishHandOver = []
-        for token in self.finishItemList:
+        objective = 0
+        for token in self.finishHandoverList:
             handover = {
                 "_parent": "HandoverItem",
                 "_props": {
-                    "dogtagLevel": 0, #TODO
-                    "id": self.generateRandomId(),
+                    "dogtagLevel": int(token.dogtagLevel),
+                    "id": f"{self.mainWindow._Id.text()}_HandoverItem_{objective}",
                     "index": self.availableForFinishIndex,
-                    "maxDurability": 100, #TODO
-                    "minDurability": 0, #TODO
+                    "maxDurability": int(token.maxDurability),
+                    "minDurability": int(token.minDurability),
                     "parentId": "",
                     "isEncoded": token.encoded,
                     "onlyFoundInRaid": token.fir,
@@ -183,14 +195,54 @@ class Quest:
                 },
                 "dynamicLocale": token.dynamicLocale
             }
+            self.localeFile[f"{self.mainWindow._Id.text()}_HandoverItem_{objective}"] = token.handover
+            objective += 1
             finishHandOver.append(handover)
             self.availableForFinishIndex += 1
         return finishHandOver
     
+    def generateFinishVisit(self):
+        Visits = []
+        index = 0
+        for token in self.finishVisitList:
+            visit = {
+                "_parent": "CounterCreator",
+                "_props": {
+                    "counter": {
+                        "id": self.generateRandomId(),
+                        "conditions": [ {
+                                "_parent": "VisitPlace",
+                                "_props": {
+                                    "target": token.zone,
+                                    "value": "1",
+                                    "id": self.generateRandomId()
+                                }
+                            }               
+                        ]
+                    },
+                    "id": f"{self.mainWindow._Id.text()}_VisitPlace_{index}",
+                    "index": index,
+                    "parentId": "", #TODO
+                    "oneSessionOnly": token.oneSession,
+                    "dynamicLocale": False,
+                    "type": "Exploration",
+                    "doNotResetIfCounterCompleted": token.doNotReset,
+                    "value": "1",
+                    "visibilityConditions": [] #TODO
+                },
+                "dynamicLocale": False   
+            }
+            self.localeFile[f"{self.mainWindow._Id.text()}_VisitPlace_{index}"] = token.text
+            Visits.append(visit)
+            index += 1
+        return Visits
+    
     def generateAvailableForFinish(self):
         Finish = []
-        for loyalty in self.generateLoyalty(self.finishLoyaltyList, self.availableForFinishIndex):
-            Finish.append(loyalty)
+        objective = 0
+        for loyalty in self.finishLoyaltyList:
+            Finish.append(self.generateLoyalty(loyalty, self.availableForFinishIndex, "TraderLoyalty", objective))
+            objective += 1
             
         for skill in self.generateFinishSkills():
             Finish.append(skill)
@@ -200,13 +252,71 @@ class Quest:
             
         for handoverItem in self.generateFinishHandover():
             Finish.append(handoverItem)
+        
+        for visitPlace in self.generateFinishVisit():
+            Finish.append(visitPlace)
             
         return Finish
 
+    #Fail  
+    def generatExitStatus(self, condition, index):
+        counterCreator = {
+            "_parent": "CounterCreator",
+            "_props": {
+                "counter": {
+                    "id": self.generateRandomId(),
+                    "conditions": [
+                        {
+                            "parent": "ExitStatus",
+                            "_props": {
+                                "status":
+                                    condition.status,
+                            "id": self.generateRandomId()
+                            }                   
+                        },
+                        {
+                        "_parent": "Location",
+                        "_props": {
+                            "target":
+                            condition.location,
+                            "id": self.generateRandomId()
+                            }
+                        }              
+                    ]
+                },
+                "id": self.generateRandomId(),
+                "index": index,
+                "parentId": "",
+                "oneSessionOnly": condition.oneSessionOnly,
+                "dynamicLocale": condition.dynamicLocale,
+                "type": "Exploration",
+                "doNotResetIfCounterCompleted": condition.doNotReset,
+                "value": 1, #TODO Investigate
+                "visibilityConditions": []
+            },
+            "dynamicLocale": condition.dynamicLocale
+        }
+        index += 1   
+        return counterCreator
+    
+    def generateFail(self):
+        Fail = []
+        for quest in self.failQuestList:
+            Fail.append(self.generateQuestRequirements(quest, self.failIndex))
+        
+        for standing in self.failStandingList:
+            Fail.append(self.generateLoyalty(standing, self.failIndex, "TraderStanding"))
+        
+        for exitStatus in self.failExitList:
+            Fail.append(self.generatExitStatus(exitStatus, self.failIndex))
+        
+        
+        return Fail
+    
     #Rewards
     def generateExperienceReward(self):
         experience = {
-            "value": self.mainWindow.ExperienceAmount.text(),
+            "value": int(self.mainWindow.ExperienceAmount.text()),
             "id": "5c95107186f7743285178ade",
             "type": "Experience",
             "index": self.successRewardIndex
@@ -258,11 +368,14 @@ class Quest:
         for item in self.generateReward(self.startedItemList, self.startedRewardIndex):
             Started.append(item)
 
+        for assort in self.generateAssortUnlock(self.startedAssortUnlockList):
+            Started.append(assort)
+        
         return Started
 
-    def generateAssortUnlock(self):
+    def generateAssortUnlock(self, assorts):
         assortRewardList = []     
-        for assort in self.assortUnlockList:
+        for assort in assorts:
             self.successRewardIndex += 1
             target = self.generateRandomId()
             reward = {
@@ -287,16 +400,13 @@ class Quest:
         if self.mainWindow.ExperienceAmount.text() != "":
             Success.append(self.generateExperienceReward())
         
-        for currency in self.generateReward(self.currencyRewardList, self.successRewardIndex):
-            Success.append(currency)
+        for reward in self.generateReward(self.itemRewardList, self.successRewardIndex):
+            Success.append(reward)
         
         for standing in self.generateTraderStandingReward():
             Success.append(standing)
-
-        for item in self.generateReward(self.itemRewardList, self.successRewardIndex):
-            Success.append(item)
             
-        for assort in self.generateAssortUnlock():
+        for assort in self.generateAssortUnlock(self.successAssortUnlockList):
             Success.append(assort)
         
         return Success
@@ -316,9 +426,11 @@ class Quest:
         if selectedLocation in LocationMap:
             location = LocationMap[selectedLocation]
             return location
+        if selectedLocation == "any":
+            return "any"
         
     #Setup Quest
-    def setUpQuests(self):
+    def setUpQuest(self):
         self.availableForStartIndex = 0
         self.availableForFinishIndex = 0
         self.startedRewardIndex = 0
@@ -326,7 +438,7 @@ class Quest:
         quest = {
             "_id":  f"{self.mainWindow._Id.text()}",
             "QuestName": f"{self.mainWindow.QuestName.text()}",
-            "canShowNotificationsInGame": f"{self.mainWindow.CanShowNotifications.isChecked()}",
+            "canShowNotificationsInGame": self.mainWindow.CanShowNotifications.isChecked(),
             "acceptPlayerMessage": f"{self.mainWindow._Id.text()} description",
             "changeQuestMessageText": f"{self.mainWindow._Id.text()} changeQuestMessageText",
             "completePlayerMessage": f"{self.mainWindow._Id.text()} successMessageText",
@@ -336,9 +448,8 @@ class Quest:
                     self.generateAvailableForFinish(),
                 "AvailableForStart":
                     self.generateAvailableForStart(),
-                "Fail": [
-                    #TODO
-                ]
+                "Fail":
+                    self.generateFail(),
             },
 
             "description": f"{self.mainWindow._Id.text()} description",
@@ -352,7 +463,7 @@ class Quest:
 
             "traderId": f"{self.getTraderId()}",
             "location": f"{self.getLocationId()}",
-            "image": self.mainWindow.ImagePath.text(),
+            "image": f"/files/quest/icon/{self.mainWindow.ImagePath.text()}",
             "type": self.mainWindow.Type.currentText(),
             "isKey": self.mainWindow.RequiresKey.isChecked(),
             "restartable": self.mainWindow.Restartable.isChecked(),
@@ -373,21 +484,18 @@ class Quest:
             },
             "side": self.mainWindow.Side.currentText()
         }
-        
-        questDict = {quest["_id"]: quest}
-        result = json.dumps(questDict, sort_keys=True, indent=4)
-
-        return result
+        return quest
     
     def setUpQuestLocale(self):
-        locale =  {}
-        locale[f"{self.mainWindow._Id.text()} name"] = self.mainWindow.QuestName.text()
-        locale[f"{self.mainWindow._Id.text()} description"] = self.mainWindow.Description.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} note"] = self.mainWindow.Note.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} successMessageText"] = self.mainWindow.SuccessMessage.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} failMessageText"] = self.mainWindow.FailMessage.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} changeQuestMessageText"] = self.mainWindow.ChangeMessage.toPlainText()
-        locale[f"{self.mainWindow._Id.text()} location"] = self.getLocationId()
+        localeDict = {}
+        localeDict[f"{self.mainWindow._Id.text()} name"] = self.mainWindow.QuestName.text()
+        localeDict[f"{self.mainWindow._Id.text()} description"] = self.mainWindow.Description.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} note"] = self.mainWindow.Note.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} successMessageText"] = self.mainWindow.SuccessMessage.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} failMessageText"] = self.mainWindow.FailMessage.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} changeQuestMessageText"] = self.mainWindow.ChangeMessage.toPlainText()
+        localeDict[f"{self.mainWindow._Id.text()} location"] = self.getLocationId()
         
-        result = json.dumps(locale, sort_keys=True, indent=4)
-        return result
+        return localeDict
+        
+    
